@@ -1,19 +1,14 @@
 package it.unive.dais.legodroid.lib.motors;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
+
+import java.io.IOException;
+import java.util.concurrent.Future;
 
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.comm.Bytecode;
 import it.unive.dais.legodroid.lib.comm.Const;
-import it.unive.dais.legodroid.lib.comm.Reply;
 import it.unive.dais.legodroid.lib.util.Prelude;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-import java.util.concurrent.Future;
 
 public class TachoMotor {
     private static final String TAG = Prelude.ReTAG("TachoMotor");

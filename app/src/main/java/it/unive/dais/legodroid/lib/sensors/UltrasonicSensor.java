@@ -2,11 +2,11 @@ package it.unive.dais.legodroid.lib.sensors;
 
 import android.support.annotation.NonNull;
 
-import it.unive.dais.legodroid.lib.EV3;
-import it.unive.dais.legodroid.lib.comm.Const;
-
 import java.io.IOException;
 import java.util.concurrent.Future;
+
+import it.unive.dais.legodroid.lib.EV3;
+import it.unive.dais.legodroid.lib.comm.Const;
 
 
 public class UltrasonicSensor extends AbstractSensor {
