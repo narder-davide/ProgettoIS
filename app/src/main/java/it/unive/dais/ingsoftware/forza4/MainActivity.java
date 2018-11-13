@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
         Channel channel = null;
         try {
             channel = conn.connect();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         EV3 ev3 = new EV3(new SpooledAsyncChannel(channel));
