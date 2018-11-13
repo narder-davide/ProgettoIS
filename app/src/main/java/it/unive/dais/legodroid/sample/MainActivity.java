@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textView);
-
+//pasd
         try {
             final EV3 ev3 = new EV3(new BluetoothConnection("EV3").connect());
 
