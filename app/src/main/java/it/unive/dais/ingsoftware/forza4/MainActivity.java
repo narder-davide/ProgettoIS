@@ -20,8 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //prova
+        
         BluetoothConnection conn = new BluetoothConnection("EV3");
         Channel channel = null;
         try {
