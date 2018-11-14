@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Forza4</string>
+
+    <string name="powered">Powered by Lego_Bros</string>
+    <string name="newGame">Nuova partita</string>
+    <string name="loadGame">Carica partita</string>
+    <string name="statistics">Statistiche</string>
+    <string name="options">Opzioni</string>
 </resources>
