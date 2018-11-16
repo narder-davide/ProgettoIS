@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="0.7"
+    android:background="@drawable/lego_background"
     tools:context="it.unive.dais.ingsoftware.forza4.NewGameActivity">
 
 </android.support.constraint.ConstraintLayout>
