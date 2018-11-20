@@ -1,5 +1,6 @@
 package it.unive.dais.legodroid.lib.comm;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +40,8 @@ public class SpooledAsyncChannel implements AsyncChannel {
 
     private static class SpoolerTask extends AsyncTask<Void, Void, Void> {
         private static final String TAG = ReTAG("SpoolerTask");
+        private static final int MAX_RETRIES = 5;
+
         @NonNull
         private final Channel channel;
         @NonNull
@@ -49,12 +52,14 @@ public class SpooledAsyncChannel implements AsyncChannel {
             this.q = q;
         }
 
+        @SuppressLint("DefaultLocale")
         @Override
         protected Void doInBackground(Void... voids) {
             Log.v(TAG, "spooler task started");
             Thread.currentThread().setName(TAG);
-            int retries = 5;
-            String cause = "cancellation";
+            int retries = MAX_RETRIES;
+            @NonNull String cause = "cancellation";
+            @Nullable Throwable last = null;
             while (!isCancelled()) {
                 try {
                     Reply r = channel.read();
@@ -66,15 +71,20 @@ public class SpooledAsyncChannel implements AsyncChannel {
                             }
                         }
                     }
+                    retries = MAX_RETRIES;
                 } catch (Throwable e) {
                     Log.e(TAG, String.format("recoverable exception caught: %s", e));
                     e.printStackTrace();
-                    if (retries-- > 0)
-                        Log.e(TAG, String.format("retries left: %d", retries));
-                    else {
-                        cause = "max retries reached";
-                        break;
+                    if (e.equals(last)) {
+                        if (retries-- > 0)
+                            Log.e(TAG, String.format("retries left: %d", retries));
+                        else {
+                            cause = String.format("max retries (%d) reached for exception %s", MAX_RETRIES, e.getMessage());
+                            break;
+                        }
                     }
+                    else retries = MAX_RETRIES;
+                    last = e;
                 }
             }
             Log.v(TAG, String.format("spooler task quitting due to %s", cause));

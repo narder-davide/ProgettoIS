@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         
-        BluetoothConnection conn = new BluetoothConnection("EV3");
+        BluetoothConnection conn = new BluetoothConnection("F4Bot");
         Channel channel = null;
         try {
             channel = conn.connect();
