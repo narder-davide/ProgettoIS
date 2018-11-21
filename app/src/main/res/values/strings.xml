@@ -9,5 +9,9 @@
     <string name="logoUnive">Logo Unive</string>
     <string name="logoApp">Logo App</string>
 
+    <string name="textUserCoin">Utente</string>
+    <string name="textRobotCoin">Robot</string>
+    <string name="textTimeElapsed">Tempo</string>
+
     <string name="textOption">OPZIONI</string>
 </resources>
