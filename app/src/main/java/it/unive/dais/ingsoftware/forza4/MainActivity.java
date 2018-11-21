@@ -14,7 +14,7 @@ import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 import it.unive.dais.legodroid.lib.comm.Channel;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
-import it.unive.dais.legodroid.lib.sensors.TouchSensor;
+import it.unive.dais.legodroid.lib.plugs.TouchSensor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,24 +73,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         EV3 ev3 = new EV3(new SpooledAsyncChannel(channel));
+        try {
+            ev3.run(data -> {
+                try {
+                    TouchSensor touchSensor = data.getTouchSensor(EV3.InputPort._1);
+                    boolean running = true;
+                    while (running) {
+                        // Set motor speed to 10 (port A)
+                        data.getTachoMotor(EV3.OutputPort.A).setSpeed(10);
 
-        ev3.run(data -> {
-            try {
-                TouchSensor touchSensor = data.getTouchSensor(EV3.InputPort._1);
-                boolean running = true;
-                while (running) {
-                    // Set motor speed to 10 (port A)
-                    data.getTachoMotor(EV3.OutputPort.A).setSpeed(10);
-
-                    // Stop job and motor if pressed
-                    if (touchSensor.getPressed().get()) {
-                        data.getTachoMotor(EV3.OutputPort.A).setSpeed(0);
-                        running = false;
+                        // Stop job and motor if pressed
+                        if (touchSensor.getPressed().get()) {
+                            data.getTachoMotor(EV3.OutputPort.A).setSpeed(0);
+                            running = false;
+                        }
                     }
+                } catch (IOException | InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
+            });
+        } catch (EV3.AlreadyRunningException e) {
+            e.printStackTrace();
+        }
     }
 }
