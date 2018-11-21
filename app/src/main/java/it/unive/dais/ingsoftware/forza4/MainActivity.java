@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 sensorMotor.setType(TachoMotor.Type.LARGE);
 
                 end=false;
-                motor.setSpeed(-5);
+                motor.setPower(30);
                 motor.start();
                 while(!end){
                     c=lightSensor.getColor();
@@ -129,14 +129,54 @@ public class MainActivity extends AppCompatActivity {
                 }
                 sensorMotor.stop();
 
-                sensorMotor.setStepPower(22,0,35,0,false);
+                sensorMotor.setStepPower(30,0,35,0,false);
+                motor.setStepPower(40,100,100,1,true);
+                Thread.sleep(1000);
 
-                for(int i=0;i<5;i++) {
-                    motor.setStepPower(-20, 10, 10, 1, false);
-                    Thread.sleep(2000);
-                    LightSensor.Color color = lightSensor.getColor().get();
-                    Log.i("CAL", i + " Color: " + color);
+                motor.clearCount();
+                sensorMotor.clearCount();
+
+                xstart=motor.getPosition().get();
+                ystart=sensorMotor.getPosition().get();
+
+                Log.i("CAL","0 Color: " +  lightSensor.getColor().get());
+                int i=1;
+                LightSensor.Color color;
+                Thread.sleep(2000);
+
+                //X step 282 in orizzontale
+                //Y step 82 in verticale
+
+                Thread.sleep(1000);
+                motor.setStepPower(100, 100, 180, 1, true);
+                sensorMotor.setStepPower(100,20,20,0,false);
+
+                Thread.sleep(1000);
+                /*
+                int j=0;
+                int pow=100;
+                while(j<6){
+                    while(i<7) {
+                        motor.setStepPower(pow, 100, 180, 1, true);
+                        Thread.sleep(2000);
+                        color= lightSensor.getColor().get();
+
+                        xstart=motor.getPosition().get();
+                        ystart=sensorMotor.getPosition().get();
+
+                        Log.i("CAL", "X: " +xstart+" Y: "+ystart);
+                        Log.i("CAL", i + " Color: " + color);
+                        i++;
+                    }
+                    pow=pow*-1;
+                    sensorMotor.setStepPower(100,20,20,0,false);
+                    j++;
+                    i=0;
                 }
+                */
+
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
