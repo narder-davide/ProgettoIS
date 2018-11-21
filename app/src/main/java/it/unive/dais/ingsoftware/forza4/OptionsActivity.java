@@ -14,6 +14,7 @@ import android.widget.Switch;
 
 import it.dais.forza4.R;
 
+
 public class OptionsActivity extends AppCompatActivity {
 
     @Override
