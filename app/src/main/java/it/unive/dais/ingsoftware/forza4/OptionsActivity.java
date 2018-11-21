@@ -23,12 +23,12 @@ public class OptionsActivity extends AppCompatActivity {
         long[] pattern = {0, 100, 1000, 300, 200, 100, 500, 200, 100};
         v.vibrate(pattern, -1); // -1 indica di vibrare una sola volta
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
         }
         else {
             v.vibrate(500);
-        }
+        }*/
 
         // DA METTERE SUL MAIN
             SharedPreferences difficultSettingsMAIN = getSharedPreferences("DIFFICULT", 0);
@@ -50,8 +50,11 @@ public class OptionsActivity extends AppCompatActivity {
 
         // classe SharedPreference per salvare le modifiche e stringa che corrisponde allo stato della partita
         SharedPreferences difficultSettings = getSharedPreferences("DIFFICULT", 0);
-        String diff = difficultSettings.getString("DIFFICULT", "noValueInsert");
+        SharedPreferences vibrationSettings = getSharedPreferences("VIBRATION", 0);
 
+        int vibration = vibrationSettings.getInt("VIBRATION", 0);
+
+        String diff = difficultSettings.getString("DIFFICULT", "noValueInsert");
         if (diff == "easy" || diff == "noValueInsert"){
             radioEasy.setChecked(true);
             radioMid.setChecked(false);

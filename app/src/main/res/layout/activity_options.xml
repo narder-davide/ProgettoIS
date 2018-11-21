@@ -30,7 +30,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/autour_one"
         android:text="@string/textOption"
-        android:textColor="font"
+        android:textColor="#000000"
         android:textSize="40dp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroupDifficolta"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,8 +89,12 @@
         android:id="@+id/radioGroupDifficolta"
         android:layout_width="101dp"
         android:layout_height="126dp"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="107dp">
+        android:layout_marginEnd="125dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/switchVibrazione"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textDifficult"
+        app:layout_constraintTop_toBottomOf="@+id/textOption">
 
         <RadioButton
             android:id="@+id/radioEasy"
