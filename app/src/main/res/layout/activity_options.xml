@@ -6,4 +6,121 @@
     android:layout_height="match_parent"
     tools:context="it.unive.dais.ingsoftware.forza4.OptionsActivity">
 
+    <TextView
+        android:id="@+id/textColore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="86dp"
+        android:layout_marginEnd="291dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/autour_one"
+        android:text="Colore"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textVibrazione" />
+
+    <TextView
+        android:id="@+id/textOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="33dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/autour_one"
+        android:text="@string/textOption"
+        android:textColor="font"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupDifficolta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textVibrazione"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="239dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/autour_one"
+        android:text="Vibrazione"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textColore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDifficult" />
+
+    <TextView
+        android:id="@+id/textDifficult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="109dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/autour_one"
+        android:text="Difficoltà"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textVibrazione"
+        app:layout_constraintEnd_toStartOf="@+id/radioGroupDifficolta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textOption" />
+
+    <Switch
+        android:id="@+id/switchVibrazione"
+        android:layout_width="49dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="178dp"
+        android:layout_marginEnd="163dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="59dp"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textVibrazione"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupDifficolta" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupDifficolta"
+        android:layout_width="101dp"
+        android:layout_height="126dp"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="107dp">
+
+        <RadioButton
+            android:id="@+id/radioEasy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:fontFamily="@font/autour_one"
+            android:text="Easy"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+
+        <RadioButton
+            android:id="@+id/radioMid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/autour_one"
+            android:text="Middle"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+
+        <RadioButton
+            android:id="@+id/radioHard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/autour_one"
+            android:text="Hard"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+    </RadioGroup>
 </android.support.constraint.ConstraintLayout>
