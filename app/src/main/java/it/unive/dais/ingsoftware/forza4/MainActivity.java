@@ -22,6 +22,8 @@ import it.unive.dais.legodroid.lib.plugs.TouchSensor;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Float xstart,ystart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                     LightSensor lightSensor = data.getLightSensor(EV3.InputPort._1);
                     boolean end=false,last=false;
                     TachoMotor motor=data.getTachoMotor(EV3.OutputPort.A);
-                    Future<LightSensor.Color> c=lightSensor.getColor();
+                    TachoMotor sensorMotor=data.getTachoMotor(EV3.OutputPort.B);
+                    Future<LightSensor.Color> c;
 
                     while(!end){
                         c=lightSensor.getColor();
@@ -102,9 +105,26 @@ public class MainActivity extends AppCompatActivity {
                     }
                     end=false;
                     while(!end){
-                        
+                        c=lightSensor.getColor();
+                        if(c.get()!=LightSensor.Color.BLUE){
+                            motor.setStepPower(30,30,1,30,true);
+                        }else {
+                            xstart=motor.getPosition().get();
+                            end=true;
+                        }
+                        Thread.sleep(1000);
                     }
-
+                    end=false;
+                    while(!end){
+                        c=lightSensor.getColor();
+                        if(c.get()!=LightSensor.Color.BLUE){
+                            sensorMotor.setStepPower(30,30,1,30,true);
+                        }else {
+                            ystart=sensorMotor.getPosition().get();
+                            end=true;
+                        }
+                        Thread.sleep(1000);
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
