@@ -5,15 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import it.dais.forza4.R;
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 import it.unive.dais.legodroid.lib.comm.Channel;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
+import it.unive.dais.legodroid.lib.plugs.LightSensor;
+import it.unive.dais.legodroid.lib.plugs.TachoMotor;
 import it.unive.dais.legodroid.lib.plugs.TouchSensor;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,19 +80,37 @@ public class MainActivity extends AppCompatActivity {
         try {
             ev3.run(data -> {
                 try {
-                    TouchSensor touchSensor = data.getTouchSensor(EV3.InputPort._1);
-                    boolean running = true;
-                    while (running) {
-                        // Set motor speed to 10 (port A)
-                        data.getTachoMotor(EV3.OutputPort.A).setSpeed(10);
+                    LightSensor lightSensor = data.getLightSensor(EV3.InputPort._1);
+                    boolean end=false,last=false;
+                    TachoMotor motor=data.getTachoMotor(EV3.OutputPort.A);
+                    Future<LightSensor.Color> c=lightSensor.getColor();
 
-                        // Stop job and motor if pressed
-                        if (touchSensor.getPressed().get()) {
-                            data.getTachoMotor(EV3.OutputPort.A).setSpeed(0);
-                            running = false;
+                    while(!end){
+                        c=lightSensor.getColor();
+                        if(c.get()==LightSensor.Color.BLUE){
+                            data.soundTone(50,1000,1000);
+                            motor.setStepPower(30,200,1,200,true);
+                            last=false;
+                        }else if(!last){
+                            motor.setStepPower(30,200,1,200,true);
+                            data.soundTone(50,500,200);
+                            last=true;
+                        }else {
+                            end = true;
                         }
+                        Thread.sleep(1500);
                     }
-                } catch (IOException | InterruptedException | ExecutionException e) {
+                    end=false;
+                    while(!end){
+                        
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
             });
