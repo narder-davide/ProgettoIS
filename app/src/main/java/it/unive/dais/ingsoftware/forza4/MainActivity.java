@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnCa
                 return null;
             }
         };
-        //a.execute();
+        a.execute();
     }
 }
 
