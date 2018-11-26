@@ -37,20 +37,6 @@ public class OptionsActivity extends AppCompatActivity {
         Boolean vibr = settings.getBoolean("VIBRATION", true);
         String diff = settings.getString("DIFFICULT", "noValueInsert");
 
-        // DA METTERE SUL MAIN
-            /*
-            // Gestione delle impostazioni di gioco
-                SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = settings.edit();
-
-                Boolean vibr = settings.getBoolean("VIBRATION", true);
-                String diff = settings.getString("DIFFICULT", "noValueInsert");
-                editor.putBoolean("VIBRATION", vibr);
-                editor.putString("DIFFICULT", diff);
-                editor.commit();
-            */
-        // END
-
         // Vibrazione all'apertura dell'activity
         if (vibr == true) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -63,8 +49,6 @@ public class OptionsActivity extends AppCompatActivity {
                 v.vibrate(300);
             }
         }
-
-
 
         // GESTIONE VIBRAZIONE
 
