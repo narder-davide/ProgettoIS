@@ -1,6 +1,5 @@
 package it.unive.dais.ingsoftware.forza4;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -34,7 +33,6 @@ public class OptionsActivity extends AppCompatActivity {
         Switch switchVibrazione = findViewById(R.id.switchVibrazione);
 
         // classe SharedPreference per salvare le opzioni di gioco e la stringa che corrisponde allo stato della partita
-        //SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
 
