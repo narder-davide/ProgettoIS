@@ -1,16 +1,17 @@
 package it.unive.dais.ingsoftware.forza4;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -22,23 +23,21 @@ import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 
 public class MainActivity extends AppCompatActivity implements RobotControl.OnCalibrationFinished {
 
-    private Float xstart,ystart;
     private RobotControl r;
     private EV3 ev3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        TextView app = findViewById(R.id.textView);
-
         // Gestione delle impostazioni di gioco
-        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
 
         Boolean vibr = settings.getBoolean("VIBRATION", true);
-        String diff = settings.getString("DIFFICULT", "noValueInsert");
+        String diff = settings.getString("DIFFICULT", "easy");
         editor.putBoolean("VIBRATION", vibr);
         editor.putString("DIFFICULT", diff);
         editor.commit();
