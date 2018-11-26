@@ -102,30 +102,39 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnCa
         AsyncTask<Void, Void, Void> a=new AsyncTask<Void,Void,Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
-                try {
-                    /*
-                    for(int i=0;i<3;i++){
+                //mouvi in 1 e cade in 4    dist 3
+                //Thread.sleep(7000);
+                r.dropToken();
 
-                        r.move(5,0);
-                        Thread.sleep(7000);
-                        r.move(0,6);
-                        Thread.sleep(7000);
-                        r.move(5,6);
-                        Thread.sleep(7000);
-                        r.move(0,0);
-                        Thread.sleep(7000);
-                    }
-                    */
-                    r.move(5,1);
-                    //mouvi in 1 e cade in 4    dist 3
-                    Thread.sleep(6000);
-                    r.dropToken();
+                try {
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                ev3.cancel();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                r.move(0,-1);
                 return null;
             }
         };
         //a.execute();
     }
 }
+
+
+/*
+                for(int i=0;i<3;i++){
+                    r.move(5,0);
+                    Thread.sleep(7000);
+                    r.move(0,6);
+                    Thread.sleep(7000);
+                    r.move(5,6);
+                    Thread.sleep(7000);
+                    r.move(0,0);
+                    Thread.sleep(7000);
+                }
+                */
