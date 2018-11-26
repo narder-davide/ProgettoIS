@@ -1,6 +1,5 @@
 package it.unive.dais.ingsoftware.forza4;
 
-import android.graphics.Color;
 import android.util.Log;
 
 import java.io.IOException;
@@ -14,8 +13,11 @@ import it.unive.dais.legodroid.lib.plugs.UltrasonicSensor;
 import it.unive.dais.legodroid.lib.util.Consumer;
 
 public class RobotControl {
-    public interface OnCalibrationFinished{
-        public void calibrated();
+    private UltrasonicSensor ultrasonicSensor;
+    private TachoMotor tokenMotor;
+
+    interface OnCalibrationFinished{
+        void calibrated();
     }
     private float xstart,ystart;
     private EV3 ev3;
@@ -32,19 +34,21 @@ public class RobotControl {
     public void calibrate() {
         Consumer<EV3.Api> calibrate = (data -> {
             try {
+                ultrasonicSensor = data.getUltrasonicSensor(EV3.InputPort._2);
                 lightSensor = data.getLightSensor(EV3.InputPort._1);
                 boolean end = false, last = false;
                 motor = data.getTachoMotor(EV3.OutputPort.A);
                 sensorMotor = data.getTachoMotor(EV3.OutputPort.B);
+                tokenMotor = data.getTachoMotor(EV3.OutputPort.C);
+
                 Future<LightSensor.Color> c;
 
                 motor.setPolarity(TachoMotor.Polarity.FORWARD);
-
                 motor.setType(TachoMotor.Type.LARGE);
                 sensorMotor.setType(TachoMotor.Type.LARGE);
 
                 end = false;
-                motor.setPower(30);
+                motor.setPower(40);
                 motor.start();
                 while (!end) {
                     c = lightSensor.getColor();
@@ -56,30 +60,27 @@ public class RobotControl {
                         end = true;
                         Log.i("CAL", "2-FoundBlue X:" + xstart);
                     }
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 }
 
                 end = false;
-                sensorMotor.setSpeed(-5);
+                sensorMotor.setPower(70);
                 sensorMotor.start();
                 while (!end) {
                     c = lightSensor.getColor();
                     LightSensor.Color color = c.get();
-                    Log.i("CAL", "3- " + color);
                     if (color != LightSensor.Color.TRANSPARENT) {
                         Log.i("CAL", "3-NotTrans");
                     } else {
-                        sensorMotor.stop();
-                        ystart = sensorMotor.getPosition().get();
-                        Log.i("CAL", "3-Trans  Y: " + ystart);
+                        sensorMotor.brake();
                         end = true;
                     }
-                    Thread.sleep(50);
+                    Thread.sleep(40);
                 }
-                sensorMotor.stop();
 
-                sensorMotor.setStepPower(30, 10, 28, 10, false);
-                motor.setStepPower(40, 100, 100, 1, true);
+                sensorMotor.setStepPower(-50, 20, 207, 50, true);
+
+                motor.setStepPower(40, 60, 105, 45, true);
                 Thread.sleep(1000);
 
                 motor.clearCount();
@@ -91,33 +92,9 @@ public class RobotControl {
                 currentRow=5;
 
                 Log.i("CAL", "0 Color: " + lightSensor.getColor().get());
-                int i = 1;
-                LightSensor.Color color;
-
                 //X step 282 in orizzontale
                 //Y step 82 in verticale
-                /*
-                int j=0;
-                int pow=100;
-                while(j<6){
-                    while(i<7) {
-                        motor.setStepPower(pow, 100, 180, 1, true);
-                        Thread.sleep(2000);
-                        color= lightSensor.getColor().get();
 
-                        xstart=motor.getPosition().get();
-                        ystart=sensorMotor.getPosition().get();
-
-                        Log.i("CAL", "X: " +xstart+" Y: "+ystart);
-                        Log.i("CAL", i + " Color: " + color);
-                        i++;
-                    }
-                    pow=pow*-1;
-                    sensorMotor.setStepPower(100,20,20,0,false);
-                    j++;
-                    i=0;
-                }
-                */
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -145,13 +122,12 @@ public class RobotControl {
         }else{
             Consumer<EV3.Api> move_c=(data ->{
                 try {
-                    Log.i("CAL","inizio");
+                    Log.i("CAL","move");
                     int newr = currentRow - r;
-                    int newc=currentCol-c;
-                    Thread.sleep(100);
+                    int newc = currentCol - c;
 
                     int stepm=Math.abs(282*newc);
-                    int steps=Math.abs(82*newr)-(5*newr);
+                    int steps=Math.abs(331*newr);
 
                     Log.i("CAL","motor: "+stepm+"Power: "+(-1*Integer.signum(newc)*30));
                     Log.i("CAL","sensor: "+steps+"Power: "+(Integer.signum(newr)*30));
@@ -159,11 +135,11 @@ public class RobotControl {
                     if(newc!=0)
                         motor.setStepPower(-1*Integer.signum(newc)*100, 50,stepm-100, 50, true);
                     if(newr!=0)
-                        sensorMotor.setStepPower(Integer.signum(newr)*30, 30,steps-45, 15, true);
+                        sensorMotor.setStepPower(-1*Integer.signum(newr)*50, 20,steps-40, 20, true);
                     Thread.sleep(5000);
-
-                    currentRow=newr;
-                    currentCol=newc;
+                    currentRow=r;
+                    currentCol=c;
+                    Log.i("CAL","currR "+currentRow+"  currC "+currentCol);
 
                     LightSensor.Rgb rgb=lightSensor.getRgb().get();
                     LightSensor.Color col= lightSensor.getColor().get();
@@ -177,11 +153,7 @@ public class RobotControl {
                             Log.i("CAL","Color err");
                         }
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e){
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | IOException | ExecutionException e) {
                     e.printStackTrace();
                 }
             });
@@ -199,13 +171,10 @@ public class RobotControl {
             try {
                 Log.i("CAL","Muovi Fuori");
                 Thread.sleep(100);
-
                 int stepm=Math.abs(282*currentCol);
                 motor.setStepPower(-100, 50,stepm-100+2300, 50, true);
                 currentCol=-1;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e){
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
         });
@@ -216,28 +185,33 @@ public class RobotControl {
             e.printStackTrace();
         }
     }
-
-    public LightSensor.Color readColor(){
-        return LightSensor.Color.BLACK;
+    
+    public float getDistance() {
+        Float dist = null;
+        try {
+            dist = ultrasonicSensor.getDistance().get();
+        } catch (ExecutionException | IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("CAL", "dist: " + dist);
+        return dist;
     }
 
-    public float getDistance() {
-        Consumer<EV3.Api> ultra = (data -> {
-            UltrasonicSensor us = data.getUltrasonicSensor(EV3.InputPort._1);
+    public void dropToken(){
+        Consumer<EV3.Api> drop=(data ->{
             try {
-                while (true) {
-                    Future<Float> d = us.getDistance();
-                    Log.i("CAL", "dist: " + d.get());
-                    Thread.sleep(1000);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+                Log.i("CAL","Drop token");
+                tokenMotor.setStepPower(-30, 20,70, 20, false);
+                Thread.sleep(1100);
+                tokenMotor.setStepPower(30, 20,70, 20, true);
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
         });
-        return 0;
+        try {
+            ev3.run(drop);
+        } catch (EV3.AlreadyRunningException e) {
+            e.printStackTrace();
+        }
     }
 }

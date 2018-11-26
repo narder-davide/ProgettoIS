@@ -1,5 +1,6 @@
 package it.unive.dais.ingsoftware.forza4;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,16 +13,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import it.dais.forza4.R;
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 import it.unive.dais.legodroid.lib.comm.Channel;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
-import it.unive.dais.legodroid.lib.plugs.LightSensor;
-import it.unive.dais.legodroid.lib.plugs.TachoMotor;
 
 public class MainActivity extends AppCompatActivity implements RobotControl.OnCalibrationFinished {
 
@@ -105,19 +102,33 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnCa
     public void calibrated() {
         Log.i("CAL","finisched calib");
         ev3.cancel();
-        new AsyncTask<Void,Void,Void>(){
+        AsyncTask<Void, Void, Void> a=new AsyncTask<Void,Void,Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    Thread.sleep(1000);
-                    r.move(3,3);
-                    Thread.sleep(10000);
-                    r.move(0,-1);
+                    /*
+                    for(int i=0;i<3;i++){
+
+                        r.move(5,0);
+                        Thread.sleep(7000);
+                        r.move(0,6);
+                        Thread.sleep(7000);
+                        r.move(5,6);
+                        Thread.sleep(7000);
+                        r.move(0,0);
+                        Thread.sleep(7000);
+                    }
+                    */
+                    r.move(5,1);
+                    //mouvi in 1 e cade in 4    dist 3
+                    Thread.sleep(6000);
+                    r.dropToken();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 return null;
             }
-        }.execute();
+        };
+        a.execute();
     }
 }
