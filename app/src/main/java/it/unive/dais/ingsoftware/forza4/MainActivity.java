@@ -2,9 +2,11 @@ package it.unive.dais.ingsoftware.forza4;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,9 +23,11 @@ import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RobotControl.OnCalibrationFinished {
 
     private Float xstart,ystart;
+    private RobotControl r;
+    private EV3 ev3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,65 +96,28 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        EV3 ev3 = new EV3(new SpooledAsyncChannel(channel));
+        ev3 = new EV3(new SpooledAsyncChannel(channel));
 
-        try {
-            ev3.run(data -> {
+        r=new RobotControl(ev3,this);
+        r.calibrate();
+    }
+    @Override
+    public void calibrated() {
+        Log.i("CAL","finisched calib");
+        ev3.cancel();
+        new AsyncTask<Void,Void,Void>(){
+            @Override
+            protected Void doInBackground(Void... voids) {
                 try {
-                    LightSensor lightSensor = data.getLightSensor(EV3.InputPort._1);
-                    boolean end=false,last=false;
-                    TachoMotor motor=data.getTachoMotor(EV3.OutputPort.A);
-                    TachoMotor sensorMotor=data.getTachoMotor(EV3.OutputPort.B);
-                    Future<LightSensor.Color> c;
-
-                    while(!end){
-                        c=lightSensor.getColor();
-                        if(c.get()==LightSensor.Color.BLUE){
-                            data.soundTone(50,1000,1000);
-                            motor.setStepPower(30,200,1,200,true);
-                            last=false;
-                        }else if(!last){
-                            motor.setStepPower(30,200,1,200,true);
-                            data.soundTone(50,500,200);
-                            last=true;
-                        }else {
-                            end = true;
-                        }
-                        Thread.sleep(1500);
-                    }
-                    end=false;
-                    while(!end){
-                        c=lightSensor.getColor();
-                        if(c.get()!=LightSensor.Color.BLUE){
-                            motor.setStepPower(30,30,1,30,true);
-                        }else {
-                            xstart=motor.getPosition().get();
-                            end=true;
-                        }
-                        Thread.sleep(1000);
-                    }
-                    end=false;
-                    while(!end){
-                        c=lightSensor.getColor();
-                        if(c.get()!=LightSensor.Color.BLUE){
-                            sensorMotor.setStepPower(30,30,1,30,true);
-                        }else {
-                            ystart=sensorMotor.getPosition().get();
-                            end=true;
-                        }
-                        Thread.sleep(1000);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Thread.sleep(1000);
+                    r.move(3,3);
+                    Thread.sleep(10000);
+                    r.move(0,-1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
                 }
-            });
-        } catch (EV3.AlreadyRunningException e) {
-            e.printStackTrace();
-        }
+                return null;
+            }
+        }.execute();
     }
 }
