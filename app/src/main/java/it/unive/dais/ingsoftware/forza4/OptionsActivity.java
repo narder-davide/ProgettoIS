@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,6 +22,7 @@ public class OptionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_options);
 
         // Recupero componenti grafici
@@ -31,11 +34,12 @@ public class OptionsActivity extends AppCompatActivity {
         Switch switchVibrazione = findViewById(R.id.switchVibrazione);
 
         // classe SharedPreference per salvare le opzioni di gioco e la stringa che corrisponde allo stato della partita
-        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        //SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
 
         Boolean vibr = settings.getBoolean("VIBRATION", true);
-        String diff = settings.getString("DIFFICULT", "noValueInsert");
+        String diff = settings.getString("DIFFICULT", "easy");
 
         // Vibrazione all'apertura dell'activity
         if (vibr == true) {
@@ -78,7 +82,7 @@ public class OptionsActivity extends AppCompatActivity {
 
         // GESTIONE DIFFICOLTA'
 
-        if (diff.compareTo("easy") == 0 || diff.compareTo("noValueInsert") == 0){
+        if (diff.compareTo("easy") == 0){
             radioEasy.setChecked(true);
             radioMid.setChecked(false);
             radioHard.setChecked(false);
