@@ -3,9 +3,9 @@ package it.unive.dais.ingsoftware.forza4;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -18,8 +18,7 @@ import it.unive.dais.legodroid.lib.comm.Channel;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
-import it.unive.dais.legodroid.lib.plugs.UltrasonicSensor;
-import it.unive.dais.legodroid.lib.util.Consumer;
+import it.unive.dais.legodroid.lib.plugs.TouchSensor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(openOptionsActivity);
             }
         });
-        
+
+        // Apertura connessione Bluetooth
         BluetoothConnection conn = new BluetoothConnection("F4Bot");
         Channel channel = null;
         try {
@@ -81,131 +81,61 @@ public class MainActivity extends AppCompatActivity {
 
         EV3 ev3 = new EV3(new SpooledAsyncChannel(channel));
 
-        Consumer<EV3.Api> calibrate=(data -> {
-            try {
-                LightSensor lightSensor = data.getLightSensor(EV3.InputPort._1);
-                boolean end=false,last=false;
-                TachoMotor motor=data.getTachoMotor(EV3.OutputPort.A);
-                TachoMotor sensorMotor=data.getTachoMotor(EV3.OutputPort.B);
-                Future<LightSensor.Color> c;
-
-                motor.setPolarity(TachoMotor.Polarity.FORWARD);
-
-                motor.setType(TachoMotor.Type.LARGE);
-                sensorMotor.setType(TachoMotor.Type.LARGE);
-
-                end=false;
-                motor.setPower(30);
-                motor.start();
-                while(!end){
-                    c=lightSensor.getColor();
-                    if(c.get()==LightSensor.Color.TRANSPARENT){
-                        Log.i("CAL","2-Not_Blue");
-                    }else{
-                        motor.stop();
-                        xstart=motor.getPosition().get();
-                        end=true;
-                        Log.i("CAL","2-FoundBlue X:"+xstart);
-                    }
-                    Thread.sleep(50);
-                }
-
-                end=false;
-                sensorMotor.setSpeed(-5);
-                sensorMotor.start();
-                while(!end){
-                    c=lightSensor.getColor();
-                    LightSensor.Color color=c.get();
-                    Log.i("CAL","3- "+color);
-                    if(color!=LightSensor.Color.TRANSPARENT){
-                        Log.i("CAL","3-NotTrans");
-                    }else{
-                        sensorMotor.stop();
-                        ystart=sensorMotor.getPosition().get();
-                        Log.i("CAL","3-Trans  Y: "+ystart);
-                        end=true;
-                    }
-                    Thread.sleep(50);
-                }
-                sensorMotor.stop();
-
-                sensorMotor.setStepPower(30,0,35,0,false);
-                motor.setStepPower(40,100,100,1,true);
-                Thread.sleep(1000);
-
-                motor.clearCount();
-                sensorMotor.clearCount();
-
-                xstart=motor.getPosition().get();
-                ystart=sensorMotor.getPosition().get();
-
-                Log.i("CAL","0 Color: " +  lightSensor.getColor().get());
-                int i=1;
-                LightSensor.Color color;
-                Thread.sleep(2000);
-
-                //X step 282 in orizzontale
-                //Y step 82 in verticale
-
-                Thread.sleep(1000);
-                motor.setStepPower(100, 100, 180, 1, true);
-                sensorMotor.setStepPower(100,20,20,0,false);
-
-                Thread.sleep(1000);
-                /*
-                int j=0;
-                int pow=100;
-                while(j<6){
-                    while(i<7) {
-                        motor.setStepPower(pow, 100, 180, 1, true);
-                        Thread.sleep(2000);
-                        color= lightSensor.getColor().get();
-
-                        xstart=motor.getPosition().get();
-                        ystart=sensorMotor.getPosition().get();
-
-                        Log.i("CAL", "X: " +xstart+" Y: "+ystart);
-                        Log.i("CAL", i + " Color: " + color);
-                        i++;
-                    }
-                    pow=pow*-1;
-                    sensorMotor.setStepPower(100,20,20,0,false);
-                    j++;
-                    i=0;
-                }
-                */
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
-
-        Consumer<EV3.Api> ultra=(data ->  {
-            UltrasonicSensor us=data.getUltrasonicSensor(EV3.InputPort._1);
-            try {
-                while(true){
-
-                    Future<Float> d=us.getDistance();
-                    Log.i("CAL","dist: "+d.get());
-                    Thread.sleep(1000);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
         try {
-            ev3.run(calibrate);
+            ev3.run(data -> {
+                try {
+                    LightSensor lightSensor = data.getLightSensor(EV3.InputPort._1);
+                    boolean end=false,last=false;
+                    TachoMotor motor=data.getTachoMotor(EV3.OutputPort.A);
+                    TachoMotor sensorMotor=data.getTachoMotor(EV3.OutputPort.B);
+                    Future<LightSensor.Color> c;
+
+                    while(!end){
+                        c=lightSensor.getColor();
+                        if(c.get()==LightSensor.Color.BLUE){
+                            data.soundTone(50,1000,1000);
+                            motor.setStepPower(30,200,1,200,true);
+                            last=false;
+                        }else if(!last){
+                            motor.setStepPower(30,200,1,200,true);
+                            data.soundTone(50,500,200);
+                            last=true;
+                        }else {
+                            end = true;
+                        }
+                        Thread.sleep(1500);
+                    }
+                    end=false;
+                    while(!end){
+                        c=lightSensor.getColor();
+                        if(c.get()!=LightSensor.Color.BLUE){
+                            motor.setStepPower(30,30,1,30,true);
+                        }else {
+                            xstart=motor.getPosition().get();
+                            end=true;
+                        }
+                        Thread.sleep(1000);
+                    }
+                    end=false;
+                    while(!end){
+                        c=lightSensor.getColor();
+                        if(c.get()!=LightSensor.Color.BLUE){
+                            sensorMotor.setStepPower(30,30,1,30,true);
+                        }else {
+                            ystart=sensorMotor.getPosition().get();
+                            end=true;
+                        }
+                        Thread.sleep(1000);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (EV3.AlreadyRunningException e) {
             e.printStackTrace();
         }
