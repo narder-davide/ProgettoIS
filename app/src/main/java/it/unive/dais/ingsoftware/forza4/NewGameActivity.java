@@ -4,8 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.util.Calendar;
-
 import it.dais.forza4.R;
 
 public class NewGameActivity extends AppCompatActivity {
