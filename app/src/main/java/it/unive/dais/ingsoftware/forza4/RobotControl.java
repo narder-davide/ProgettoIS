@@ -201,9 +201,15 @@ public class RobotControl {
         Consumer<EV3.Api> drop=(data ->{
             try {
                 Log.i("CAL","Drop token");
-                tokenMotor.setStepPower(-30, 20,70, 20, false);
-                Thread.sleep(1100);
-                tokenMotor.setStepPower(30, 20,70, 20, true);
+
+                //prima il motore drop -> wait -> dopo motor in dir <-
+                int stepm=Math.abs(282*1);
+                tokenMotor.setStepPower(-5, 20,90, 1, true);
+                motor.setStepPower(50, 50,stepm-100, 50, true);
+                Thread.sleep(2000);
+                tokenMotor.setStepPower(5, 20,90, 1, true);
+                Thread.sleep(2000);
+                motor.setStepPower(-50, 50,stepm-100, 50, true);
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
