@@ -102,7 +102,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="403dp"
         android:fontFamily="@font/autour_one"
-        android:text="@string/textTurno"
+        android:text="@string/textTurnoGiocatore"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"

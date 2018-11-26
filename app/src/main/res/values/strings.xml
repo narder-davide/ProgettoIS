@@ -14,7 +14,8 @@
     <string name="textTimeElapsed">Tempo</string>
 
     <string name="textNewgame">NUOVA PARTITA</string>
-    <string name="textTurno">E\' il turno del giocatore</string>
+    <string name="textTurnoGiocatore">E\' il turno del giocatore</string>
+    <string name="textTurnoRobot">E\' il turno del robot</string>
 
     <string name="textOption">OPZIONI</string>
 
