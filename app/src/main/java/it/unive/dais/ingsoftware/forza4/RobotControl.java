@@ -204,6 +204,7 @@ public class RobotControl {
 
                 //prima il motore drop -> wait -> dopo motor in dir <-
                 int stepm=Math.abs(282*1);
+                //
                 tokenMotor.setStepPower(-5, 20,90, 1, true);
                 motor.setStepPower(50, 50,stepm-100, 50, true);
                 Thread.sleep(2000);
