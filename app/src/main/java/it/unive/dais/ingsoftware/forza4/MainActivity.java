@@ -36,8 +36,10 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnCa
 
         Boolean vibr = settings.getBoolean("VIBRATION", true);
         String diff = settings.getString("DIFFICULT", "easy");
+        String statusLastGame = settings.getString("LASTGAME", "");
         editor.putBoolean("VIBRATION", vibr);
         editor.putString("DIFFICULT", diff);
+        editor.putString("LASTGAME", statusLastGame);
         editor.commit();
 
         // Recupero bottone per NUOVA PARTITA
