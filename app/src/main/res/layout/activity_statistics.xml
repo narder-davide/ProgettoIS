@@ -148,7 +148,7 @@
                         android:layout_marginRight="1dp"
                         android:layout_marginBottom="8dp"
                         android:background="#ffffff"
-                        android:text="@string/labelWon"
+                        android:text="@string/labelPCWon"
                         android:textAlignment="center" />
 
                     <TextView
@@ -288,7 +288,7 @@
                         android:layout_marginRight="1dp"
                         android:layout_marginBottom="8dp"
                         android:background="#ffffff"
-                        android:text="@string/labelWon"
+                        android:text="@string/labelPCWon"
                         android:textAlignment="center" />
 
                     <TextView
@@ -427,7 +427,7 @@
                         android:layout_marginRight="1dp"
                         android:layout_marginBottom="8dp"
                         android:background="#ffffff"
-                        android:text="@string/labelWon"
+                        android:text="@string/labelPCWon"
                         android:textAlignment="center" />
 
                     <TextView
