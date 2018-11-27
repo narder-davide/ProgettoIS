@@ -13,5 +13,15 @@
     <string name="textRobotCoin">Robot</string>
     <string name="textTimeElapsed">Tempo</string>
 
+    <string name="textNewgame">NUOVA PARTITA</string>
+    <string name="textTurnoGiocatore">E\' il turno del giocatore</string>
+    <string name="textTurnoRobot">E\' il turno del robot</string>
+
     <string name="textOption">OPZIONI</string>
+
+    <string name="textStatistics">STATISTICHE</string>
+
+    <string name="textLoadGame">CARICA PARTITA</string>
+    <string name="textButtonLoad">Carica partita salvata</string>
+    <string name="textButtonScan">Scansiona la partita</string>
 </resources>

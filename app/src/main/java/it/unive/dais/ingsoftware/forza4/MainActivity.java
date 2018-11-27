@@ -1,7 +1,5 @@
 package it.unive.dais.ingsoftware.forza4;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.content.SharedPreferences;

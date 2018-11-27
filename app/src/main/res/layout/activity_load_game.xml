@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context="it.unive.dais.ingsoftware.forza4.LoadGameActivity">
 
+    <TextView
+        android:id="@+id/testoLoadGame"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="75dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/autour_one"
+        android:text="@string/textLoadGame"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLoad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonLoad"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:background="#3498db"
+        android:padding="5dp"
+        android:text="@string/textButtonLoad"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonScan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testoLoadGame" />
+
+    <Button
+        android:id="@+id/buttonScan"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:background="#3498db"
+        android:padding="5dp"
+        android:text="@string/textButtonScan"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoad" />
 </android.support.constraint.ConstraintLayout>
