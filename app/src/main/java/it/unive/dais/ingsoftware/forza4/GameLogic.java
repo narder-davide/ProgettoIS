@@ -8,7 +8,7 @@ import android.widget.TableRow;
 
 import it.dais.forza4.R;
 
-public class GameLogic {
+public class GameLogic extends NewGameActivity {
 
     final int ROWS = 6;
     final int COLS = 7;
@@ -19,10 +19,10 @@ public class GameLogic {
     TableLayout gameGrid;
 
     // Costruttore
-    public GameLogic(NewGameActivity activity, String lastGame){
+    public GameLogic(String lastGame){
         matrix = new char[ROWS][COLS];
         quote = new int[COLS];
-        this.gameGrid = ((Activity)activity).findViewById(R.id.gamegrid);
+        this.gameGrid = super.gameGrid;
         this.lastGame = lastGame;
 
         this.initializeStructures();
@@ -129,6 +129,11 @@ public class GameLogic {
             for(j=0;j<COLS;j++){
                 this.matrix[i][j] = 'X';
             }
+        }
+
+        // Resetta quote
+        for(j=0;j<COLS;j++){
+            this.quote[j] = 0;
         }
     }
 }
