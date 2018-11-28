@@ -68,8 +68,8 @@ public class NewGameActivity extends AppCompatActivity {
 
     private void startGame(){
         // Inizio logica di gioco
-        gameLogic = new GameLogic(statusLastGame);
-        gameLogic.loadLastGame();
+        gameLogic = new GameLogic(this, statusLastGame);
+        //gameLogic.loadLastGame();
     }
 
     @Override
@@ -83,6 +83,10 @@ public class NewGameActivity extends AppCompatActivity {
         minutes = 0;
         seconds = 0;
         threadTimer.interrupt();
+    }
+
+    public void setCoin(int r, int c, int id){
+        ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(id);
     }
 
     private void decreaseUserCoin(){

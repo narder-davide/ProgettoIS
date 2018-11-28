@@ -1,7 +1,5 @@
 package it.unive.dais.ingsoftware.forza4;
 
-import android.app.Activity;
-import android.content.Context;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -16,13 +14,15 @@ public class GameLogic extends NewGameActivity {
     int[] quote;    // vettore lungo tanto quanto il numero di colonne.
                     // Contiene l'indice della prima riga disponibile in cui andare ad inserire un gettone.
     String lastGame;
-    TableLayout gameGrid;
+    NewGameActivity newGameActivity;
+    // TableLayout gameGrid;
 
     // Costruttore
-    public GameLogic(String lastGame){
+    public GameLogic(NewGameActivity newGameActivity, String lastGame){
         matrix = new char[ROWS][COLS];
         quote = new int[COLS];
-        this.gameGrid = super.gameGrid;
+        // this.gameGrid = tab;
+        this.newGameActivity = newGameActivity;
         this.lastGame = lastGame;
 
         this.initializeStructures();
@@ -31,6 +31,7 @@ public class GameLogic extends NewGameActivity {
     private void initializeStructures(){
         int i, j;
 
+        // UTILIZZARE STRINGA lastGame e fare i dovuti conti
         for(i=0;i<ROWS;i++){
             for(j=0;j<COLS;j++){
                 this.matrix[i][j] = 'X';
@@ -101,13 +102,13 @@ public class GameLogic extends NewGameActivity {
         this.quote[c]++;
 
         if (type == 'R') {
-            ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_red);
+            newGameActivity.setCoin(r,c,R.drawable.rounded_button_red);
         }
         else if (type == 'Y'){
-            ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_yellow);
+            newGameActivity.setCoin(r,c,R.drawable.rounded_button_yellow);
         }
         else {
-            ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_empty);
+            newGameActivity.setCoin(r,c,R.drawable.rounded_button_empty);
         }
     }
 
@@ -117,10 +118,8 @@ public class GameLogic extends NewGameActivity {
 
         // Resetta layout
         for(i=0;i<ROWS;i++){
-            TableRow row = (TableRow)gameGrid.getChildAt(i);
             for(j=0;j<COLS;j++){
-                Button b = (Button)row.getVirtualChildAt(j);
-                b.setBackgroundResource(R.drawable.rounded_button_empty);
+                newGameActivity.setCoin(i,j,R.drawable.rounded_button_empty);
             }
         }
 
