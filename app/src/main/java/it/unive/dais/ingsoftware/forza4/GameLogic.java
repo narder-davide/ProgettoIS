@@ -1,9 +1,5 @@
 package it.unive.dais.ingsoftware.forza4;
 
-import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-
 import it.dais.forza4.R;
 
 public class GameLogic extends NewGameActivity {
@@ -14,15 +10,13 @@ public class GameLogic extends NewGameActivity {
     int[] quote;    // vettore lungo tanto quanto il numero di colonne.
                     // Contiene l'indice della prima riga disponibile in cui andare ad inserire un gettone.
     String lastGame;
-    NewGameActivity newGameActivity;
     // TableLayout gameGrid;
 
     // Costruttore
-    public GameLogic(NewGameActivity newGameActivity, String lastGame){
+    public GameLogic(String lastGame){
         matrix = new char[ROWS][COLS];
         quote = new int[COLS];
         // this.gameGrid = tab;
-        this.newGameActivity = newGameActivity;
         this.lastGame = lastGame;
 
         this.initializeStructures();
@@ -102,13 +96,13 @@ public class GameLogic extends NewGameActivity {
         this.quote[c]++;
 
         if (type == 'R') {
-            newGameActivity.setCoin(r,c,R.drawable.rounded_button_red);
+            super.setCoin(r,c,R.drawable.rounded_button_red);
         }
         else if (type == 'Y'){
-            newGameActivity.setCoin(r,c,R.drawable.rounded_button_yellow);
+            super.setCoin(r,c,R.drawable.rounded_button_yellow);
         }
         else {
-            newGameActivity.setCoin(r,c,R.drawable.rounded_button_empty);
+            super.setCoin(r,c,R.drawable.rounded_button_empty);
         }
     }
 
@@ -119,7 +113,7 @@ public class GameLogic extends NewGameActivity {
         // Resetta layout
         for(i=0;i<ROWS;i++){
             for(j=0;j<COLS;j++){
-                newGameActivity.setCoin(i,j,R.drawable.rounded_button_empty);
+                super.setCoin(i,j,R.drawable.rounded_button_empty);
             }
         }
 

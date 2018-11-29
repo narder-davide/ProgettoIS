@@ -68,7 +68,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     private void startGame(){
         // Inizio logica di gioco
-        gameLogic = new GameLogic(this, statusLastGame);
+        gameLogic = new GameLogic(statusLastGame);
         //gameLogic.loadLastGame();
     }
 
