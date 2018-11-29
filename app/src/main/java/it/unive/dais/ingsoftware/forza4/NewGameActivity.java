@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -11,11 +13,16 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import it.dais.forza4.R;
 
 public class NewGameActivity extends AppCompatActivity {
 
     private final int MAX_COIN = 20;
+
+    final int ROWS = 6;
+    final int COLS = 7;
 
     private int userCoin = MAX_COIN;
     private int robotCoin = MAX_COIN;
@@ -24,7 +31,7 @@ public class NewGameActivity extends AppCompatActivity {
     TextView robotCoinCount;
 
     SharedPreferences settings;
-    String statusLastGame;
+    String lastGame;
 
     GameLogic gameLogic;
 
@@ -42,7 +49,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         // Gestione delle impostazioni di gioco
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        statusLastGame = settings.getString("LASTGAME", "");
+        lastGame = settings.getString("LASTGAME", "");
 
         // Ottenimento degli oggetti grafici
         timerValue = findViewById(R.id.timerValue);
@@ -61,15 +68,16 @@ public class NewGameActivity extends AppCompatActivity {
         TableRow row4 = findViewById(R.id.row4);
         TableRow row5 = findViewById(R.id.row5);
 
-
         startGame();
         startClock();
     }
 
     private void startGame(){
         // Inizio logica di gioco
-        gameLogic = new GameLogic(statusLastGame);
-        //gameLogic.loadLastGame();
+        gameLogic = new GameLogic("");
+        gameLogic.initializeGame();
+
+        this.initializeLayout();
     }
 
     @Override
@@ -85,8 +93,58 @@ public class NewGameActivity extends AppCompatActivity {
         threadTimer.interrupt();
     }
 
-    public void setCoin(int r, int c, int id){
-        ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(id);
+    private void initializeLayout(){
+        if (lastGame.compareTo("") == 0){
+            this.resetLayout();
+        }
+        else {
+            int row = 0;
+            int col = 0;
+
+            for (int i = 0; i < lastGame.length(); i++) {
+                if (col == COLS) {
+                    col = 0;
+                    row++;
+                }
+                this.setCoinLayout(row, col, lastGame.charAt(i));
+                col++;
+            }
+        }
+    }
+
+    private void resetLayout(){
+        int i, j;
+
+        for(i=0;i<ROWS;i++){
+            for(j=0;j<COLS;j++){
+                this.setCoinLayout(i, j, 'X');
+            }
+        }
+    }
+
+    private void setCoinLayout(int r, int c, char type){
+        r = (r+(COLS-1))%COLS;
+        c = (c+(ROWS-1))%ROWS;
+
+
+        // Problema conversione View a TableRow o Button
+        TableRow riga = (TableRow)gameGrid.getChildAt(r);
+
+        TextView testo = findViewById(R.id.textTurno);
+        testo.setText("QUI: " + riga.getVirtualChildCount());
+
+
+        //Button b = (Button)riga.getVirtualChildAt(c);
+
+        /*if (type == 'R') {
+            b.setBackgroundResource(R.drawable.rounded_button_red);
+        }
+        else if (type == 'Y'){
+            b.setBackgroundResource(R.drawable.rounded_button_yellow);
+        }
+        else {
+            b.setBackgroundResource(R.drawable.rounded_button_empty);
+        }*/
     }
 
     private void decreaseUserCoin(){
