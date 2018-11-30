@@ -74,7 +74,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     private void startGame(){
         // Inizio logica di gioco
-        gameLogic = new GameLogic("");
+        gameLogic = new GameLogic(lastGame);
         gameLogic.initializeGame();
 
         this.initializeLayout();
@@ -123,8 +123,8 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     private void setCoinLayout(int r, int c, char type){
-        r = (r+(COLS-1))%COLS;
-        c = (c+(ROWS-1))%ROWS;
+        r = (r+(ROWS-1))%(ROWS-1);
+        c = (c+(COLS-1))%(COLS-1);
 
 
         // Problema conversione View a TableRow o Button
