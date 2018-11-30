@@ -55,29 +55,35 @@ public class NewGameActivity extends AppCompatActivity {
         timerValue = findViewById(R.id.timerValue);
 
         userCoinCount = findViewById(R.id.userCoinCount);
-        robotCoinCount = findViewById(R.id.robotCoinCount);
         userCoinCount.setText("" + userCoin);
+
+        robotCoinCount = findViewById(R.id.robotCoinCount);
         robotCoinCount.setText("" + robotCoin);
 
         gameGrid = findViewById(R.id.gamegrid);
 
-        TableRow row0 = findViewById(R.id.row0);
+        /*TableRow row0 = findViewById(R.id.row0);
         TableRow row1 = findViewById(R.id.row1);
         TableRow row2 = findViewById(R.id.row2);
         TableRow row3 = findViewById(R.id.row3);
         TableRow row4 = findViewById(R.id.row4);
-        TableRow row5 = findViewById(R.id.row5);
+        TableRow row5 = findViewById(R.id.row5);*/
 
+        // Dà inizio al gioco
         startGame();
-        startClock();
     }
 
     private void startGame(){
         // Inizio logica di gioco
-        gameLogic = new GameLogic(lastGame);
+        gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
 
-        this.initializeLayout();
+        //this.initializeLayout();
+        startTimer();
+
+        /*while(gameLogic.winner() == 'H'){
+
+        }*/
     }
 
     @Override
@@ -93,60 +99,6 @@ public class NewGameActivity extends AppCompatActivity {
         threadTimer.interrupt();
     }
 
-    private void initializeLayout(){
-        if (lastGame.compareTo("") == 0){
-            this.resetLayout();
-        }
-        else {
-            int row = 0;
-            int col = 0;
-
-            for (int i = 0; i < lastGame.length(); i++) {
-                if (col == COLS) {
-                    col = 0;
-                    row++;
-                }
-                this.setCoinLayout(row, col, lastGame.charAt(i));
-                col++;
-            }
-        }
-    }
-
-    private void resetLayout(){
-        int i, j;
-
-        for(i=0;i<ROWS;i++){
-            for(j=0;j<COLS;j++){
-                this.setCoinLayout(i, j, 'X');
-            }
-        }
-    }
-
-    private void setCoinLayout(int r, int c, char type){
-        r = (r+(ROWS-1))%(ROWS-1);
-        c = (c+(COLS-1))%(COLS-1);
-
-
-        // Problema conversione View a TableRow o Button
-        TableRow riga = (TableRow)gameGrid.getChildAt(r);
-
-        TextView testo = findViewById(R.id.textTurno);
-        testo.setText("QUI: " + riga.getVirtualChildCount());
-
-
-        //Button b = (Button)riga.getVirtualChildAt(c);
-
-        /*if (type == 'R') {
-            b.setBackgroundResource(R.drawable.rounded_button_red);
-        }
-        else if (type == 'Y'){
-            b.setBackgroundResource(R.drawable.rounded_button_yellow);
-        }
-        else {
-            b.setBackgroundResource(R.drawable.rounded_button_empty);
-        }*/
-    }
-
     private void decreaseUserCoin(){
         this.userCoin--;
         userCoinCount.setText("" + userCoin);
@@ -157,7 +109,7 @@ public class NewGameActivity extends AppCompatActivity {
         robotCoinCount.setText("" + robotCoin);
     }
 
-    private void startClock(){
+    private void startTimer(){
         threadTimer = new Thread() {
             @Override
             public void run() {
