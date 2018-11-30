@@ -23,29 +23,6 @@ public class GameLogic{
         this.lastGame = lastGame;
     }
 
-    /*private void initializeStructures(){
-        int i, j, k;
-
-        // initialize matrix
-        k = 0;
-        for(i=0;i<ROWS;i++){
-            for(j=0;j<COLS;j++){
-                this.matrix[i][j] = lastGame.charAt(k);
-                k++;
-            }
-        }
-
-        // initialize quote
-        for(j=0;j<COLS;j++){
-            quote[j] = 0;
-            for(i=0;i<ROWS;i++){
-                if (lastGame.charAt(i*COLS) != 'X'){
-                    quote[j]++;
-                }
-            }
-        }
-    }*/
-
     // Legge la stringa lastGame e carica la matrice corrispondente
     // X -> empty (no coins)
     // Y -> yellow coin
@@ -85,8 +62,8 @@ public class GameLogic{
             this.quote[c]++;    // Si presuppone che la stringa lastGame sia sempre coerente e valida
         }
 
-        r = (r+(ROWS-1))%(ROWS-1);
-        c = (c+(COLS-1))%(COLS-1);
+        r = (r+ROWS)%ROWS;
+        c = (c+COLS)%COLS;
 
         if (type == 'R') {
             ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_red);
@@ -144,8 +121,8 @@ public class GameLogic{
             for(j=0;j<COLS;j++){
                 this.matrix[i][j] = 'X';
 
-                int r = (i+(ROWS-1))%(ROWS-1);
-                int c = (j+(COLS-1))%(COLS-1);
+                int r = (i+ROWS)%ROWS;
+                int c = (j+COLS)%COLS;
 
                 ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_empty);
             }

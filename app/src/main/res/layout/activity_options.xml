@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/autour_one"
-            android:text="Middle"
+            android:text="Normal"
             android:textColor="#000000"
             android:textSize="15dp" />
 

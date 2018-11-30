@@ -91,7 +91,7 @@ public class OptionsActivity extends AppCompatActivity {
             radioEasy.setChecked(false);
             radioMid.setChecked(true);
             radioHard.setChecked(false);
-            editor.putString("DIFFICULT", "mid");
+            editor.putString("DIFFICULT", "norm");
             editor.commit();
         }
         else if (diff.compareTo("hard") == 0){
@@ -111,7 +111,7 @@ public class OptionsActivity extends AppCompatActivity {
                     editor.putString("DIFFICULT", "easy");
                 }
                 else if (checkedRadioButton.getId() == R.id.radioMid){
-                    editor.putString("DIFFICULT", "mid");
+                    editor.putString("DIFFICULT", "norm");
                 }
                 else {  // R.id.radioHard
                     editor.putString("DIFFICULT", "hard");
