@@ -34,12 +34,14 @@ public class NewGameActivity extends AppCompatActivity {
 
     SharedPreferences settings;
     String lastGame;
+    String diff;
 
     GameLogic gameLogic;
 
     TableLayout gameGrid;
 
     char control;
+    int[] coordinateRobot;
 
     TextView timerValue = null;
     Thread threadTimer = null;
@@ -54,6 +56,7 @@ public class NewGameActivity extends AppCompatActivity {
         // Gestione delle impostazioni di gioco
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         lastGame = settings.getString("LASTGAME", "");
+        diff = settings.getString("DIFFICULT", "easy");
 
         // Ottenimento degli oggetti grafici
         timerValue = findViewById(R.id.timerValue);
@@ -92,25 +95,29 @@ public class NewGameActivity extends AppCompatActivity {
 
         startTimer();
 
+        coordinateRobot = gameLogic.calculateRobotAction(diff);
+
         /*do {
 
 
 
+            decreaseUserCoin();
+            decreaseRobotCoin();
 
             control = gameLogic.winner();
         } while(control == 'H');
 
         if (control == 'R'){    // vince RED
             textTurno.setText(R.string.textRedWin);
-            //Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
         }
         else if (control == 'Y'){   // vince YELLOW
             textTurno.setText(R.string.textYellowWin);
-            //Toast.makeText(this, "VINCE IL GIALLO", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "VINCE IL GIALLO", Toast.LENGTH_LONG).show();
         }
         else {  // partita patta (gettoni esauriti)
             textTurno.setText(R.string.textPartitaPatta);
-            //Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
         }*/
     }
 

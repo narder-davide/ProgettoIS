@@ -3,6 +3,8 @@ package it.unive.dais.ingsoftware.forza4;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.Random;
+
 import it.dais.forza4.R;
 
 public class GameLogic{
@@ -67,6 +69,34 @@ public class GameLogic{
         else {
             ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_empty);
         }
+    }
+
+    public int[] calculateRobotAction(String diff){
+        int[] out = new int[2];
+
+        // EASY
+        if (diff.compareTo("easy") == 0){
+            Random random = new Random();
+            int r, c;
+
+            do {
+                r = random.nextInt(ROWS);
+                c = random.nextInt(COLS);
+            } while(quote[c] >= ROWS-1);
+
+            out[0] = r;
+            out[1] = c;
+        }
+        // NORMAL
+        else if (diff.compareTo("norm") == 0){
+
+        }
+        // HARD
+        else {
+
+        }
+
+        return out;
     }
 
     // 'R' ha vinto RED
