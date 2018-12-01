@@ -16,10 +16,13 @@
     <string name="textNewgame">NUOVA PARTITA</string>
     <string name="textTurnoGiocatore">E\' il turno del giocatore</string>
     <string name="textTurnoRobot">E\' il turno del robot</string>
+    <string name="textPartitaPatta">PARTITA PATTA</string>
+    <string name="textRedWin">VINCE IL ROSSO</string>
+    <string name="textYellowWin">VINCE IL GIALLO</string>
 
     <string name="textOption">OPZIONI</string>
     <string name="easyTable">Easy</string>
-    <string name="middleTable">Middle</string>
+    <string name="middleTable">Normal</string>
     <string name="hardTable">Hard</string>
     <string name="labelPlayed">Giocate</string>
     <string name="labelWon">Vinte</string>

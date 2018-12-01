@@ -30,12 +30,16 @@ public class NewGameActivity extends AppCompatActivity {
     TextView userCoinCount;
     TextView robotCoinCount;
 
+    TextView textTurno;
+
     SharedPreferences settings;
     String lastGame;
 
     GameLogic gameLogic;
 
     TableLayout gameGrid;
+
+    char control;
 
     TextView timerValue = null;
     Thread threadTimer = null;
@@ -60,6 +64,8 @@ public class NewGameActivity extends AppCompatActivity {
         robotCoinCount = findViewById(R.id.robotCoinCount);
         robotCoinCount.setText("" + robotCoin);
 
+        textTurno = findViewById(R.id.textTurno);
+
         gameGrid = findViewById(R.id.gamegrid);
 
         /*TableRow row0 = findViewById(R.id.row0);
@@ -78,11 +84,33 @@ public class NewGameActivity extends AppCompatActivity {
         gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
 
-        //this.initializeLayout();
+        gameLogic.setCoin(0,0,'Y');
+        gameLogic.setCoin(5,6,'R');
+        gameLogic.setCoin(0,6,'Y');
+        gameLogic.setCoin(5,0,'R');
+        gameLogic.setCoin(3,3,'Y');
+
         startTimer();
 
-        /*while(gameLogic.winner() == 'H'){
+        /*do {
 
+
+
+
+            control = gameLogic.winner();
+        } while(control == 'H');
+
+        if (control == 'R'){    // vince RED
+            textTurno.setText(R.string.textRedWin);
+            //Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_SHORT).show();
+        }
+        else if (control == 'Y'){   // vince YELLOW
+            textTurno.setText(R.string.textYellowWin);
+            //Toast.makeText(this, "VINCE IL GIALLO", Toast.LENGTH_SHORT).show();
+        }
+        else {  // partita patta (gettoni esauriti)
+            textTurno.setText(R.string.textPartitaPatta);
+            //Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_SHORT).show();
         }*/
     }
 

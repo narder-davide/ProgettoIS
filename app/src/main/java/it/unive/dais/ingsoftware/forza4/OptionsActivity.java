@@ -87,7 +87,7 @@ public class OptionsActivity extends AppCompatActivity {
             editor.putString("DIFFICULT", "easy");
             editor.commit();
         }
-        else if (diff.compareTo("mid") == 0){
+        else if (diff.compareTo("norm") == 0){
             radioEasy.setChecked(false);
             radioMid.setChecked(true);
             radioHard.setChecked(false);

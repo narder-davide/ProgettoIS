@@ -28,17 +28,11 @@ public class GameLogic{
     // Y -> yellow coin
     // R -> red coin
     public void initializeGame(){
-        if (lastGame.compareTo("") == 0){
-            this.resetGame();
-        }
-        else {
+        this.resetGame();
+
+        if (lastGame.compareTo("") != 0){
             int row = 0;
             int col = 0;
-            int j;
-
-            for(j=0;j<COLS;j++) {
-                quote[j] = 0;
-            }
 
             for(int i=0;i<lastGame.length();i++){
                 if (col == COLS){
@@ -62,8 +56,7 @@ public class GameLogic{
             this.quote[c]++;    // Si presuppone che la stringa lastGame sia sempre coerente e valida
         }
 
-        r = (r+ROWS)%ROWS;
-        c = (c+COLS)%COLS;
+        r = (ROWS-1)-r;
 
         if (type == 'R') {
             ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_red);
@@ -79,7 +72,7 @@ public class GameLogic{
     // 'R' ha vinto RED
     // 'Y' ha vinto YELLOW
     // 'X' partita patta (gettoni esauriti)
-    // 'H' ancora nessun vincitore, continua a giocars
+    // 'H' ancora nessun vincitore, continua a giocare
     public char winner(){
 
         return 'H'; // o 'R' o 'Y' o 'X'=patta
@@ -121,8 +114,8 @@ public class GameLogic{
             for(j=0;j<COLS;j++){
                 this.matrix[i][j] = 'X';
 
-                int r = (i+ROWS)%ROWS;
-                int c = (j+COLS)%COLS;
+                int r = (ROWS-1)-i;
+                int c = j;
 
                 ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_empty);
             }
