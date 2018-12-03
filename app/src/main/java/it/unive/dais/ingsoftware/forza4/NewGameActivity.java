@@ -50,7 +50,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     TableLayout gameGrid;
 
     char win = 'X';
-    int[] coordinateRobot;
+    int coordinateRobot;
 
     TextView timerValue = null;
     Thread threadTimer = null;
@@ -308,16 +308,17 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
     @Override
     public void colorRead(LightSensor.Color color,int r,int c) {
-        if(color==LightSensor.Color.RED){
+        if (color == LightSensor.Color.RED){
             gameLogic.setCoin(gameLogic.quote[c],c,'R');
             coordinateRobot = gameLogic.calculateRobotAction(diff);
-            gameLogic.setCoin(gameLogic.quote[coordinateRobot[1]],coordinateRobot[1],'Y');
+            gameLogic.setCoin(gameLogic.quote[coordinateRobot],coordinateRobot,'Y');
 
             runOnUiThread(()->{
                 decreaseRobotCoin();
             });
-            this.r.dropToken(coordinateRobot[1]);
-        }else if (c<6){
+            this.r.dropToken(coordinateRobot);
+        }
+        else if (c<6){
             this.r.getCoinAt(gameLogic.quote[c+1],c+1);
         }
     }

@@ -74,21 +74,20 @@ public class GameLogic{
         }
     }
 
-    public int[] calculateRobotAction(String diff){
-        int[] out = new int[2];
+    public int calculateRobotAction(String diff){
+        int out = 0;
 
         // EASY
         if (diff.compareTo("easy") == 0){
             Random random = new Random();
-            int r, c;
+            int c;
 
             do {
-                r = random.nextInt(ROWS);
+                // r = random.nextInt(ROWS);
                 c = random.nextInt(COLS);
             } while(quote[c] >= ROWS-1);
 
-            out[0] = r;
-            out[1] = c;
+            out = c;
         }
         // NORMAL
         else if (diff.compareTo("norm") == 0){
