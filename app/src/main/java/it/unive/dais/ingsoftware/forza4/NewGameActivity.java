@@ -1,6 +1,7 @@
 package it.unive.dais.ingsoftware.forza4;
 
 import android.content.SharedPreferences;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,6 +83,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         textTurno = findViewById(R.id.textTurno);
 
         gameGrid = findViewById(R.id.gamegrid);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         /*TableRow row0 = findViewById(R.id.row0);
         TableRow row1 = findViewById(R.id.row1);
@@ -116,6 +118,10 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
         startTimer();
 
+
+        // MOSSA UTENTE
+        textTurno.setText(R.string.textTurnoGiocatore);
+        /*
         do {
             // MOSSA UTENTE
             textTurno.setText(R.string.textTurnoGiocatore);
@@ -125,11 +131,16 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             // MOSSA ROBOT
             textTurno.setText(R.string.textTurnoRobot);
             coordinateRobot = gameLogic.calculateRobotAction(diff);
+            gameLogic.setCoin(coordinateRobot[0],coordinateRobot[1],'Y');
+
+            r.dropToken(coordinateRobot[1]);
+
             decreaseRobotCoin();
 
             win = gameLogic.winner();
             gameLogic.incrementTurno();
-        } while(win == 'H');
+        } while(win == 'H');*/
+
 
         if (win == 'R'){    // vince RED - UTENTE
             textTurno.setText(R.string.textRedWin);
@@ -265,7 +276,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     }
                 }
                 catch (InterruptedException e) {
-                    Toast.makeText(getApplicationContext(), "InterruptedException occurred", Toast.LENGTH_LONG);
+                    //Toast.makeText(getApplicationContext(), "InterruptedException occurred", Toast.LENGTH_LONG);
                 }
             }
         };
@@ -279,11 +290,35 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
     @Override
     public void columnRead(int c) {
+        runOnUiThread(()->{
+            decreaseUserCoin();
+            textTurno.setText(R.string.textTurnoRobot);
+        });
+
+        //trova coin dell'utente
+        searchCoin(c);
+
+        // MOSSA ROBOT
 
     }
 
-    @Override
-    public void colorRead(LightSensor.Color color) {
+    private void searchCoin(int c) {
+        r.getCoinAt(gameLogic.quote[c],c);
+    }
 
+    @Override
+    public void colorRead(LightSensor.Color color,int r,int c) {
+        if(color==LightSensor.Color.RED){
+            gameLogic.setCoin(gameLogic.quote[c],c,'R');
+            coordinateRobot = gameLogic.calculateRobotAction(diff);
+            gameLogic.setCoin(gameLogic.quote[coordinateRobot[1]],coordinateRobot[1],'Y');
+
+            runOnUiThread(()->{
+                decreaseRobotCoin();
+            });
+            this.r.dropToken(coordinateRobot[1]);
+        }else if (c<6){
+            this.r.getCoinAt(gameLogic.quote[c+1],c+1);
+        }
     }
 }
