@@ -33,6 +33,7 @@ public class NewGameActivity extends AppCompatActivity {
     TextView textTurno;
 
     SharedPreferences settings;
+    SharedPreferences.Editor editor;
     String lastGame;
     String diff;
 
@@ -55,6 +56,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         // Gestione delle impostazioni di gioco
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = settings.edit();
         lastGame = settings.getString("LASTGAME", "");
         diff = settings.getString("DIFFICULT", "easy");
 
@@ -95,7 +97,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         startTimer();
 
-        do {
+        /*do {
             // MOSSA UTENTE
 
             decreaseUserCoin();
@@ -119,7 +121,76 @@ public class NewGameActivity extends AppCompatActivity {
         else {  // partita patta (gettoni esauriti)
             textTurno.setText(R.string.textPartitaPatta);
             Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
+        }*/
+
+        // Salvataggio delle statistiche
+        if (diff.compareTo("easy") == 0){
+            int eg = settings.getInt("easyGiocate",0);
+            editor.putInt("easyGiocate", eg+1);
+
+            int ev = settings.getInt("easyVinte", 0);
+            editor.putInt("easyVinte", ev+1);
+
+            String t = settings.getString("easyTempoGioco", "00:00");
+            String[] split_temp = t.split(":");
+            int[] split = new int[split_temp.length];
+            split[0] = Integer.parseInt(split_temp[0]);
+            split[1] = Integer.parseInt(split_temp[1]);
+            t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
+            editor.putString("easyTempoGioco", t);
+
+            if (eg != 0){
+                editor.putInt("easyPCVittore", (ev/eg));
+            }
+            else {
+                editor.putInt("easyPCVittore", 0);
+            }
         }
+        else if (diff.compareTo("norm") == 0){
+            int mg = settings.getInt("middleGiocate",0);
+            editor.putInt("middleGiocate", mg+1);
+
+            int mv = settings.getInt("middleVinte", 0);
+            editor.putInt("middleVinte", mv+1);
+
+            String t = settings.getString("middleTempoGioco", "00:00");
+            String[] split_temp = t.split(":");
+            int[] split = new int[split_temp.length];
+            split[0] = Integer.parseInt(split_temp[0]);
+            split[1] = Integer.parseInt(split_temp[1]);
+            t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
+            editor.putString("middleTempoGioco", t);
+
+            if (mg != 0){
+                editor.putInt("middlePCVittore", (mv/mg));
+            }
+            else {
+                editor.putInt("middlePCVittore", 0);
+            }
+        }
+        else {
+            int hg = settings.getInt("hardGiocate",0);
+            editor.putInt("hardGiocate", hg+1);
+
+            int hv = settings.getInt("hardVinte", 0);
+            editor.putInt("hardVinte", hv+1);
+
+            String t = settings.getString("hardTempoGioco", "00:00");
+            String[] split_temp = t.split(":");
+            int[] split = new int[split_temp.length];
+            split[0] = Integer.parseInt(split_temp[0]);
+            split[1] = Integer.parseInt(split_temp[1]);
+            t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
+            editor.putString("hardTempoGioco", t);
+
+            if (hg != 0){
+                editor.putInt("hardPCVittore", (hv/hg));
+            }
+            else {
+                editor.putInt("hardPCVittore", 0);
+            }
+        }
+        editor.commit();
     }
 
     @Override
