@@ -16,6 +16,7 @@ public class GameLogic{
                     // Contiene l'indice della prima riga disponibile in cui andare ad inserire un gettone.
     TableLayout gameGrid;
     String lastGame;
+    int turno;
 
     // Costruttore
     public GameLogic(TableLayout gameGrid, String lastGame){
@@ -23,6 +24,7 @@ public class GameLogic{
         quote = new int[COLS];
         this.gameGrid = gameGrid;
         this.lastGame = lastGame;
+        this.turno = 0;
     }
 
     // Legge la stringa lastGame e carica la matrice corrispondente
@@ -89,7 +91,12 @@ public class GameLogic{
         }
         // NORMAL
         else if (diff.compareTo("norm") == 0){
-
+            if (turno%2 == 0){
+                return calculateRobotAction("easy");
+            }
+            else {
+                return calculateRobotAction("hard");
+            }
         }
         // HARD
         else {
@@ -97,6 +104,10 @@ public class GameLogic{
         }
 
         return out;
+    }
+
+    public void incrementTurno(){
+        this.turno++;
     }
 
     // 'R' ha vinto RED

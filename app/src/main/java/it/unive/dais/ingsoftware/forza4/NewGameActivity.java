@@ -95,16 +95,17 @@ public class NewGameActivity extends AppCompatActivity {
 
         startTimer();
 
-        coordinateRobot = gameLogic.calculateRobotAction(diff);
-
-        /*do {
-
-
+        do {
+            // MOSSA UTENTE
 
             decreaseUserCoin();
+
+            // MOSSA ROBOT
+            coordinateRobot = gameLogic.calculateRobotAction(diff);
             decreaseRobotCoin();
 
             control = gameLogic.winner();
+            gameLogic.incrementTurno();
         } while(control == 'H');
 
         if (control == 'R'){    // vince RED
@@ -118,7 +119,7 @@ public class NewGameActivity extends AppCompatActivity {
         else {  // partita patta (gettoni esauriti)
             textTurno.setText(R.string.textPartitaPatta);
             Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 
     @Override
