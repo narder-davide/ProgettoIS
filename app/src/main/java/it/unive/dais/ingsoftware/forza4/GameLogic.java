@@ -25,6 +25,7 @@ public class GameLogic{
         this.gameGrid = gameGrid;
         this.lastGame = lastGame;
         this.turno = 0;
+        resetGame();
     }
 
     // Legge la stringa lastGame e carica la matrice corrispondente
