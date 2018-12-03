@@ -134,8 +134,9 @@ public class RobotControl {
                         newc = currentCol - c;
                     }else{
                         motor.setStepPower(100, 50,RobotControl.OUT_DISTANCE-100, 50, true);
-                        Thread.sleep(3000);
-                        newc=c;
+                        Thread.sleep(4000);
+                        currentCol=0;
+                        newc=currentCol-c;
                         outOfBoard=false;
                     }
                     if(dropping){
@@ -159,7 +160,7 @@ public class RobotControl {
                         sensorMotor.setStepPower(-1*Integer.signum(newr)*50, 20,steps-40, 20, true);
                     Thread.sleep(5000);
                     currentRow=r;
-                    currentCol=c;
+                    currentCol=(dropping ? c-3: c);
                     Log.i("CAL","currR "+currentRow+"  currC "+currentCol);
 
                     if(dropping){
@@ -179,9 +180,14 @@ public class RobotControl {
 
                         Log.i("CAL","Muovi Fuori");
                         Thread.sleep(1000);
-                        stepm=Math.abs(282*currentCol);
+                        stepm=(282*currentCol);
+
                         motor.setStepPower(-100, 50,stepm-100+RobotControl.OUT_DISTANCE, 50, true);
                         outOfBoard=true;
+                        //tempo di uscita dalla griglia
+                        Thread.sleep(6000);
+
+                        getDistance();
                     }else{
                         LightSensor.Rgb rgb=lightSensor.getRgb().get();
                         LightSensor.Color col= lightSensor.getColor().get();
@@ -211,10 +217,10 @@ public class RobotControl {
         }
     }
     
-    public float getDistance() {
+    private void getDistance() {
         Float dist = null;
         try {
-            dist=new Float(255);
+            dist=Float.valueOf(255);
             while(dist>21){
                 Thread.sleep(700);
                 dist = ultrasonicSensor.getDistance().get();
@@ -226,7 +232,6 @@ public class RobotControl {
         } catch (ExecutionException | IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        return dist;
     }
 
     private void colorRead(LightSensor.Color color) {

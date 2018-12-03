@@ -106,11 +106,12 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnTa
 
     @Override
     public void columnRead(int c) {
-        Log.i("CAL","Column: "+c);
+        Log.i("CAL","Ultra suoni Column: "+c);
+        r.getCoinAt(4,4);
     }
     @Override
     public void colorRead(LightSensor.Color color) {
-        Log.i("CAL","Color: "+color);
+        Log.i("CAL","Coin color : "+color);
         r.dropToken(1);
     }
 }
