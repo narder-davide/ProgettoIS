@@ -41,7 +41,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     TableLayout gameGrid;
 
-    char control;
+    char win;
     int[] coordinateRobot;
 
     TextView timerValue = null;
@@ -106,15 +106,15 @@ public class NewGameActivity extends AppCompatActivity {
             coordinateRobot = gameLogic.calculateRobotAction(diff);
             decreaseRobotCoin();
 
-            control = gameLogic.winner();
+            win = gameLogic.winner();
             gameLogic.incrementTurno();
-        } while(control == 'H');
+        } while(win == 'H');
 
-        if (control == 'R'){    // vince RED
+        if (win == 'R'){    // vince RED
             textTurno.setText(R.string.textRedWin);
             Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
         }
-        else if (control == 'Y'){   // vince YELLOW
+        else if (win == 'Y'){   // vince YELLOW
             textTurno.setText(R.string.textYellowWin);
             Toast.makeText(this, "VINCE IL GIALLO", Toast.LENGTH_LONG).show();
         }
@@ -123,7 +123,7 @@ public class NewGameActivity extends AppCompatActivity {
             Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
         }*/
 
-        // Salvataggio delle statistiche
+        // Salvataggio delle statistiche SOLO a fine partita
         if (diff.compareTo("easy") == 0){
             int eg = settings.getInt("easyGiocate",0);
             editor.putInt("easyGiocate", eg+1);
