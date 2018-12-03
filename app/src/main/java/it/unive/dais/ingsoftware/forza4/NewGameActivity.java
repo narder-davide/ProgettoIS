@@ -99,10 +99,11 @@ public class NewGameActivity extends AppCompatActivity {
 
         /*do {
             // MOSSA UTENTE
-
+            textTurno.setText(R.string.textTurnoGiocatore);
             decreaseUserCoin();
 
             // MOSSA ROBOT
+            textTurno.setText(R.string.textTurnoRobot);
             coordinateRobot = gameLogic.calculateRobotAction(diff);
             decreaseRobotCoin();
 

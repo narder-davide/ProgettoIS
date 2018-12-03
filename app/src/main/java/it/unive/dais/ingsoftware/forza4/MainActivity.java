@@ -37,17 +37,19 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnTa
 
         Boolean vibr = settings.getBoolean("VIBRATION", true);
         String diff = settings.getString("DIFFICULT", "easy");
-        String statusLastGame = settings.getString("LASTGAME", "");
-        editor.putBoolean("VIBRATION", vibr);
+        String LastGame = settings.getString("LASTGAME", "");
+        /*editor.putBoolean("VIBRATION", vibr);
         editor.putString("DIFFICULT", diff);
         editor.putString("LASTGAME", statusLastGame);
-        editor.commit();
+        editor.commit();*/
 
         // Recupero bottone per NUOVA PARTITA
         Button newGameButton = findViewById(R.id.newGameButton);
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.putString("LASTGAME", "");
+                editor.commit();
                 Intent openNewGameActivity = new Intent(MainActivity.this, NewGameActivity.class);
                 startActivity(openNewGameActivity);
             }
