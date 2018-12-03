@@ -19,6 +19,14 @@ public class RobotControl {
     private TachoMotor tokenMotor;
     private boolean outOfBoard=false;
 
+    public void dropToken(int c) {
+        move(currentRow,c,true);
+    }
+
+    public void getCoinAt(int r, int c) {
+        move(r,c,false);
+    }
+
     interface OnTasksFinished{
         void calibrated();
         void columnRead(int c);
@@ -109,7 +117,7 @@ public class RobotControl {
     }
 
 
-    public void move(int r, int c,boolean dropping){
+    private void move(int r, int c,boolean dropping){
         if((r>5 || r<0 || c>6 || c<0) && !dropping){
             return;
         }else{
@@ -167,6 +175,13 @@ public class RobotControl {
                         tokenMotor.setStepPower(15, 20,90, 5, true);
                         Thread.sleep(3000);
                         motor.setStepPower(-50, 50,stepm-100, 50, true);
+
+
+                        Log.i("CAL","Muovi Fuori");
+                        Thread.sleep(1000);
+                        stepm=Math.abs(282*currentCol);
+                        motor.setStepPower(-100, 50,stepm-100+RobotControl.OUT_DISTANCE, 50, true);
+                        outOfBoard=true;
                     }else{
                         LightSensor.Rgb rgb=lightSensor.getRgb().get();
                         LightSensor.Color col= lightSensor.getColor().get();
@@ -179,7 +194,7 @@ public class RobotControl {
                                 //Log.i("CAL","Color ROSSO rgb+col");
                                 colorRead(LightSensor.Color.RED);
                             }else{
-                                Log.i("CAL","Color err");
+                                colorRead(col);
                             }
                         }
                     }
@@ -193,26 +208,6 @@ public class RobotControl {
             } catch (EV3.AlreadyRunningException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void moveOut() {
-        Consumer<EV3.Api> move_out=(data ->{
-            try {
-                Log.i("CAL","Muovi Fuori");
-                Thread.sleep(100);
-                int stepm=Math.abs(282*currentCol);
-                motor.setStepPower(-100, 50,stepm-100+RobotControl.OUT_DISTANCE, 50, true);
-                outOfBoard=true;
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        });
-        try {
-            ev3.run(move_out);
-            Log.i("CAL","ev3_running");
-        } catch (EV3.AlreadyRunningException e) {
-            e.printStackTrace();
         }
     }
     

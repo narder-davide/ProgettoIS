@@ -101,17 +101,16 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnTa
     @Override
     public void calibrated() {
         Log.i("CAL","finished calib");
-        r.move(4,3,false);
+        r.getCoinAt(4,3);
     }
 
     @Override
     public void columnRead(int c) {
         Log.i("CAL","Column: "+c);
-
     }
     @Override
     public void colorRead(LightSensor.Color color) {
         Log.i("CAL","Color: "+color);
-        r.move(1,1,false);
+        r.dropToken(1);
     }
 }
