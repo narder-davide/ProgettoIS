@@ -115,8 +115,142 @@ public class GameLogic{
     // 'X' partita patta (gettoni esauriti)
     // 'H' ancora nessun vincitore, continua a giocare
     public char winner(){
+        int red=0, yellow = 0;
+        int freeCells = ROWS*COLS;
 
-        return 'H'; // o 'R' o 'Y' o 'X'=patta
+        // controllo riga
+        for(int r=0;r<ROWS;r++){
+            for(int c=0;c<COLS;c++){
+                if(matrix[r][c]=='R'){
+                    red++;
+                    yellow = 0;
+                }
+                else if(matrix[r][c]=='Y'){
+                   yellow++;
+                   red = 0;
+                }
+                else{
+                    red = 0;
+                    yellow = 0;
+                    // decremento solo qui numero celle occupate
+                    freeCells--;
+                }
+            }
+            if(red>=4 || yellow>=4){
+                return red >= 4? 'R' : 'Y';
+            }
+            red=0;
+            yellow=0;
+        }
+
+        // controllo colonna
+        for(int c=0;c<COLS;c++){
+            for(int r=0;r<ROWS;r++){
+                if(matrix[r][c]=='R'){
+                    red++;
+                    yellow = 0;
+                }
+                else if(matrix[r][c]=='Y'){
+                    yellow++;
+                    red = 0;
+                }
+                else{
+                    red = 0;
+                    yellow = 0;
+                }
+            }
+            if(red>=4 || yellow>=4){
+                return red >= 4? 'R' : 'Y';
+            }
+            red=0;
+            yellow=0;
+        }
+
+        // controllo \ partendo dalle cella della prima colonna
+        for(int trow = 0; trow<ROWS; trow++) {
+            for (int r = trow, c = 0; r < ROWS && c < COLS; r++,c++) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+                red = 0;
+                yellow = 0;
+            }
+        }
+
+        // controllo / partendo dalle celle dell'ultima colonna
+        for(int trow = 0; trow<ROWS; trow++) {
+            for (int r = trow, c = COLS-1; r < ROWS && c >= 0; r++,c--) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+                red = 0;
+                yellow = 0;
+            }
+        }
+
+        // controllo \ partendo dalle celle della prima riga
+        for(int tcol = 0; tcol<COLS; tcol++) {
+            for (int r = 0, c = tcol; r < ROWS && c < COLS; r++,c++) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+                red = 0;
+                yellow = 0;
+            }
+        }
+
+        // controllo / da ogni cella della prima riga
+        for(int tcol = 0; tcol<COLS; tcol++) {
+            for (int r = 0, c = tcol; r < ROWS && c < COLS; r++,c--) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+                red = 0;
+                yellow = 0;
+            }
+        }
+
+        return freeCells == 0 ? 'X' : 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
     }
 
     // Legge la matrice e crea una stringa corrispondente alla partita appena interrotta
