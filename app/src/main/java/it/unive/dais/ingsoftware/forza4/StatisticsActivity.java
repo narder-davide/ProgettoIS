@@ -107,18 +107,18 @@ public class StatisticsActivity extends AppCompatActivity {
         easyGiocate.setText("" + settings.getInt("easyGiocate", 0));
         easyVinte.setText("" + settings.getInt("easyVinte", 0));
         easyTempoGioco.setText(settings.getString("easyTempoGioco", "00:00"));
-        easyPCVittorie.setText("" + settings.getInt("easyPCVittore", 0));
+        easyPCVittorie.setText("" + settings.getInt("easyPCVittore", 0)  + "%");
 
         // MODALITA' normal
         middleGiocate.setText("" + settings.getInt("middleGiocate", 0));
         middleVinte.setText("" + settings.getInt("middleVinte", 0));
         middleTempoGioco.setText(settings.getString("middleTempoGioco", "00:00"));
-        middlePCVittorie.setText("" + settings.getInt("middlePCVittore", 0));
+        middlePCVittorie.setText("" + settings.getInt("middlePCVittore", 0)  + "%");
 
         // MODALITA' hard
         hardGiocate.setText("" + settings.getInt("hardGiocate", 0));
         hardVinte.setText("" + settings.getInt("hardVinte", 0));
         hardTempoGioco.setText(settings.getString("hardTempoGioco", "00:00"));
-        hardPCVittorie.setText("" + settings.getInt("hardPCVittore", 0));
+        hardPCVittorie.setText("" + settings.getInt("hardPCVittore", 0)  + "%");
     }
 }

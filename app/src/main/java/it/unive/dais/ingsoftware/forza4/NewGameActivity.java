@@ -41,7 +41,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     TableLayout gameGrid;
 
-    char win;
+    char win = 'X';
     int[] coordinateRobot;
 
     TextView timerValue = null;
@@ -110,11 +110,11 @@ public class NewGameActivity extends AppCompatActivity {
             gameLogic.incrementTurno();
         } while(win == 'H');
 
-        if (win == 'R'){    // vince RED
+        if (win == 'R'){    // vince RED - UTENTE
             textTurno.setText(R.string.textRedWin);
             Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
         }
-        else if (win == 'Y'){   // vince YELLOW
+        else if (win == 'Y'){   // vince YELLOW - ROBOT
             textTurno.setText(R.string.textYellowWin);
             Toast.makeText(this, "VINCE IL GIALLO", Toast.LENGTH_LONG).show();
         }
@@ -129,7 +129,9 @@ public class NewGameActivity extends AppCompatActivity {
             editor.putInt("easyGiocate", eg+1);
 
             int ev = settings.getInt("easyVinte", 0);
-            editor.putInt("easyVinte", ev+1);
+            if (win == 'R') {
+                editor.putInt("easyVinte", ev + 1);
+            }
 
             String t = settings.getString("easyTempoGioco", "00:00");
             String[] split_temp = t.split(":");
@@ -140,7 +142,7 @@ public class NewGameActivity extends AppCompatActivity {
             editor.putString("easyTempoGioco", t);
 
             if (eg != 0){
-                editor.putInt("easyPCVittore", (ev/eg));
+                editor.putInt("easyPCVittore", (ev/eg)*100);
             }
             else {
                 editor.putInt("easyPCVittore", 0);
@@ -151,7 +153,9 @@ public class NewGameActivity extends AppCompatActivity {
             editor.putInt("middleGiocate", mg+1);
 
             int mv = settings.getInt("middleVinte", 0);
-            editor.putInt("middleVinte", mv+1);
+            if (win == 'R') {
+                editor.putInt("middleVinte", mv + 1);
+            }
 
             String t = settings.getString("middleTempoGioco", "00:00");
             String[] split_temp = t.split(":");
@@ -162,7 +166,7 @@ public class NewGameActivity extends AppCompatActivity {
             editor.putString("middleTempoGioco", t);
 
             if (mg != 0){
-                editor.putInt("middlePCVittore", (mv/mg));
+                editor.putInt("middlePCVittore", (mv/mg)*100);
             }
             else {
                 editor.putInt("middlePCVittore", 0);
@@ -173,7 +177,9 @@ public class NewGameActivity extends AppCompatActivity {
             editor.putInt("hardGiocate", hg+1);
 
             int hv = settings.getInt("hardVinte", 0);
-            editor.putInt("hardVinte", hv+1);
+            if (win == 'R') {
+                editor.putInt("hardVinte", hv + 1);
+            }
 
             String t = settings.getString("hardTempoGioco", "00:00");
             String[] split_temp = t.split(":");
@@ -184,7 +190,7 @@ public class NewGameActivity extends AppCompatActivity {
             editor.putString("hardTempoGioco", t);
 
             if (hg != 0){
-                editor.putInt("hardPCVittore", (hv/hg));
+                editor.putInt("hardPCVittore", (hv/hg)*100);
             }
             else {
                 editor.putInt("hardPCVittore", 0);
