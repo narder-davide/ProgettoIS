@@ -18,8 +18,9 @@ import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 import it.unive.dais.legodroid.lib.comm.Channel;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
+import it.unive.dais.legodroid.lib.plugs.LightSensor;
 
-public class MainActivity extends AppCompatActivity implements RobotControl.OnCalibrationFinished {
+public class MainActivity extends AppCompatActivity implements RobotControl.OnTasksFinished {
 
     private RobotControl r;
     private EV3 ev3;
@@ -99,44 +100,18 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnCa
     }
     @Override
     public void calibrated() {
-        Log.i("CAL","finisched calib");
-        ev3.cancel();
-        AsyncTask<Void, Void, Void> a=new AsyncTask<Void,Void,Void>(){
-            @Override
-            protected Void doInBackground(Void... voids) {
-                //mouvi in 1 e cade in 4    dist 3
-                //Thread.sleep(7000);
-                r.dropToken();
+        Log.i("CAL","finished calib");
+        r.move(4,3,false);
+    }
 
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                ev3.cancel();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                r.move(0,-1);
-                return null;
-            }
-        };
-        a.execute();
+    @Override
+    public void columnRead(int c) {
+        Log.i("CAL","Column: "+c);
+
+    }
+    @Override
+    public void colorRead(LightSensor.Color color) {
+        Log.i("CAL","Color: "+color);
+        r.move(1,1,false);
     }
 }
-
-
-/*
-                for(int i=0;i<3;i++){
-                    r.move(5,0);
-                    Thread.sleep(7000);
-                    r.move(0,6);
-                    Thread.sleep(7000);
-                    r.move(5,6);
-                    Thread.sleep(7000);
-                    r.move(0,0);
-                    Thread.sleep(7000);
-                }
-                */
