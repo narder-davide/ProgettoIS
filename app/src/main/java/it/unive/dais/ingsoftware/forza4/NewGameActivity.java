@@ -15,9 +15,16 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
-import it.dais.forza4.R;
+import java.io.IOException;
 
-public class NewGameActivity extends AppCompatActivity {
+import it.dais.forza4.R;
+import it.unive.dais.legodroid.lib.EV3;
+import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
+import it.unive.dais.legodroid.lib.comm.Channel;
+import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
+import it.unive.dais.legodroid.lib.plugs.LightSensor;
+
+public class NewGameActivity extends AppCompatActivity implements RobotControl.OnTasksFinished {
 
     private final int MAX_COIN = 20;
 
@@ -47,6 +54,9 @@ public class NewGameActivity extends AppCompatActivity {
     TextView timerValue = null;
     Thread threadTimer = null;
     int minutes = 0, seconds = 0;
+
+    private RobotControl r;
+    private EV3 ev3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +90,21 @@ public class NewGameActivity extends AppCompatActivity {
         TableRow row4 = findViewById(R.id.row4);
         TableRow row5 = findViewById(R.id.row5);*/
 
+        // Associazione robot con Bluetooth
+        BluetoothConnection conn = new BluetoothConnection("F4Bot");
+        Channel channel = null;
+        try {
+            channel = conn.connect();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ev3 = new EV3(new SpooledAsyncChannel(channel));
+
+        r = new RobotControl(ev3,this);
+        r.calibrate();
+
         // Dà inizio al gioco
         startGame();
     }
@@ -89,17 +114,12 @@ public class NewGameActivity extends AppCompatActivity {
         gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
 
-        gameLogic.setCoin(0,0,'Y');
-        gameLogic.setCoin(5,6,'R');
-        gameLogic.setCoin(0,6,'Y');
-        gameLogic.setCoin(5,0,'R');
-        gameLogic.setCoin(3,3,'Y');
-
         startTimer();
 
-        /*do {
+        do {
             // MOSSA UTENTE
             textTurno.setText(R.string.textTurnoGiocatore);
+
             decreaseUserCoin();
 
             // MOSSA ROBOT
@@ -122,7 +142,7 @@ public class NewGameActivity extends AppCompatActivity {
         else {  // partita patta (gettoni esauriti)
             textTurno.setText(R.string.textPartitaPatta);
             Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
-        }*/
+        }
 
         // Salvataggio delle statistiche SOLO a fine partita
         if (diff.compareTo("easy") == 0){
@@ -250,5 +270,20 @@ public class NewGameActivity extends AppCompatActivity {
             }
         };
         threadTimer.start();
+    }
+
+    @Override
+    public void calibrated() {
+
+    }
+
+    @Override
+    public void columnRead(int c) {
+
+    }
+
+    @Override
+    public void colorRead(LightSensor.Color color) {
+
     }
 }

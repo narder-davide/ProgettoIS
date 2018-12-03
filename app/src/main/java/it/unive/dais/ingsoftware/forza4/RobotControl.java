@@ -14,6 +14,7 @@ import it.unive.dais.legodroid.lib.plugs.UltrasonicSensor;
 import it.unive.dais.legodroid.lib.util.Consumer;
 
 public class RobotControl {
+
     private static final int OUT_DISTANCE = 2500;
     private UltrasonicSensor ultrasonicSensor;
     private TachoMotor tokenMotor;
@@ -39,7 +40,8 @@ public class RobotControl {
     private boolean calibrated=false;
     private LightSensor lightSensor;
     private OnTasksFinished callback;
-    public RobotControl(EV3 e,OnTasksFinished c){
+
+    public RobotControl(EV3 e, OnTasksFinished c){
         ev3=e;
         callback=c;
     }

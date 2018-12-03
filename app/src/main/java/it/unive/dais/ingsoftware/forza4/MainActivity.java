@@ -20,10 +20,7 @@ import it.unive.dais.legodroid.lib.comm.Channel;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 
-public class MainActivity extends AppCompatActivity implements RobotControl.OnTasksFinished {
-
-    private RobotControl r;
-    private EV3 ev3;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,36 +81,5 @@ public class MainActivity extends AppCompatActivity implements RobotControl.OnTa
                 startActivity(openOptionsActivity);
             }
         });
-
-        // Apertura connessione Bluetooth
-        BluetoothConnection conn = new BluetoothConnection("F4Bot");
-        Channel channel = null;
-        try {
-            channel = conn.connect();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ev3 = new EV3(new SpooledAsyncChannel(channel));
-
-        r=new RobotControl(ev3,this);
-        r.calibrate();
-    }
-    @Override
-    public void calibrated() {
-        Log.i("CAL","finished calib");
-        r.getCoinAt(4,3);
-    }
-
-    @Override
-    public void columnRead(int c) {
-        Log.i("CAL","Ultra suoni Column: "+c);
-        r.getCoinAt(4,4);
-    }
-    @Override
-    public void colorRead(LightSensor.Color color) {
-        Log.i("CAL","Coin color : "+color);
-        r.dropToken(1);
     }
 }
