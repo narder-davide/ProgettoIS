@@ -19,7 +19,7 @@ public class RobotControl {
     private static final int OUT_DISTANCE = 2500;
     private UltrasonicSensor ultrasonicSensor;
     private TachoMotor tokenMotor;
-    private boolean outOfBoard=false;
+    private boolean outOfBoard = false;
     private TouchSensor redButton;
 
     public void dropToken(int c) {
@@ -35,25 +35,25 @@ public class RobotControl {
         void columnRead(int c);
         void colorRead(LightSensor.Color color,int r,int c);
     }
+
     private float xstart,ystart;
     private EV3 ev3;
-    private TachoMotor motor,sensorMotor;
-    private int currentRow,currentCol;
-    private boolean calibrated=false;
+    private TachoMotor motor, sensorMotor;
+    private int currentRow, currentCol;
+    private boolean calibrated = false;
     private LightSensor lightSensor;
     private OnTasksFinished callback;
 
     public RobotControl(EV3 e, OnTasksFinished c){
-        ev3=e;
-        callback=c;
+        ev3 = e;
+        callback = c;
     }
 
     public void calibrate() {
         Consumer<EV3.Api> calibrate = (data -> {
             try {
-                redButton=data.getTouchSensor(EV3.InputPort._3);
-                ultrasonicSensor=data.getUltrasonicSensor(EV3.InputPort._2);
-
+                redButton = data.getTouchSensor(EV3.InputPort._3);
+                ultrasonicSensor = data.getUltrasonicSensor(EV3.InputPort._2);
 
                 lightSensor = data.getLightSensor(EV3.InputPort._1);
                 boolean end = false;
@@ -73,7 +73,8 @@ public class RobotControl {
                     c = lightSensor.getColor();
                     if (c.get() == LightSensor.Color.TRANSPARENT) {
                         Log.i("CAL", "2-Not_Blue");
-                    } else {
+                    }
+                    else {
                         motor.stop();
                         end = true;
                         Log.i("CAL", "2-FoundBlue X:" + xstart);
@@ -87,9 +88,11 @@ public class RobotControl {
                 while (!end) {
                     c = lightSensor.getColor();
                     LightSensor.Color color = c.get();
+
                     if (color != LightSensor.Color.TRANSPARENT) {
                         Log.i("CAL", "3-NotTrans");
-                    } else {
+                    }
+                    else {
                         sensorMotor.brake();
                         end = true;
                     }
@@ -102,7 +105,6 @@ public class RobotControl {
                 sleepTime(210);
                 //Thread.sleep(1000);
 
-
                 currentCol=0;
                 currentRow=5;
                 //2500 giri in 2.7 sec 3.3 2.9
@@ -113,20 +115,26 @@ public class RobotControl {
                 data.soundTone(40,440,600);
                 Thread.sleep(800);
                 getDistance();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
-            } catch (ExecutionException e) {
+            }
+            catch (ExecutionException e) {
                 e.printStackTrace();
             }
         });
+
         try {
             ev3.run(calibrate);
-        } catch (EV3.AlreadyRunningException e) {
+        }
+        catch (EV3.AlreadyRunningException e) {
             e.printStackTrace();
         }
     }
+
     private void sleepTime(int giri){
         try {
             Thread.sleep(1500+4200/2500*giri);
@@ -135,10 +143,11 @@ public class RobotControl {
         }
     }
 
-    private void move(int r, int c,boolean dropping){
-        if((r>5 || r<0 || c>6 || c<0) && !dropping){
+    private void move(int r, int c, boolean dropping){
+        if ((r>5 || r<0 || c>6 || c<0) && !dropping){
             return;
-        }else{
+        }
+        else{
             Consumer<EV3.Api> move_c=(data ->{
                 try {
                     Log.i("CAL","move");
@@ -148,9 +157,11 @@ public class RobotControl {
                     sensorMotor.setType(TachoMotor.Type.LARGE);
                     int newr;
                     int newc;
+
                     if(!outOfBoard){
                         newc = currentCol - c;
-                    }else{
+                    }
+                    else{
                         motor.setStepPower(100, 50,RobotControl.OUT_DISTANCE-100, 50, true);
                         sleepTime(OUT_DISTANCE);
                         //Thread.sleep(4000);
@@ -158,6 +169,7 @@ public class RobotControl {
                         newc=currentCol-c;
                         outOfBoard=false;
                     }
+
                     if(dropping){
                         //move(currentRow,c+3,true);
                         newc=newc+3;
@@ -213,18 +225,21 @@ public class RobotControl {
                         //tempo di uscita dalla griglia
                         data.soundTone(40,440,600);
                         getDistance();
-                    }else{
+                    }
+                    else {
                         LightSensor.Rgb rgb=lightSensor.getRgb().get();
                         LightSensor.Color col= lightSensor.getColor().get();
                         Log.i("CAL","Color "+col);
                         if(col==LightSensor.Color.YELLOW || col==LightSensor.Color.BROWN){
                             //Log.i("CAL","Color Giallo/Marrone");
                             colorRead(LightSensor.Color.YELLOW,currentRow,currentCol);
-                        }else{
+                        }
+                        else {
                             if(rgb.B-37<5 && rgb.G-68<5 && rgb.R-255<5 && col==LightSensor.Color.BLUE) {
                                 //Log.i("CAL","Color ROSSO rgb+col");
                                 colorRead(LightSensor.Color.RED,currentRow,currentCol);
-                            }else{
+                            }
+                            else {
                                 colorRead(col,currentRow,currentCol);
                             }
                         }
@@ -233,10 +248,12 @@ public class RobotControl {
                     e.printStackTrace();
                 }
             });
+
             try {
                 ev3.run(move_c);
                 Log.i("CAL","ev3_running");
-            } catch (EV3.AlreadyRunningException e) {
+            }
+            catch (EV3.AlreadyRunningException e) {
                 e.printStackTrace();
             }
         }
@@ -245,6 +262,7 @@ public class RobotControl {
     private void getDistance() {
         Float dist = null;
         int col=-1;
+
         try {
             dist= 255f;
             while((dist<30f) || col==-1){
@@ -259,27 +277,31 @@ public class RobotControl {
             Thread.sleep(400);
             if(col!=-1)
                 columnRead(col);
-        } catch (ExecutionException | IOException | InterruptedException e) {
+        }
+        catch (ExecutionException | IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private void colorRead(LightSensor.Color color,int r,int c) {
-        AsyncTask a=new MyTasks(TaskType.COLOR);
+        AsyncTask a = new MyTasks(TaskType.COLOR);
         a.execute(color,r,c);
     }
+
     private void columnRead(int i) {
-        AsyncTask a=new MyTasks(TaskType.DISTANCE);
+        AsyncTask a = new MyTasks(TaskType.DISTANCE);
         a.execute(i);
     }
+
     private void calibrationFinished(){
-        AsyncTask a=new MyTasks(TaskType.CALIBRATED);
+        AsyncTask a = new MyTasks(TaskType.CALIBRATED);
         a.execute();
     }
 
     private enum TaskType {
         DISTANCE, COLOR, CALIBRATED;
     }
+
     private void bottoneRosso(){
         while(true){
             try {
@@ -290,27 +312,35 @@ public class RobotControl {
                     ev3.cancel();
                     break;
                 }
-            } catch (ExecutionException e) {
+            }
+            catch (ExecutionException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
     private class MyTasks extends AsyncTask<Object, Void, Void> {
         private TaskType t;
+
         public MyTasks(TaskType taskType) {
             t=taskType;
         }
+
         @Override
         protected Void doInBackground(Object... ob) {
             try {
                 Thread.sleep(600);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             switch (t){
                 case DISTANCE:
                     callback.columnRead((int)ob[0]);

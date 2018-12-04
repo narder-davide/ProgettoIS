@@ -9,6 +9,11 @@ import it.dais.forza4.R;
 
 public class GameLogic{
 
+    private final int MAX_COIN = 20;
+
+    private int userCoin = MAX_COIN;
+    private int robotCoin = MAX_COIN;
+
     final int ROWS = 6;
     final int COLS = 7;
     char[][] matrix;
@@ -28,6 +33,22 @@ public class GameLogic{
         resetGame();
     }
 
+    public int getUserCoin(){
+        return this.userCoin;
+    }
+
+    public int getRobotCoin(){
+        return this.robotCoin;
+    }
+
+    public void decreaseUserCoin(){
+        this.userCoin--;
+    }
+
+    public void decreaseRobotCoin(){
+        this.robotCoin--;
+    }
+
     // Legge la stringa lastGame e carica la matrice corrispondente
     // X -> empty (no coins)
     // Y -> yellow coin
@@ -44,7 +65,7 @@ public class GameLogic{
                     col = 0;
                     row++;
                 }
-                this.setCoin(row, col, lastGame.charAt(i));
+                this.setCoin(col, lastGame.charAt(i));
                 col++;
             }
         }
@@ -54,14 +75,14 @@ public class GameLogic{
     // X -> empty (no coins)
     // Y -> yellow coin
     // R -> red coin
-    public void setCoin(int r, int c, char type){
-        this.matrix[r][c] = type;
+    public void setCoin(int c, char type){
+        this.matrix[quote[c]][c] = type;
+
+        int r = (ROWS-1)-quote[c];
 
         if (type != 'X') {
             this.quote[c]++;    // Si presuppone che la stringa lastGame sia sempre coerente e valida
         }
-
-        r = (ROWS-1)-r;
 
         if (type == 'R') {
             ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_red);
@@ -115,8 +136,13 @@ public class GameLogic{
     // 'X' partita patta (gettoni esauriti)
     // 'H' ancora nessun vincitore, continua a giocare
     public char winner(){
+
         int red=0, yellow = 0;
         int freeCells = ROWS*COLS;
+
+        if (userCoin == 0 || robotCoin == 0){
+            return 'X';
+        }
 
         // controllo riga
         for(int r=0;r<ROWS;r++){
@@ -166,7 +192,7 @@ public class GameLogic{
             yellow=0;
         }
 
-        // controllo \ partendo dalle cella della prima colonna
+        // controllo \ (diagonale) partendo dalle cella della prima colonna
         for(int trow = 0; trow<ROWS; trow++) {
             for (int r = trow, c = 0; r < ROWS && c < COLS; r++,c++) {
                 if (matrix[r][c] == 'R') {
@@ -187,7 +213,7 @@ public class GameLogic{
             }
         }
 
-        // controllo / partendo dalle celle dell'ultima colonna
+        // controllo / (anti-diagonale) partendo dalle celle dell'ultima colonna
         for(int trow = 0; trow<ROWS; trow++) {
             for (int r = trow, c = COLS-1; r < ROWS && c >= 0; r++,c--) {
                 if (matrix[r][c] == 'R') {
@@ -250,7 +276,9 @@ public class GameLogic{
             }
         }
 
-        return freeCells == 0 ? 'X' : 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
+
+        return 'H';
+        //return freeCells == 0 ? 'X' : 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
     }
 
     // Legge la matrice e crea una stringa corrispondente alla partita appena interrotta

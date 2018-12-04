@@ -27,13 +27,8 @@ import it.unive.dais.legodroid.lib.plugs.LightSensor;
 
 public class NewGameActivity extends AppCompatActivity implements RobotControl.OnTasksFinished {
 
-    private final int MAX_COIN = 20;
-
     final int ROWS = 6;
     final int COLS = 7;
-
-    private int userCoin = MAX_COIN;
-    private int robotCoin = MAX_COIN;
 
     TextView userCoinCount;
     TextView robotCoinCount;
@@ -75,10 +70,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         timerValue = findViewById(R.id.timerValue);
 
         userCoinCount = findViewById(R.id.userCoinCount);
-        userCoinCount.setText("" + userCoin);
-
         robotCoinCount = findViewById(R.id.robotCoinCount);
-        robotCoinCount.setText("" + robotCoin);
 
         textTurno = findViewById(R.id.textTurno);
 
@@ -116,8 +108,10 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
 
-        startTimer();
+        userCoinCount.setText("" + gameLogic.getUserCoin());
+        robotCoinCount.setText("" + gameLogic.getRobotCoin());
 
+        startTimer();
 
         // MOSSA UTENTE
         textTurno.setText(R.string.textTurnoGiocatore);
@@ -155,7 +149,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
         }
 
-        // Salvataggio delle statistiche SOLO a fine partita
+        /* Salvataggio delle statistiche SOLO a fine partita */
         if (diff.compareTo("easy") == 0){
             int eg = settings.getInt("easyGiocate",0);
             editor.putInt("easyGiocate", eg+1);
@@ -229,6 +223,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             }
         }
         editor.commit();
+        /* fine salvataggio statistiche di gioco */
     }
 
     @Override
@@ -245,13 +240,13 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     }
 
     private void decreaseUserCoin(){
-        this.userCoin--;
-        userCoinCount.setText("" + userCoin);
+        gameLogic.decreaseUserCoin();
+        userCoinCount.setText("" + gameLogic.getUserCoin());
     }
 
     private void decreaseRobotCoin(){
-        this.robotCoin--;
-        robotCoinCount.setText("" + robotCoin);
+        gameLogic.decreaseRobotCoin();
+        robotCoinCount.setText("" + gameLogic.getRobotCoin());
     }
 
     private void startTimer(){
@@ -303,15 +298,19 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     }
 
     private void searchCoin(int c) {
-        r.getCoinAt(gameLogic.quote[c],c);
+        for (int j=0;j<gameLogic.quote.length;j++) {
+            r.getCoinAt(gameLogic.quote[c], c);
+            // aggiungere 1 alla posizione quote[c] presente in GameLogic
+            // chiamare setCoin in GameLogic alla posizione trovata
+        }
     }
 
     @Override
     public void colorRead(LightSensor.Color color,int r,int c) {
         if (color == LightSensor.Color.RED){
-            gameLogic.setCoin(gameLogic.quote[c],c,'R');
+            gameLogic.setCoin(c,'R');
             coordinateRobot = gameLogic.calculateRobotAction(diff);
-            gameLogic.setCoin(gameLogic.quote[coordinateRobot],coordinateRobot,'Y');
+            gameLogic.setCoin(coordinateRobot,'Y');
 
             runOnUiThread(()->{
                 decreaseRobotCoin();
