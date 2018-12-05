@@ -123,7 +123,7 @@ public class GameLogic{
         }
         // HARD
         else {
-
+            return this.getBestMove('Y');
         }
 
         return out;
