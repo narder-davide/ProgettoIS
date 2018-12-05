@@ -84,6 +84,8 @@ public class GameLogic{
             this.quote[c]++;    // Si presuppone che la stringa lastGame sia sempre coerente e valida
         }
 
+        c = c+(COLS-1)-(2*c);
+
         if (type == 'R') {
             ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_red);
         }
@@ -135,7 +137,7 @@ public class GameLogic{
     // 'Y' ha vinto YELLOW
     // 'X' partita patta (gettoni esauriti)
     // 'H' ancora nessun vincitore, continua a giocare
-    public char winner(){
+    /*public char winner(){
 
         int red=0, yellow = 0;
         int freeCells = ROWS*COLS;
@@ -279,6 +281,120 @@ public class GameLogic{
 
         return 'H';
         //return freeCells == 0 ? 'X' : 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
+    }*/
+
+    // 'R' ha vinto RED
+    // 'Y' ha vinto YELLOW
+    // 'X' partita patta (gettoni esauriti)
+    // 'H' ancora nessun vincitore, continua a giocare
+
+    public char winner(char player, int column) {   // column è la colonna dove è stato appena messo un gettone
+                                                    // player sarà 'R' x utente o 'Y' x robot
+
+        if (userCoin == 0 || robotCoin == 0){
+            return 'X';
+        }
+        else {
+            int j, r, l, i, height;
+            final int FORZA4 = 4-1;
+
+            i = column;
+            j = ROWS - 1;
+            while (matrix[j][i] != 'X') j--;
+            j++;
+            height = j;
+
+            r = 0;
+            l = 0;
+            while (((++i) < COLS) && (matrix[j][i] == player)) r++;
+            i = column;
+            while (((--i) >= 0) && (matrix[j][i] == player)) l++;
+            if ((r + l) >= FORZA4) return player;
+            i = column;
+
+            r = 0;
+            while (((++j) < ROWS) && (matrix[j][i] == player)) r++;
+            if (r >= FORZA4) return player;
+            j = height;
+
+            r = 0;
+            l = 0;
+            while (((++i) < COLS) && ((++j) < ROWS) && (matrix[j][i] == player)) r++;
+            i = column;
+            j = height;
+            while (((--i) >= 0) && ((--j) >= 0) && (matrix[j][i] == player)) l++;
+            if ((r + l) >= FORZA4) return player;
+            i = column;
+            j = height;
+
+            r = 0;
+            l = 0;
+            while (((++i) < COLS) && ((--j) >= 0) && (matrix[j][i] == player)) r++;
+            i = column;
+            j = height;
+            while (((--i) >= 0) && ((++j) < ROWS) && (matrix[j][i] == player)) l++;
+            if ((r + l) >= FORZA4) return player;
+
+            return 'H';
+        }
+    }
+
+    private int goodness(char player, int depth, int column, int trigger) {
+        int max,i,value,j;
+        int nodes;
+        max = -200;
+
+        if (winner(player,column) == 'R' || winner(player,column) == 'Y') return -128;
+
+        if (depth == 0) return 0;
+
+        for(i=0;i<COLS;i++){
+            if(matrix[0][i] == 0) {
+                nodes = 0;
+                j = ROWS-1;
+                while(matrix[j][i] != 'X') j--;
+                matrix[j][i] = player;
+                nodes++;
+                value = -goodness(player,depth-1,i,-max)/2;
+                matrix[j][i] = 'X';
+                if (value>max) max = value;
+                if (value>trigger) return max;
+            }
+        }
+        return max;
+    }
+
+    // UTILIZZARLO PER RITORNARE ANCHE SUGGERIMENTI ALL'UTENTE con un Toast DOPO tot. secondi di inattività
+    public int getBestMove(char player) {
+        int i, j, max, value, best;
+        int nodes;
+        int[] res = new int[COLS];
+
+        max = -100;
+        best = -1;
+        for(i=0;i<COLS;i++) {
+            if(matrix[0][i]==0) {
+                nodes = 0;
+                j = ROWS-1;
+                while((matrix[j][i] != 'X')&&(j>=0)) j--;
+                matrix[j][i] = player;
+                value = -goodness(player,10, i,200);
+                //printf("\nmove %d goodness: %d   tree size for this move: %d nodes",i+1,value,nodes);
+                res[i] = value;
+                matrix[j][i] = 'X';
+                if (value>max) {
+                    max = value;
+                    best = i;
+                }
+            }
+        }
+        if (best == -1) {
+            for(i=0;i<COLS;i++){
+                if(matrix[0][i] == 'X') return i;
+            }
+        }
+
+        return best;
     }
 
     // Legge la matrice e crea una stringa corrispondente alla partita appena interrotta

@@ -115,8 +115,13 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
         // MOSSA UTENTE
         textTurno.setText(R.string.textTurnoGiocatore);
-        /*
-        do {
+
+        gameLogic.setCoin(0,'R');
+        gameLogic.setCoin(6,'Y');
+        gameLogic.setCoin(0, 'R');
+        gameLogic.setCoin(3,'Y');
+
+        /*do {
             // MOSSA UTENTE
             textTurno.setText(R.string.textTurnoGiocatore);
 
@@ -125,9 +130,9 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             // MOSSA ROBOT
             textTurno.setText(R.string.textTurnoRobot);
             coordinateRobot = gameLogic.calculateRobotAction(diff);
-            gameLogic.setCoin(coordinateRobot[0],coordinateRobot[1],'Y');
+            gameLogic.setCoin(coordinateRobot,'Y');
 
-            r.dropToken(coordinateRobot[1]);
+            r.dropToken(coordinateRobot);
 
             decreaseRobotCoin();
 
@@ -317,7 +322,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             });
             this.r.dropToken(coordinateRobot);
         }
-        else if (c<6){
+        else if (c < 6){
             this.r.getCoinAt(gameLogic.quote[c+1],c+1);
         }
     }
