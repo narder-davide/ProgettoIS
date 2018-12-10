@@ -258,7 +258,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     }
                 }
                 catch (InterruptedException e) {
-                    Toast.makeText(getApplicationContext(), "InterruptedException occurred in timer", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "InterruptedException occurred in timer", Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -285,7 +285,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     }
 
     @Override
-    public void colorRead(LightSensor.Color color, int r, int c) {
+    public void colorRead(LightSensor.Color color, int c) {
         if (color == LightSensor.Color.RED){
             runOnUiThread(()-> {
                 gameLogic.setCoin(c, 'R');

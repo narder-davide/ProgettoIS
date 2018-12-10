@@ -306,14 +306,14 @@ public class GameLogic{
 
             r = 0;
             l = 0;
-            while (((++i) < COLS) && (matrix[j][i] == player)) r++;
+            while (((++i) < COLS-1) && (matrix[j][i] == player)) r++;
             i = column;
             while (((--i) >= 0) && (matrix[j][i] == player)) l++;
             if ((r + l) >= FORZA4) return player;
             i = column;
 
             r = 0;
-            while (((++j) < ROWS) && (matrix[j][i] == player)) r++;
+            while (((++j) < ROWS-1) && (matrix[j][i] == player)) r++;
             if (r >= FORZA4) return player;
             j = height;
 
