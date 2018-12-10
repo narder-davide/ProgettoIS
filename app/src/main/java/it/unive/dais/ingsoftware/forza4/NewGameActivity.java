@@ -1,20 +1,13 @@
 package it.unive.dais.ingsoftware.forza4;
 
 import android.content.SharedPreferences;
-import android.os.PowerManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -78,21 +71,20 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Associazione robot con Bluetooth
-        BluetoothConnection conn = new BluetoothConnection("F4Bot");
-        Channel channel = null;
         try {
+            BluetoothConnection conn = new BluetoothConnection("F4Bot");
+            Channel channel = null;
             channel = conn.connect();
+
+
+            ev3 = new EV3(new SpooledAsyncChannel(channel));
+            r = new RobotControl(ev3,this);
+
+            // Dà inizio al gioco
+            startGame();
+        }catch(Exception e){
+            Toast.makeText(this,"Errore Bluetooth",Toast.LENGTH_LONG).show();
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ev3 = new EV3(new SpooledAsyncChannel(channel));
-
-        r = new RobotControl(ev3,this);
-
-        // Dà inizio al gioco
-        startGame();
     }
 
     private void startGame(){
