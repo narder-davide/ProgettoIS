@@ -33,7 +33,7 @@ public class RobotControl {
     interface OnTasksFinished{
         void calibrated();
         void columnRead(int c);
-        void colorRead(LightSensor.Color color,int r,int c);
+        void colorRead(LightSensor.Color color,int c);
     }
 
     private float xstart,ystart;
@@ -232,15 +232,15 @@ public class RobotControl {
                         Log.i("CAL","Color "+col);
                         if(col==LightSensor.Color.YELLOW || col==LightSensor.Color.BROWN){
                             //Log.i("CAL","Color Giallo/Marrone");
-                            colorRead(LightSensor.Color.YELLOW,currentRow,currentCol);
+                            colorRead(LightSensor.Color.YELLOW,currentCol);
                         }
                         else {
                             if(rgb.B-37<5 && rgb.G-68<5 && rgb.R-255<5 && col==LightSensor.Color.BLUE) {
                                 //Log.i("CAL","Color ROSSO rgb+col");
-                                colorRead(LightSensor.Color.RED,currentRow,currentCol);
+                                colorRead(LightSensor.Color.RED,currentCol);
                             }
                             else {
-                                colorRead(col,currentRow,currentCol);
+                                colorRead(col,currentCol);
                             }
                         }
                     }
@@ -261,17 +261,28 @@ public class RobotControl {
     
     private void getDistance() {
         Float dist = null;
-        int col=-1;
-
+        int col=-1,t=0;
+        boolean end=false;
         try {
             dist= 255f;
-            while((dist<30f) || col==-1){
+            while(!end){
+                //(dist<30f) || col==-1
                 Thread.sleep(250);
                 dist = ultrasonicSensor.getDistance().get();
                 Log.i("CAL", "dist: " + dist);
                 if(dist<21){
-                    //col=(dist>8 ? 2 : 0);//sistemare distsnza->colonne
-                    col = 0;
+                    col=(dist>8 ? 2 : 0);//sistemare distsnza->colonne
+                }else if(col!=-1){
+                    while(dist>30f && t<5){
+                        dist = ultrasonicSensor.getDistance().get();
+                        Thread.sleep(200);
+                        Log.i("CAL", "dist: " + dist);
+                        t++;
+                    }
+                    if(t>=5){
+                        end=true;
+                    }
+                    t=0;
                 }
             }
             Thread.sleep(400);
@@ -283,9 +294,9 @@ public class RobotControl {
         }
     }
 
-    private void colorRead(LightSensor.Color color, int r, int c) {
+    private void colorRead(LightSensor.Color color,int c) {
         AsyncTask a = new MyTasks(TaskType.COLOR);
-        a.execute(color, r, c);
+        a.execute(color,c);
     }
 
     private void columnRead(int i) {
@@ -329,7 +340,7 @@ public class RobotControl {
         private TaskType t;
 
         public MyTasks(TaskType taskType) {
-            t = taskType;
+            t=taskType;
         }
 
         @Override
@@ -346,7 +357,7 @@ public class RobotControl {
                     callback.columnRead((int)ob[0]);
                     break;
                 case COLOR:
-                    callback.colorRead((LightSensor.Color)ob[0], (int)ob[1], (int)ob[2]);
+                    callback.colorRead((LightSensor.Color)ob[0],(int)ob[1]);
                     break;
                 case CALIBRATED:
                     callback.calibrated();
