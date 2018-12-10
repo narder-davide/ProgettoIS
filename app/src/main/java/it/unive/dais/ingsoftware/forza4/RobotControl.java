@@ -1,5 +1,6 @@
 package it.unive.dais.ingsoftware.forza4;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,17 +11,16 @@ import java.util.concurrent.Future;
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
-import it.unive.dais.legodroid.lib.plugs.TouchSensor;
 import it.unive.dais.legodroid.lib.plugs.UltrasonicSensor;
 import it.unive.dais.legodroid.lib.util.Consumer;
 
+@SuppressWarnings("WeakerAccess")
 public class RobotControl {
 
     private static final int OUT_DISTANCE = 2500;
     private UltrasonicSensor ultrasonicSensor;
     private TachoMotor tokenMotor;
     private boolean outOfBoard = false;
-    private TouchSensor redButton;
 
     public void dropToken(int c) {
         move(currentRow,c,true);
@@ -36,11 +36,9 @@ public class RobotControl {
         void colorRead(LightSensor.Color color,int c);
     }
 
-    private float xstart,ystart;
     private EV3 ev3;
     private TachoMotor motor, sensorMotor;
     private int currentRow, currentCol;
-    private boolean calibrated = false;
     private LightSensor lightSensor;
     private OnTasksFinished callback;
 
@@ -52,13 +50,12 @@ public class RobotControl {
     public void calibrate() {
         Consumer<EV3.Api> calibrate = (data -> {
             try {
-                redButton = data.getTouchSensor(EV3.InputPort._3);
                 ultrasonicSensor = data.getUltrasonicSensor(EV3.InputPort._2);
 
                 lightSensor = data.getLightSensor(EV3.InputPort._1);
-                boolean end = false;
+                boolean end;
                 motor = data.getTachoMotor(EV3.OutputPort.A);
-                sensorMotor = data.getTachoMotor(EV3.OutputPort.B);
+                sensorMotor = data.getTachoMotor(EV3.OutputPort.D);
 
                 Future<LightSensor.Color> c;
 
@@ -77,7 +74,7 @@ public class RobotControl {
                     else {
                         motor.stop();
                         end = true;
-                        Log.i("CAL", "2-FoundBlue X:" + xstart);
+                        Log.i("CAL", "2-FoundBlue X:");
                     }
                     Thread.sleep(40);
                 }
@@ -116,13 +113,7 @@ public class RobotControl {
                 Thread.sleep(800);
                 getDistance();
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            catch (ExecutionException e) {
+            catch (IOException | InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         });
@@ -137,7 +128,8 @@ public class RobotControl {
 
     private void sleepTime(int giri){
         try {
-            Thread.sleep(1500+4200/2500*giri);
+            float g=(42/25)*giri;
+            Thread.sleep(1500+(int)g);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -152,7 +144,7 @@ public class RobotControl {
                 try {
                     Log.i("CAL","move");
                     motor = data.getTachoMotor(EV3.OutputPort.A);
-                    sensorMotor = data.getTachoMotor(EV3.OutputPort.B);
+                    sensorMotor = data.getTachoMotor(EV3.OutputPort.D);
                     motor.setType(TachoMotor.Type.LARGE);
                     sensorMotor.setType(TachoMotor.Type.LARGE);
                     int newr;
@@ -198,7 +190,7 @@ public class RobotControl {
                     if(dropping){
                         Log.i("CAL","Drop token");
                         stepm=Math.abs(150);
-                        tokenMotor=data.getTachoMotor(EV3.OutputPort.D);
+                        tokenMotor=data.getTachoMotor(EV3.OutputPort.C);
                         tokenMotor.setType(TachoMotor.Type.MEDIUM);
                         Thread.sleep(500);
                         tokenMotor.setStepPower(-15, 20,90, 5, true);
@@ -260,11 +252,10 @@ public class RobotControl {
     }
     
     private void getDistance() {
-        Float dist = null;
+        Float dist;
         int col=-1,t=0;
         boolean end=false;
         try {
-            dist= 255f;
             while(!end){
                 //(dist<30f) || col==-1
                 Thread.sleep(250);
@@ -273,21 +264,20 @@ public class RobotControl {
                 if(dist<21){
                     col=(dist>8 ? 2 : 0);//sistemare distsnza->colonne
                 }else if(col!=-1){
-                    while(dist>30f && t<5){
+                    while(dist>30f && t<7){
                         dist = ultrasonicSensor.getDistance().get();
-                        Thread.sleep(200);
+                        Thread.sleep(300);
                         Log.i("CAL", "dist: " + dist);
                         t++;
                     }
-                    if(t>=5){
+                    if(t>=7){
                         end=true;
                     }
                     t=0;
                 }
             }
-            Thread.sleep(400);
-            if(col!=-1)
-                columnRead(col);
+            Thread.sleep(200);
+            columnRead(col);
         }
         catch (ExecutionException | IOException | InterruptedException e) {
             e.printStackTrace();
@@ -295,24 +285,23 @@ public class RobotControl {
     }
 
     private void colorRead(LightSensor.Color color,int c) {
-        AsyncTask a = new MyTasks(TaskType.COLOR);
+        AsyncTask<Object, Void, Void> a = new MyTasks(TaskType.COLOR);
         a.execute(color,c);
     }
 
     private void columnRead(int i) {
-        AsyncTask a = new MyTasks(TaskType.DISTANCE);
+        AsyncTask<Object, Void, Void> a = new MyTasks(TaskType.DISTANCE);
         a.execute(i);
     }
 
-    private void calibrationFinished(){
-        AsyncTask a = new MyTasks(TaskType.CALIBRATED);
-        a.execute();
-    }
 
     private enum TaskType {
-        DISTANCE, COLOR, CALIBRATED;
+        /**
+         *
+         */
+        DISTANCE, COLOR, CALIBRATED
     }
-
+/*
     private void bottoneRosso(){
         while(true){
             try {
@@ -324,18 +313,13 @@ public class RobotControl {
                     break;
                 }
             }
-            catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            catch (IOException e) {
+            catch (ExecutionException | InterruptedException | IOException e) {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
+    @SuppressLint("StaticFieldLeak")
     private class MyTasks extends AsyncTask<Object, Void, Void> {
         private TaskType t;
 
@@ -369,8 +353,5 @@ public class RobotControl {
 }
 
 /*-sistemare drop
-  -invertire la griglia nell UI
-  -sensore ultrasuoni salta la colonna 1
-  -game logic partita finita
-
+  -sensore ultrasuoni distanze
  */
