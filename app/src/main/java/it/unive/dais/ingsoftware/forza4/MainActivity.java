@@ -1,5 +1,6 @@
 package it.unive.dais.ingsoftware.forza4;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -21,6 +23,8 @@ import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Button newGameButton,loadGameButton,statisticsButton,optionsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("DIFFICULT", diff);
         editor.putString("LASTGAME", statusLastGame);
         editor.commit();*/
-
+       
         // Recupero bottone per NUOVA PARTITA
-        Button newGameButton = findViewById(R.id.newGameButton);
+        newGameButton = findViewById(R.id.newGameButton);
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Recupero bottone per CARICA PARTITA
-        Button loadGameButton = findViewById(R.id.loadGameButton);
+        loadGameButton = findViewById(R.id.loadGameButton);
         loadGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Recupero bottone per STATISTICHE
-        Button statisticsButton = findViewById(R.id.statisticsButton);
+        statisticsButton = findViewById(R.id.statisticsButton);
         statisticsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Recupero bottone per OPZIONI
-        Button optionsButton = findViewById(R.id.optionsButton);
+        optionsButton = findViewById(R.id.optionsButton);
         optionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,5 +85,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(openOptionsActivity);
             }
         });
+        
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            enableDisableButtons(false);
+            Toast.makeText(this,"Dispositivo non supporta Bluetooth",Toast.LENGTH_LONG).show();
+
+        } else {
+            if (!bluetoothAdapter.isEnabled()) {
+                enableDisableButtons(false);
+                Toast.makeText(this,"Bluetooth non abilitato",Toast.LENGTH_LONG).show();
+            }
+        }
+
+    }
+
+    private void enableDisableButtons(boolean b) {
+        newGameButton.setEnabled(b);
+        loadGameButton.setEnabled(b);
     }
 }

@@ -1,6 +1,7 @@
 package it.unive.dais.ingsoftware.forza4;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -52,12 +53,15 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         setContentView(R.layout.activity_new_game);
 
         // Gestione delle impostazioni di gioco
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = settings.edit();
         lastGame = settings.getString("LASTGAME", "");
+
         diff = settings.getString("DIFFICULT", "easy");
 
         // Ottenimento degli oggetti grafici
@@ -69,19 +73,29 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         textTurno = findViewById(R.id.textTurno);
 
         gameGrid = findViewById(R.id.gamegrid);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Associazione robot con Bluetooth
-        r = RobotControl.connectToEv3(this);
-        // Dà inizio al gioco
-        if(r!=null){
-            startGame();
-        }else {
-            Toast.makeText(this, "Errore Bluetooth", Toast.LENGTH_LONG).show();
+        new ConnectTask().execute(this);
+    }
+    public class ConnectTask extends AsyncTask<RobotControl.OnTasksFinished,Void,Void>{
+        @Override
+        protected Void doInBackground(RobotControl.OnTasksFinished... a) {
+            r = RobotControl.connectToEv3(a[0]);
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(r!=null){
+                boolean resumed = getIntent().getBooleanExtra("resume", false);
+                startGame(resumed);
+            }else{
+                Toast.makeText(NewGameActivity.this, "Errore Bluetooth", Toast.LENGTH_LONG).show();
+                textTurno.setText("Errore Bluetooth");
+            }
         }
     }
-
-    private void startGame(){
+    private void startGame(boolean res){
         // Inizio logica di gioco
         gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
@@ -92,9 +106,12 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         robotCoinCount.setText("" + gameLogic.getRobotCoin());
 
         startTimer();
-
-        r.calibrate();
-
+        if(!res)
+            r.calibrate(true);
+        else{
+            r.setCurrentPos(5,0);
+            r.calibrate(true);
+        }
         // MOSSA UTENTE
         textTurno.setText(R.string.textTurnoGiocatore);
     }
@@ -282,7 +299,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
             if (!endGame) {
                 // Mossa ROBOT
-                coordinateRobot = gameLogic.calculateRobotAction(diff);
+                coordinateRobot = gameLogic.calculateRobotAction("hard");
                 runOnUiThread(() -> {
                     gameLogic.setCoin(coordinateRobot, 'Y');
                     decreaseRobotCoin();
@@ -292,7 +309,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 runOnUiThread(() -> {
                     endGame = this.checkWin();
                 });
-
+                //il thread runonUI non finisce in tempo
                 if (!endGame) {
                     this.r.dropToken(coordinateRobot);
                 }
