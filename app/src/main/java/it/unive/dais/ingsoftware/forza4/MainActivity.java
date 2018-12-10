@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         if (bluetoothAdapter == null) {
             enableDisableButtons(false);
             Toast.makeText(this,"Dispositivo non supporta Bluetooth",Toast.LENGTH_LONG).show();
-
         } else {
             if (!bluetoothAdapter.isEnabled()) {
                 enableDisableButtons(false);

@@ -366,5 +366,9 @@ public class RobotControl {
 }
 
 /*
-  -sensore ultrasuoni distanze
+  -sensore ultrasuoni distanze si bugga ogni tanto
+  -runOnUI non finisce in tempo
+  -controlli Bluetooth
+  -caduta gettone
+
  */
