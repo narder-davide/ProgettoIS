@@ -97,7 +97,6 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         ev3 = new EV3(new SpooledAsyncChannel(channel));
 
         r = new RobotControl(ev3,this);
-        r.calibrate();
 
         // Dà inizio al gioco
         startGame();
@@ -113,122 +112,105 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
         startTimer();
 
+        r.calibrate();
+
         // MOSSA UTENTE
         textTurno.setText(R.string.textTurnoGiocatore);
+    }
 
-        gameLogic.setCoin(0,'R');
-        gameLogic.setCoin(6,'Y');
-        gameLogic.setCoin(0, 'R');
-        gameLogic.setCoin(3,'Y');
+    private void checkWin(char type, int c){
+        win = gameLogic.winner(type, c);
 
-        /*do {
-            // MOSSA UTENTE
-            textTurno.setText(R.string.textTurnoGiocatore);
-
-            decreaseUserCoin();
-
-            // MOSSA ROBOT
-            textTurno.setText(R.string.textTurnoRobot);
-            coordinateRobot = gameLogic.calculateRobotAction(diff);
-            gameLogic.setCoin(coordinateRobot,'Y');
-
-            r.dropToken(coordinateRobot);
-
-            decreaseRobotCoin();
-
-            win = gameLogic.winner();
-            gameLogic.incrementTurno();
-        } while(win == 'H');*/
-
-
-        if (win == 'R'){    // vince RED - UTENTE
-            textTurno.setText(R.string.textRedWin);
-            Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
-        }
-        else if (win == 'Y'){   // vince YELLOW - ROBOT
-            textTurno.setText(R.string.textYellowWin);
-            Toast.makeText(this, "VINCE IL GIALLO", Toast.LENGTH_LONG).show();
-        }
-        else {  // partita patta (gettoni esauriti)
-            textTurno.setText(R.string.textPartitaPatta);
-            Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
-        }
-
-        /* Salvataggio delle statistiche SOLO a fine partita */
-        if (diff.compareTo("easy") == 0){
-            int eg = settings.getInt("easyGiocate",0);
-            editor.putInt("easyGiocate", eg+1);
-
-            int ev = settings.getInt("easyVinte", 0);
-            if (win == 'R') {
-                editor.putInt("easyVinte", ev + 1);
+        if (win != 'H') {
+            if (win == 'R') {    // vince RED - UTENTE
+                textTurno.setText(R.string.textRedWin);
+                Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
+            }
+            else if (win == 'Y') {   // vince YELLOW - ROBOT
+                textTurno.setText(R.string.textYellowWin);
+                Toast.makeText(this, "VINCE IL GIALLO", Toast.LENGTH_LONG).show();
+            }
+            else if (win == 'X') {  // partita patta (gettoni esauriti)
+                textTurno.setText(R.string.textPartitaPatta);
+                Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
             }
 
-            String t = settings.getString("easyTempoGioco", "00:00");
-            String[] split_temp = t.split(":");
-            int[] split = new int[split_temp.length];
-            split[0] = Integer.parseInt(split_temp[0]);
-            split[1] = Integer.parseInt(split_temp[1]);
-            t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
-            editor.putString("easyTempoGioco", t);
+            /* Salvataggio delle statistiche SOLO a fine partita */
+            if (diff.compareTo("easy") == 0){
+                int eg = settings.getInt("easyGiocate",0);
+                editor.putInt("easyGiocate", eg+1);
 
-            if (eg != 0){
-                editor.putInt("easyPCVittore", (ev/eg)*100);
+                int ev = settings.getInt("easyVinte", 0);
+                if (win == 'R') {
+                    editor.putInt("easyVinte", ev + 1);
+                }
+
+                String t = settings.getString("easyTempoGioco", "00:00");
+                String[] split_temp = t.split(":");
+                int[] split = new int[split_temp.length];
+                split[0] = Integer.parseInt(split_temp[0]);
+                split[1] = Integer.parseInt(split_temp[1]);
+                t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
+                editor.putString("easyTempoGioco", t);
+
+                if (eg != 0){
+                    editor.putInt("easyPCVittore", (ev/eg)*100);
+                }
+                else {
+                    editor.putInt("easyPCVittore", 0);
+                }
             }
-            else {
-                editor.putInt("easyPCVittore", 0);
-            }
-        }
-        else if (diff.compareTo("norm") == 0){
-            int mg = settings.getInt("middleGiocate",0);
-            editor.putInt("middleGiocate", mg+1);
+            else if (diff.compareTo("norm") == 0){
+                int mg = settings.getInt("middleGiocate",0);
+                editor.putInt("middleGiocate", mg+1);
 
-            int mv = settings.getInt("middleVinte", 0);
-            if (win == 'R') {
-                editor.putInt("middleVinte", mv + 1);
-            }
+                int mv = settings.getInt("middleVinte", 0);
+                if (win == 'R') {
+                    editor.putInt("middleVinte", mv + 1);
+                }
 
-            String t = settings.getString("middleTempoGioco", "00:00");
-            String[] split_temp = t.split(":");
-            int[] split = new int[split_temp.length];
-            split[0] = Integer.parseInt(split_temp[0]);
-            split[1] = Integer.parseInt(split_temp[1]);
-            t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
-            editor.putString("middleTempoGioco", t);
+                String t = settings.getString("middleTempoGioco", "00:00");
+                String[] split_temp = t.split(":");
+                int[] split = new int[split_temp.length];
+                split[0] = Integer.parseInt(split_temp[0]);
+                split[1] = Integer.parseInt(split_temp[1]);
+                t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
+                editor.putString("middleTempoGioco", t);
 
-            if (mg != 0){
-                editor.putInt("middlePCVittore", (mv/mg)*100);
+                if (mg != 0){
+                    editor.putInt("middlePCVittore", (mv/mg)*100);
+                }
+                else {
+                    editor.putInt("middlePCVittore", 0);
+                }
             }
             else {
-                editor.putInt("middlePCVittore", 0);
+                int hg = settings.getInt("hardGiocate",0);
+                editor.putInt("hardGiocate", hg+1);
+
+                int hv = settings.getInt("hardVinte", 0);
+                if (win == 'R') {
+                    editor.putInt("hardVinte", hv + 1);
+                }
+
+                String t = settings.getString("hardTempoGioco", "00:00");
+                String[] split_temp = t.split(":");
+                int[] split = new int[split_temp.length];
+                split[0] = Integer.parseInt(split_temp[0]);
+                split[1] = Integer.parseInt(split_temp[1]);
+                t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
+                editor.putString("hardTempoGioco", t);
+
+                if (hg != 0){
+                    editor.putInt("hardPCVittore", (hv/hg)*100);
+                }
+                else {
+                    editor.putInt("hardPCVittore", 0);
+                }
             }
+            editor.commit();
+            /* fine salvataggio statistiche di gioco */
         }
-        else {
-            int hg = settings.getInt("hardGiocate",0);
-            editor.putInt("hardGiocate", hg+1);
-
-            int hv = settings.getInt("hardVinte", 0);
-            if (win == 'R') {
-                editor.putInt("hardVinte", hv + 1);
-            }
-
-            String t = settings.getString("hardTempoGioco", "00:00");
-            String[] split_temp = t.split(":");
-            int[] split = new int[split_temp.length];
-            split[0] = Integer.parseInt(split_temp[0]);
-            split[1] = Integer.parseInt(split_temp[1]);
-            t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
-            editor.putString("hardTempoGioco", t);
-
-            if (hg != 0){
-                editor.putInt("hardPCVittore", (hv/hg)*100);
-            }
-            else {
-                editor.putInt("hardPCVittore", 0);
-            }
-        }
-        editor.commit();
-        /* fine salvataggio statistiche di gioco */
     }
 
     @Override
@@ -276,7 +258,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     }
                 }
                 catch (InterruptedException e) {
-                    //Toast.makeText(getApplicationContext(), "InterruptedException occurred", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), "InterruptedException occurred in timer", Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -295,34 +277,33 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             textTurno.setText(R.string.textTurnoRobot);
         });
 
-        //trova coin dell'utente
         searchCoin(c);
-
-        // MOSSA ROBOT
-
     }
 
     private void searchCoin(int c) {
-        for (int j=0;j<gameLogic.quote.length;j++) {
-            r.getCoinAt(gameLogic.quote[c], c);
-            // aggiungere 1 alla posizione quote[c] presente in GameLogic
-            // chiamare setCoin in GameLogic alla posizione trovata
-        }
+        r.getCoinAt(gameLogic.quote[c], c);
     }
 
     @Override
-    public void colorRead(LightSensor.Color color,int r,int c) {
+    public void colorRead(LightSensor.Color color, int r, int c) {
         if (color == LightSensor.Color.RED){
-            gameLogic.setCoin(c,'R');
+            runOnUiThread(()-> {
+                gameLogic.setCoin(c, 'R');
+            });
+            this.checkWin('R', c);
+
             coordinateRobot = gameLogic.calculateRobotAction(diff);
-            gameLogic.setCoin(coordinateRobot,'Y');
+            runOnUiThread(()-> {
+                gameLogic.setCoin(coordinateRobot, 'Y');
+            });
+            this.checkWin('Y', coordinateRobot);
 
             runOnUiThread(()->{
                 decreaseRobotCoin();
             });
             this.r.dropToken(coordinateRobot);
         }
-        else if (c < 6){
+        else if (c < COLS-1){
             this.r.getCoinAt(gameLogic.quote[c+1],c+1);
         }
     }

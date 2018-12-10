@@ -376,7 +376,7 @@ public class GameLogic{
             if(matrix[0][i]==0) {
                 nodes = 0;
                 j = ROWS-1;
-                while((matrix[j][i] != 'X')&&(j>=0)) j--;
+                while((matrix[j][i] != 'X') && (j>=0)) j--;
                 matrix[j][i] = player;
                 value = -goodness(player,10, i,200);
                 //printf("\nmove %d goodness: %d   tree size for this move: %d nodes",i+1,value,nodes);
