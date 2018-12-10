@@ -77,9 +77,9 @@ public class GameLogic{
     // R -> red coin
     public void setCoin(int c, char type){
         //this.matrix[quote[c]][c] = type;
-        this.matrix[(ROWS-1)-quote[c]][c] = type;
-
         int r = (ROWS-1)-quote[c];
+
+        this.matrix[r][c] = type;
 
         if (type != 'X') {
             this.quote[c]++;    // Si presuppone che la stringa lastGame sia sempre coerente e valida
