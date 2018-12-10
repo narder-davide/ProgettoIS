@@ -12,7 +12,7 @@ public class GameLogic{
     private final int MAX_COIN = 20;
 
     private int userCoin = MAX_COIN;
-    private int robotCoin = MAX_COIN;
+    private int robotCoin = MAX_COIN-1;
 
     final int ROWS = 6;
     final int COLS = 7;
@@ -76,7 +76,8 @@ public class GameLogic{
     // Y -> yellow coin
     // R -> red coin
     public void setCoin(int c, char type){
-        this.matrix[quote[c]][c] = type;
+        //this.matrix[quote[c]][c] = type;
+        this.matrix[(ROWS-1)-quote[c]][c] = type;
 
         int r = (ROWS-1)-quote[c];
 
@@ -133,162 +134,7 @@ public class GameLogic{
         this.turno++;
     }
 
-    // 'R' ha vinto RED
-    // 'Y' ha vinto YELLOW
-    // 'X' partita patta (gettoni esauriti)
-    // 'H' ancora nessun vincitore, continua a giocare
-    /*public char winner(){
-
-        int red=0, yellow = 0;
-        int freeCells = ROWS*COLS;
-
-        if (userCoin == 0 || robotCoin == 0){
-            return 'X';
-        }
-
-        // controllo riga
-        for(int r=0;r<ROWS;r++){
-            for(int c=0;c<COLS;c++){
-                if(matrix[r][c]=='R'){
-                    red++;
-                    yellow = 0;
-                }
-                else if(matrix[r][c]=='Y'){
-                   yellow++;
-                   red = 0;
-                }
-                else{
-                    red = 0;
-                    yellow = 0;
-                    // decremento solo qui numero celle occupate
-                    freeCells--;
-                }
-            }
-            if(red>=4 || yellow>=4){
-                return red >= 4? 'R' : 'Y';
-            }
-            red=0;
-            yellow=0;
-        }
-
-        // controllo colonna
-        for(int c=0;c<COLS;c++){
-            for(int r=0;r<ROWS;r++){
-                if(matrix[r][c]=='R'){
-                    red++;
-                    yellow = 0;
-                }
-                else if(matrix[r][c]=='Y'){
-                    yellow++;
-                    red = 0;
-                }
-                else{
-                    red = 0;
-                    yellow = 0;
-                }
-            }
-            if(red>=4 || yellow>=4){
-                return red >= 4? 'R' : 'Y';
-            }
-            red=0;
-            yellow=0;
-        }
-
-        // controllo \ (diagonale) partendo dalle cella della prima colonna
-        for(int trow = 0; trow<ROWS; trow++) {
-            for (int r = trow, c = 0; r < ROWS && c < COLS; r++,c++) {
-                if (matrix[r][c] == 'R') {
-                    red++;
-                    yellow = 0;
-                } else if (matrix[r][c] == 'Y') {
-                    yellow++;
-                    red = 0;
-                } else {
-                    red = 0;
-                    yellow = 0;
-                }
-                if (red >= 4 || yellow >= 4) {
-                    return red >= 4 ? 'R' : 'Y';
-                }
-                red = 0;
-                yellow = 0;
-            }
-        }
-
-        // controllo / (anti-diagonale) partendo dalle celle dell'ultima colonna
-        for(int trow = 0; trow<ROWS; trow++) {
-            for (int r = trow, c = COLS-1; r < ROWS && c >= 0; r++,c--) {
-                if (matrix[r][c] == 'R') {
-                    red++;
-                    yellow = 0;
-                } else if (matrix[r][c] == 'Y') {
-                    yellow++;
-                    red = 0;
-                } else {
-                    red = 0;
-                    yellow = 0;
-                }
-                if (red >= 4 || yellow >= 4) {
-                    return red >= 4 ? 'R' : 'Y';
-                }
-                red = 0;
-                yellow = 0;
-            }
-        }
-
-        // controllo \ partendo dalle celle della prima riga
-        for(int tcol = 0; tcol<COLS; tcol++) {
-            for (int r = 0, c = tcol; r < ROWS && c < COLS; r++,c++) {
-                if (matrix[r][c] == 'R') {
-                    red++;
-                    yellow = 0;
-                } else if (matrix[r][c] == 'Y') {
-                    yellow++;
-                    red = 0;
-                } else {
-                    red = 0;
-                    yellow = 0;
-                }
-                if (red >= 4 || yellow >= 4) {
-                    return red >= 4 ? 'R' : 'Y';
-                }
-                red = 0;
-                yellow = 0;
-            }
-        }
-
-        // controllo / da ogni cella della prima riga
-        for(int tcol = 0; tcol<COLS; tcol++) {
-            for (int r = 0, c = tcol; r < ROWS && c < COLS; r++,c--) {
-                if (matrix[r][c] == 'R') {
-                    red++;
-                    yellow = 0;
-                } else if (matrix[r][c] == 'Y') {
-                    yellow++;
-                    red = 0;
-                } else {
-                    red = 0;
-                    yellow = 0;
-                }
-                if (red >= 4 || yellow >= 4) {
-                    return red >= 4 ? 'R' : 'Y';
-                }
-                red = 0;
-                yellow = 0;
-            }
-        }
-
-
-        return 'H';
-        //return freeCells == 0 ? 'X' : 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
-    }*/
-
-    // 'R' ha vinto RED
-    // 'Y' ha vinto YELLOW
-    // 'X' partita patta (gettoni esauriti)
-    // 'H' ancora nessun vincitore, continua a giocare
-
-    public char winner(char player, int column) {   // column è la colonna dove è stato appena messo un gettone
+    /*public char winner(char player, int column) {   // column è la colonna dove è stato appena messo un gettone
                                                     // player sarà 'R' x utente o 'Y' x robot
 
         if (userCoin == 0 || robotCoin == 0){
@@ -306,14 +152,14 @@ public class GameLogic{
 
             r = 0;
             l = 0;
-            while (((++i) < COLS-1) && (matrix[j][i] == player)) r++;
+            while (((++i) < COLS) && (matrix[j][i] == player)) r++;
             i = column;
             while (((--i) >= 0) && (matrix[j][i] == player)) l++;
             if ((r + l) >= FORZA4) return player;
             i = column;
 
             r = 0;
-            while (((++j) < ROWS-1) && (matrix[j][i] == player)) r++;
+            while (((++j) < ROWS) && (matrix[j][i] == player)) r++;
             if (r >= FORZA4) return player;
             j = height;
 
@@ -337,6 +183,154 @@ public class GameLogic{
 
             return 'H';
         }
+    }*/
+
+    // 'R' ha vinto RED
+    // 'Y' ha vinto YELLOW
+    // 'X' partita patta (gettoni esauriti)
+    // 'H' ancora nessun vincitore, continua a giocare
+    public char winner(){
+        int red=0, yellow = 0;
+
+        if (userCoin == 0 || robotCoin == 0){
+            return 'X';
+        }
+
+        // controllo riga
+        for(int r=0;r<ROWS;r++){
+            for(int c=0;c<COLS;c++){
+                //System.out.println(r+"|"+c+"| "+matrix[r][c]+": "+(matrix[r][c]=='R' ? "RedOK" : "RedNo"));
+                if(matrix[r][c]=='R'){
+                    red++;
+                    yellow = 0;
+
+                }
+                else if(matrix[r][c]=='Y'){
+                    yellow++;
+                    red = 0;
+                }
+                else{
+                    red = 0;
+                    yellow = 0;
+                }
+                if(red>=4 || yellow>=4){
+                    return red >= 4? 'R' : 'Y';
+                }
+            }
+
+            red=0;
+            yellow=0;
+        }
+
+        // controllo colonna
+        for(int c=0;c<COLS;c++){
+            for(int r=0;r<ROWS;r++){
+                if(matrix[r][c]=='R'){
+                    red++;
+                    yellow = 0;
+                }
+                else if(matrix[r][c]=='Y'){
+                    yellow++;
+                    red = 0;
+                }
+                else{
+                    red = 0;
+                    yellow = 0;
+                }
+                if(red>=4 || yellow>=4){
+                    return red >= 4? 'R' : 'Y';
+                }
+            }
+
+            red=0;
+            yellow=0;
+        }
+
+        // controllo \ (diagonale) partendo dalle cella della prima colonna
+        for(int trow = 0; trow<ROWS; trow++) {
+            for (int r = trow, c = 0; r < ROWS && c < COLS; r++,c++) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+            }
+            red = 0;
+            yellow = 0;
+        }
+
+        // controllo / (anti-diagonale) partendo dalle celle dell'ultima colonna
+        for(int trow = 0; trow<ROWS; trow++) {
+            for (int r = trow, c = COLS-1; r < ROWS && c >= 0; r++,c--) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+            }
+            red = 0;
+            yellow = 0;
+        }
+
+        // controllo \ partendo dalle celle della prima riga
+        for(int tcol = 0; tcol<COLS; tcol++) {
+            for (int r = 0, c = tcol; r < ROWS && c < COLS; r++,c++) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+            }
+            red = 0;
+            yellow = 0;
+        }
+
+        // controllo / da ogni cella della prima riga
+        for(int tcol = 0; tcol<COLS; tcol++) {
+            for (int r = 0, c = tcol; r < ROWS && c >= 0; r++,c--) {
+                if (matrix[r][c] == 'R') {
+                    red++;
+                    yellow = 0;
+                } else if (matrix[r][c] == 'Y') {
+                    yellow++;
+                    red = 0;
+                } else {
+                    red = 0;
+                    yellow = 0;
+                }
+                if (red >= 4 || yellow >= 4) {
+                    return red >= 4 ? 'R' : 'Y';
+                }
+            }
+            red = 0;
+            yellow = 0;
+        }
+
+        return 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
     }
 
     private int goodness(char player, int depth, int column, int trigger) {
@@ -344,7 +338,7 @@ public class GameLogic{
         int nodes;
         max = -200;
 
-        if (winner(player,column) == 'R' || winner(player,column) == 'Y') return -128;
+        if (winner() == 'R' || winner() == 'Y') return -128;
 
         if (depth == 0) return 0;
 

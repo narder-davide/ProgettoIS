@@ -77,13 +77,6 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         gameGrid = findViewById(R.id.gamegrid);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        /*TableRow row0 = findViewById(R.id.row0);
-        TableRow row1 = findViewById(R.id.row1);
-        TableRow row2 = findViewById(R.id.row2);
-        TableRow row3 = findViewById(R.id.row3);
-        TableRow row4 = findViewById(R.id.row4);
-        TableRow row5 = findViewById(R.id.row5);*/
-
         // Associazione robot con Bluetooth
         BluetoothConnection conn = new BluetoothConnection("F4Bot");
         Channel channel = null;
@@ -118,8 +111,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         textTurno.setText(R.string.textTurnoGiocatore);
     }
 
-    private void checkWin(char type, int c){
-        win = gameLogic.winner(type, c);
+    private char checkWin(){
+        win = gameLogic.winner();
 
         if (win != 'H') {
             if (win == 'R') {    // vince RED - UTENTE
@@ -211,6 +204,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             editor.commit();
             /* fine salvataggio statistiche di gioco */
         }
+
+        return win;
     }
 
     @Override
@@ -290,13 +285,25 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             runOnUiThread(()-> {
                 gameLogic.setCoin(c, 'R');
             });
-            this.checkWin('R', c);
+            gameLogic.incrementTurno();
+            runOnUiThread(()-> {
+                char winner = this.checkWin();
+                if (winner == 'R'){
+                    return;
+                }
+            });
 
             coordinateRobot = gameLogic.calculateRobotAction(diff);
             runOnUiThread(()-> {
                 gameLogic.setCoin(coordinateRobot, 'Y');
             });
-            this.checkWin('Y', coordinateRobot);
+            gameLogic.incrementTurno();
+            runOnUiThread(()-> {
+                char winner = this.checkWin();
+                if (winner == 'Y'){
+                    return;
+                }
+            });
 
             runOnUiThread(()->{
                 decreaseRobotCoin();
