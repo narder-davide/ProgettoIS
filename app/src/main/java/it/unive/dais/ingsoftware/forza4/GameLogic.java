@@ -367,7 +367,7 @@ public class GameLogic{
         max = -100;
         best = -1;
         for(i=0;i<COLS;i++) {
-            if(matrix[0][i]==0) {
+            if(matrix[0][i]=='X') {
                 nodes = 0;
                 j = ROWS-1;
                 while((matrix[j][i] != 'X') && (j>=0)) j--;

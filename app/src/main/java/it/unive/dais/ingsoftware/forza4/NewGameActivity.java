@@ -299,7 +299,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
             if (!endGame) {
                 // Mossa ROBOT
-                coordinateRobot = gameLogic.calculateRobotAction("hard");
+                coordinateRobot = gameLogic.calculateRobotAction(diff);
                 runOnUiThread(() -> {
                     gameLogic.setCoin(coordinateRobot, 'Y');
                     decreaseRobotCoin();
