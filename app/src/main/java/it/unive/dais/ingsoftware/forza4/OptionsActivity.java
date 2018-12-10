@@ -32,11 +32,14 @@ public class OptionsActivity extends AppCompatActivity {
 
         Switch switchVibrazione = findViewById(R.id.switchVibrazione);
 
+        Switch switchSound = findViewById(R.id.switchSound);
+
         // classe SharedPreference per salvare le opzioni di gioco e la stringa che corrisponde allo stato della partita
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
 
         Boolean vibr = settings.getBoolean("VIBRATION", true);
+        Boolean sound = settings.getBoolean("SOUND", true);
         String diff = settings.getString("DIFFICULT", "easy");
 
         // Vibrazione all'apertura dell'activity
@@ -73,6 +76,32 @@ public class OptionsActivity extends AppCompatActivity {
                 }
                 else {
                     editor.putBoolean("VIBRATION", false);
+                }
+                editor.commit();
+            }
+        });
+
+        // GESTIONE SUONI
+
+        if (sound == true){
+            switchSound.setChecked(true);
+            editor.putBoolean("SOUND", true);
+            editor.commit();
+        }
+        else {
+            switchSound.setChecked(false);
+            editor.putBoolean("SOUND", false);
+            editor.commit();
+        }
+
+        switchSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    editor.putBoolean("SOUND", true);
+                }
+                else {
+                    editor.putBoolean("SOUND", false);
                 }
                 editor.commit();
             }

@@ -1,6 +1,7 @@
 package it.unive.dais.ingsoftware.forza4;
 
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -46,6 +47,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     Thread threadTimer = null;
     int minutes = 0, seconds = 0;
 
+    MediaPlayer mediaPlayer = null;
+
     private RobotControl r;
     private EV3 ev3;
 
@@ -73,6 +76,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         textTurno = findViewById(R.id.textTurno);
 
         gameGrid = findViewById(R.id.gamegrid);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.coin_sound);
 
         // Associazione robot con Bluetooth
         new ConnectTask().execute(this);
@@ -312,6 +317,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 //il thread runonUI non finisce in tempo
                 if (!endGame) {
                     this.r.dropToken(coordinateRobot);
+                    mediaPlayer.start();
                 }
                 else {
                     return;
