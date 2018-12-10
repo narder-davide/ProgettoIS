@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import it.dais.forza4.R;
@@ -23,6 +24,7 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
     private char mat[][]=new char[ROWS][COLS];
     private boolean starting;
     private Button buttonLoad,buttonScan;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,9 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
                 startActivity(openNewGameActivity);
             }
         });
-
-
+        progressBar=findViewById(R.id.progressBar);
+        progressBar.setEnabled(false);
+        progressBar.setVisibility(View.INVISIBLE);
         // Scansione della plancia di gioco e creazione della stringa corrispondente alla partita
         new ConnectTask().execute(this);
         buttonScan.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +56,10 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
             public void onClick(View v) {
                 // lettura delle cella della plancia e str += VALORE_LETTO_DA_SENSORE_ROBOT
                 enableDisableButtons(false);
+                progressBar.setEnabled(true);
+                progressBar.setVisibility(View.VISIBLE);
                 r.calibrate(false);
+
             }
         });
     }

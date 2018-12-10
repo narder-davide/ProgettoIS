@@ -343,7 +343,7 @@ public class GameLogic{
         if (depth == 0) return 0;
 
         for(i=0;i<COLS;i++){
-            if(matrix[0][i] == 0) {
+            if(matrix[0][i] == 'X') {
                 nodes = 0;
                 j = ROWS-1;
                 while(matrix[j][i] != 'X') j--;
