@@ -46,6 +46,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
     char win = 'X';
     int coordinateRobot;
+    boolean endGame;
 
     TextView timerValue = null;
     Thread threadTimer = null;
@@ -100,6 +101,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
 
+        endGame = false;
+
         userCoinCount.setText("" + gameLogic.getUserCoin());
         robotCoinCount.setText("" + gameLogic.getRobotCoin());
 
@@ -111,10 +114,12 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         textTurno.setText(R.string.textTurnoGiocatore);
     }
 
-    private char checkWin(){
+    private boolean checkWin(){
         win = gameLogic.winner();
 
         if (win != 'H') {
+            endGame = true;
+
             if (win == 'R') {    // vince RED - UTENTE
                 textTurno.setText(R.string.textRedWin);
                 Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
@@ -205,7 +210,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             /* fine salvataggio statistiche di gioco */
         }
 
-        return win;
+        return endGame;
     }
 
     @Override
@@ -261,9 +266,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     }
 
     @Override
-    public void calibrated() {
-
-    }
+    public void calibrated() { }
 
     @Override
     public void columnRead(int c) {
@@ -282,33 +285,36 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     @Override
     public void colorRead(LightSensor.Color color, int c) {
         if (color == LightSensor.Color.RED){
+            // Mossa UTENTE
             runOnUiThread(()-> {
                 gameLogic.setCoin(c, 'R');
             });
             gameLogic.incrementTurno();
+
             runOnUiThread(()-> {
-                char winner = this.checkWin();
-                if (winner == 'R'){
-                    return;
-                }
+                endGame = this.checkWin();
             });
 
-            coordinateRobot = gameLogic.calculateRobotAction(diff);
-            runOnUiThread(()-> {
-                gameLogic.setCoin(coordinateRobot, 'Y');
-            });
-            gameLogic.incrementTurno();
-            runOnUiThread(()-> {
-                char winner = this.checkWin();
-                if (winner == 'Y'){
+            if (!endGame) {
+                // Mossa ROBOT
+                coordinateRobot = gameLogic.calculateRobotAction(diff);
+                runOnUiThread(() -> {
+                    gameLogic.setCoin(coordinateRobot, 'Y');
+                    decreaseRobotCoin();
+                });
+                gameLogic.incrementTurno();
+
+                runOnUiThread(() -> {
+                    endGame = this.checkWin();
+                });
+
+                if (!endGame) {
+                    this.r.dropToken(coordinateRobot);
+                }
+                else {
                     return;
                 }
-            });
-
-            runOnUiThread(()->{
-                decreaseRobotCoin();
-            });
-            this.r.dropToken(coordinateRobot);
+            }
         }
         else if (c < COLS-1){
             this.r.getCoinAt(gameLogic.quote[c+1],c+1);
