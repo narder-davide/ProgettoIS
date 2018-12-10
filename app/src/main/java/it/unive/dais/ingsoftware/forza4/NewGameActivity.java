@@ -72,19 +72,12 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Associazione robot con Bluetooth
-        try {
-            BluetoothConnection conn = new BluetoothConnection("F4Bot");
-            Channel channel = null;
-            channel = conn.connect();
-
-
-            ev3 = new EV3(new SpooledAsyncChannel(channel));
-            r = new RobotControl(ev3,this);
-
-            // Dà inizio al gioco
+        r = RobotControl.connectToEv3(this);
+        // Dà inizio al gioco
+        if(r!=null){
             startGame();
-        }catch(Exception e){
-            Toast.makeText(this,"Errore Bluetooth",Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, "Errore Bluetooth", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -275,7 +268,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     }
 
     @Override
-    public void colorRead(LightSensor.Color color, int c) {
+    public void colorRead(LightSensor.Color color,int r, int c) {
         if (color == LightSensor.Color.RED){
             // Mossa UTENTE
             runOnUiThread(()-> {

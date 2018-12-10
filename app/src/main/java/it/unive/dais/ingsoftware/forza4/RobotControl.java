@@ -9,6 +9,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import it.unive.dais.legodroid.lib.EV3;
+import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
+import it.unive.dais.legodroid.lib.comm.Channel;
+import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
 import it.unive.dais.legodroid.lib.plugs.UltrasonicSensor;
@@ -33,7 +36,7 @@ public class RobotControl {
     interface OnTasksFinished{
         void calibrated();
         void columnRead(int c);
-        void colorRead(LightSensor.Color color,int c);
+        void colorRead(LightSensor.Color color,int r,int c);
     }
 
     private EV3 ev3;
@@ -42,11 +45,25 @@ public class RobotControl {
     private LightSensor lightSensor;
     private OnTasksFinished callback;
 
-    public RobotControl(EV3 e, OnTasksFinished c){
+    private RobotControl(EV3 e, OnTasksFinished c){
         ev3 = e;
         callback = c;
     }
 
+    public static RobotControl connectToEv3(OnTasksFinished act){
+        try {
+            BluetoothConnection conn = new BluetoothConnection("F4Bot");
+            Channel channel = null;
+            EV3 ev3;
+            channel = conn.connect();
+            ev3 = new EV3(new SpooledAsyncChannel(channel));
+            RobotControl r = new RobotControl(ev3,act);
+            return r;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public void calibrate() {
         Consumer<EV3.Api> calibrate = (data -> {
             try {
@@ -224,15 +241,15 @@ public class RobotControl {
                         Log.i("CAL","Color "+col);
                         if(col==LightSensor.Color.YELLOW || col==LightSensor.Color.BROWN){
                             //Log.i("CAL","Color Giallo/Marrone");
-                            colorRead(LightSensor.Color.YELLOW,currentCol);
+                            colorRead(LightSensor.Color.YELLOW,currentRow,currentCol);
                         }
                         else {
                             if(rgb.B-37<5 && rgb.G-68<5 && rgb.R-255<5 && col==LightSensor.Color.BLUE) {
                                 //Log.i("CAL","Color ROSSO rgb+col");
-                                colorRead(LightSensor.Color.RED,currentCol);
+                                colorRead(LightSensor.Color.RED,currentRow,currentCol);
                             }
                             else {
-                                colorRead(col,currentCol);
+                                colorRead(col,currentRow,currentCol);
                             }
                         }
                     }
@@ -284,9 +301,9 @@ public class RobotControl {
         }
     }
 
-    private void colorRead(LightSensor.Color color,int c) {
+    private void colorRead(LightSensor.Color color,int r,int c) {
         AsyncTask<Object, Void, Void> a = new MyTasks(TaskType.COLOR);
-        a.execute(color,c);
+        a.execute(color,r,c);
     }
 
     private void columnRead(int i) {
@@ -341,7 +358,7 @@ public class RobotControl {
                     callback.columnRead((int)ob[0]);
                     break;
                 case COLOR:
-                    callback.colorRead((LightSensor.Color)ob[0],(int)ob[1]);
+                    callback.colorRead((LightSensor.Color)ob[0],(int)ob[1],(int)ob[2]);
                     break;
                 case CALIBRATED:
                     callback.calibrated();
