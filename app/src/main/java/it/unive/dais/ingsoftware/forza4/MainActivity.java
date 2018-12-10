@@ -38,11 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         Boolean vibr = settings.getBoolean("VIBRATION", true);
         String diff = settings.getString("DIFFICULT", "easy");
+        Boolean sound = settings.getBoolean("SOUND", true);
         String LastGame = settings.getString("LASTGAME", "");
-        /*editor.putBoolean("VIBRATION", vibr);
-        editor.putString("DIFFICULT", diff);
-        editor.putString("LASTGAME", statusLastGame);
-        editor.commit();*/
        
         // Recupero bottone per NUOVA PARTITA
         newGameButton = findViewById(R.id.newGameButton);
