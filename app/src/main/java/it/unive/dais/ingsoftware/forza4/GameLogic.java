@@ -381,47 +381,47 @@ public class GameLogic{
     //algoritmo MIN MAX da implementare a piacimento
     private void votazioni() {
 
-        for(int i=0;i<6;i++){
-            for(int k=0;k<7;k++) {
+        for(int i=0;i<ROWS;i++){
+            for(int k=0;k<COLS;k++) {
 
                 voto[i][k]=0;
 
-                if(matrix[i-1][k-1]==matrix[i-2][k-2] && matrix[i-1][k-1]==matrix[i-3][k-3]
+                if(i>2 && k>2 && matrix[i-1][k-1]==matrix[i-2][k-2] && matrix[i-1][k-1]==matrix[i-3][k-3]
                         && matrix[i-1][k-1]!=0)
                 {
                     voto[i][k]=10;
                 }
-                if(matrix[i-1][k]==matrix[i-2][k] && matrix[i-1][k]==matrix[i-3][k]
+                if(i>2 && matrix[i-1][k]==matrix[i-2][k] && matrix[i-1][k]==matrix[i-3][k]
                         && matrix[i-1][k]!=0)
                 {
                     voto[i][k]=10;
                 }
-                if(matrix[i-1][k+1]==matrix[i-2][k+2] && matrix[i-1][k+1]==matrix[i-3][k+3]
+                if(i>2 && k+3<COLS && matrix[i-1][k+1]==matrix[i-2][k+2] && matrix[i-1][k+1]==matrix[i-3][k+3]
                         && matrix[i-1][k+1]!=0)
                 {
                     voto[i][k]=10;
                 }
-                if(matrix[i][k-1]==matrix[i][k-2] && matrix[i][k-1]==matrix[i][k-3]
+                if(k>2 && matrix[i][k-1]==matrix[i][k-2] && matrix[i][k-1]==matrix[i][k-3]
                         && matrix[i][k-1]!=0)
                 {
                     voto[i][k]=10;
                 }
-                if(matrix[i][k+1]==matrix[i][k+2] && matrix[i][k+3]==matrix[i][k+1]
+                if(k+3<COLS && matrix[i][k+1]==matrix[i][k+2] && matrix[i][k+3]==matrix[i][k+1]
                         && matrix[i][k+1]!=0)
                 {
                     voto[i][k]=10;
                 }
-                if(matrix[i+1][k-1]==matrix[i+2][k-2] && matrix[i+1][k-1]==matrix[i+3][k-3]
+                if(i+3<ROWS && k>2 && matrix[i+1][k-1]==matrix[i+2][k-2] && matrix[i+1][k-1]==matrix[i+3][k-3]
                         && matrix[i+1][k-1]!=0)
                 {
                     voto[i][k]=10;
                 }
-                if(matrix[i+1][k]==matrix[i+2][k] &&matrix[i+1][k]==matrix[i+3][k]
+                if(i+3<ROWS && matrix[i+1][k]==matrix[i+2][k] &&matrix[i+1][k]==matrix[i+3][k]
                         && matrix[i+1][k]!=0)
                 {
                     voto[i][k]=10;
                 }
-                if(matrix[i+1][k+1]==matrix[i+2][k+2] && matrix[i+1][k+1]==matrix[i+3][k+3]
+                if(i+3<ROWS && k+3<COLS && matrix[i+1][k+1]==matrix[i+2][k+2] && matrix[i+1][k+1]==matrix[i+3][k+3]
                         && matrix[i+1][k+1]!=0)
                 {
                     voto[i][k]=10;
