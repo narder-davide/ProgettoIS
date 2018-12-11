@@ -1,5 +1,6 @@
 package it.unive.dais.ingsoftware.forza4;
 
+import android.util.Log;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -133,57 +134,6 @@ public class GameLogic{
     public void incrementTurno(){
         this.turno++;
     }
-
-    /*public char winner(char player, int column) {   // column è la colonna dove è stato appena messo un gettone
-                                                    // player sarà 'R' x utente o 'Y' x robot
-
-        if (userCoin == 0 || robotCoin == 0){
-            return 'X';
-        }
-        else {
-            int j, r, l, i, height;
-            final int FORZA4 = 4-1;
-
-            i = column;
-            j = ROWS - 1;
-            while (matrix[j][i] != 'X') j--;
-            j++;
-            height = j;
-
-            r = 0;
-            l = 0;
-            while (((++i) < COLS) && (matrix[j][i] == player)) r++;
-            i = column;
-            while (((--i) >= 0) && (matrix[j][i] == player)) l++;
-            if ((r + l) >= FORZA4) return player;
-            i = column;
-
-            r = 0;
-            while (((++j) < ROWS) && (matrix[j][i] == player)) r++;
-            if (r >= FORZA4) return player;
-            j = height;
-
-            r = 0;
-            l = 0;
-            while (((++i) < COLS) && ((++j) < ROWS) && (matrix[j][i] == player)) r++;
-            i = column;
-            j = height;
-            while (((--i) >= 0) && ((--j) >= 0) && (matrix[j][i] == player)) l++;
-            if ((r + l) >= FORZA4) return player;
-            i = column;
-            j = height;
-
-            r = 0;
-            l = 0;
-            while (((++i) < COLS) && ((--j) >= 0) && (matrix[j][i] == player)) r++;
-            i = column;
-            j = height;
-            while (((--i) >= 0) && ((++j) < ROWS) && (matrix[j][i] == player)) l++;
-            if ((r + l) >= FORZA4) return player;
-
-            return 'H';
-        }
-    }*/
 
     // 'R' ha vinto RED
     // 'Y' ha vinto YELLOW
@@ -367,16 +317,16 @@ public class GameLogic{
         max = -100;
         best = -1;
         for(i=0;i<COLS;i++) {
-            if(matrix[0][i]=='X') {
+            if(matrix[0][i] == 'X') {
                 nodes = 0;
                 j = ROWS-1;
                 while((matrix[j][i] != 'X') && (j>=0)) j--;
                 matrix[j][i] = player;
                 value = -goodness(player,10, i,200);
-                //printf("\nmove %d goodness: %d   tree size for this move: %d nodes",i+1,value,nodes);
+                Log.i("CAL","\nmove:"+i+1+"    goodness: "+ value +"    tree size for this move: "+nodes+" nodes");
                 res[i] = value;
                 matrix[j][i] = 'X';
-                if (value>max) {
+                if (value > max) {
                     max = value;
                     best = i;
                 }

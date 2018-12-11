@@ -10,8 +10,8 @@
         android:id="@+id/testoLoadGame"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="75dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/autour_one"
         android:text="@string/textLoadGame"
         android:textAlignment="center"
@@ -56,14 +56,11 @@
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="156dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="11dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonLoad"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/testoLoadGame" />
 </android.support.constraint.ConstraintLayout>

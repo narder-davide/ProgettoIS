@@ -104,9 +104,10 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         robotCoinCount.setText("" + gameLogic.getRobotCoin());
 
         startTimer();
-        if(!res)
+
+        if (!res)
             r.calibrate(true);
-        else{
+        else {
             r.setCurrentPos(5,0);
             r.calibrate(true);
         }

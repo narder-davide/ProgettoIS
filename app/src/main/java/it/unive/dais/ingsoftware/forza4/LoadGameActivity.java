@@ -46,9 +46,11 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
                 startActivity(openNewGameActivity);
             }
         });
+
         progressBar=findViewById(R.id.progressBar);
         progressBar.setEnabled(false);
         progressBar.setVisibility(View.INVISIBLE);
+
         // Scansione della plancia di gioco e creazione della stringa corrispondente alla partita
         new ConnectTask().execute(this);
         buttonScan.setOnClickListener(new View.OnClickListener() {
