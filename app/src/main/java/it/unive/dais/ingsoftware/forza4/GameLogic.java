@@ -18,6 +18,7 @@ public class GameLogic{
     final int ROWS = 6;
     final int COLS = 7;
     char[][] matrix;
+    int[][] voto;
     int[] quote;    // vettore lungo tanto quanto il numero di colonne.
                     // Contiene l'indice della prima riga disponibile in cui andare ad inserire un gettone.
     TableLayout gameGrid;
@@ -27,6 +28,7 @@ public class GameLogic{
     // Costruttore
     public GameLogic(TableLayout gameGrid, String lastGame){
         matrix = new char[ROWS][COLS];
+        voto = new int[ROWS][COLS];
         quote = new int[COLS];
         this.gameGrid = gameGrid;
         this.lastGame = lastGame;
@@ -125,7 +127,8 @@ public class GameLogic{
         }
         // HARD
         else {
-            return this.getBestMove('Y');
+            //return this.getBestMove('Y');
+            return this.getBestMove();
         }
 
         return out;
@@ -283,7 +286,7 @@ public class GameLogic{
         return 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
     }
 
-    private int goodness(char player, int depth, int column, int trigger) {
+    /*private int goodness(char player, int depth, int column, int trigger) {
         int max,i,value,j;
         int nodes;
         max = -200;
@@ -339,6 +342,92 @@ public class GameLogic{
         }
 
         return best;
+    }*/
+
+
+
+    public int getBestMove(){
+        votazioni();
+        Random random = new Random();
+        int colonna = random.nextInt(COLS);
+
+        for(int i=0;i<ROWS;i++){
+            for(int k=0;k<COLS;k++){
+                if (voto[i][k] > voto[i][colonna]){
+                    colonna = k;
+                }
+            }
+        }
+
+        boolean piena = true;
+        int i = 5;
+
+        while(piena==true){
+            if(i < 0){
+                colonna = random.nextInt(COLS);
+                i = 5;
+            }
+            if (matrix[i][colonna] == 'X'){
+                piena=false;
+            }
+            else {
+                i--;
+            }
+        }
+
+        return colonna;
+    }
+
+    //algoritmo MIN MAX da implementare a piacimento
+    private void votazioni() {
+
+        for(int i=0;i<6;i++){
+            for(int k=0;k<7;k++) {
+
+                voto[i][k]=0;
+
+                if(matrix[i-1][k-1]==matrix[i-2][k-2] && matrix[i-1][k-1]==matrix[i-3][k-3]
+                        && matrix[i-1][k-1]!=0)
+                {
+                    voto[i][k]=10;
+                }
+                if(matrix[i-1][k]==matrix[i-2][k] && matrix[i-1][k]==matrix[i-3][k]
+                        && matrix[i-1][k]!=0)
+                {
+                    voto[i][k]=10;
+                }
+                if(matrix[i-1][k+1]==matrix[i-2][k+2] && matrix[i-1][k+1]==matrix[i-3][k+3]
+                        && matrix[i-1][k+1]!=0)
+                {
+                    voto[i][k]=10;
+                }
+                if(matrix[i][k-1]==matrix[i][k-2] && matrix[i][k-1]==matrix[i][k-3]
+                        && matrix[i][k-1]!=0)
+                {
+                    voto[i][k]=10;
+                }
+                if(matrix[i][k+1]==matrix[i][k+2] && matrix[i][k+3]==matrix[i][k+1]
+                        && matrix[i][k+1]!=0)
+                {
+                    voto[i][k]=10;
+                }
+                if(matrix[i+1][k-1]==matrix[i+2][k-2] && matrix[i+1][k-1]==matrix[i+3][k-3]
+                        && matrix[i+1][k-1]!=0)
+                {
+                    voto[i][k]=10;
+                }
+                if(matrix[i+1][k]==matrix[i+2][k] &&matrix[i+1][k]==matrix[i+3][k]
+                        && matrix[i+1][k]!=0)
+                {
+                    voto[i][k]=10;
+                }
+                if(matrix[i+1][k+1]==matrix[i+2][k+2] && matrix[i+1][k+1]==matrix[i+3][k+3]
+                        && matrix[i+1][k+1]!=0)
+                {
+                    voto[i][k]=10;
+                }
+            }
+        }
     }
 
     // Legge la matrice e crea una stringa corrispondente alla partita appena interrotta
