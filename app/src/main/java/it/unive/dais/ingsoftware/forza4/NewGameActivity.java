@@ -6,18 +6,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import it.dais.forza4.R;
 import it.unive.dais.legodroid.lib.EV3;
-import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
-import it.unive.dais.legodroid.lib.comm.Channel;
-import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 
 public class NewGameActivity extends AppCompatActivity implements RobotControl.OnTasksFinished {
@@ -39,9 +35,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
     TableLayout gameGrid;
 
-    char win = 'X';
     int coordinateRobot;
-    boolean endGame;
 
     TextView timerValue = null;
     Thread threadTimer = null;
@@ -51,6 +45,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
     private RobotControl r;
     private EV3 ev3;
+    private char win;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +100,6 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
 
-        endGame = false;
-
         userCoinCount.setText("" + gameLogic.getUserCoin());
         robotCoinCount.setText("" + gameLogic.getRobotCoin());
 
@@ -121,12 +114,9 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         textTurno.setText(R.string.textTurnoGiocatore);
     }
 
-    private boolean checkWin(){
-        win = gameLogic.winner();
+    private void checkWin(char win){
 
         if (win != 'H') {
-            endGame = true;
-
             if (win == 'R') {    // vince RED - UTENTE
                 textTurno.setText(R.string.textRedWin);
                 Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
@@ -217,20 +207,33 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             /* fine salvataggio statistiche di gioco */
         }
 
-        return endGame;
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle state){
-        super.onSaveInstanceState(state);
+    protected void onPause() {
+        super.onPause();
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(r!=null)
+            r.interrupt();
+        Log.i("SAVE","saving");
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("LASTGAME", gameLogic.getLastGame());
+        Log.i("SAVE",gameLogic.getLastGame());
         editor.commit();
 
         minutes = 0;
         seconds = 0;
         threadTimer.interrupt();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state){
+        super.onSaveInstanceState(state);
     }
 
     private void decreaseUserCoin(){
@@ -278,14 +281,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     @Override
     public void columnRead(int c) {
         runOnUiThread(()->{
-            decreaseUserCoin();
             textTurno.setText(R.string.textTurnoRobot);
         });
-
-        searchCoin(c);
-    }
-
-    private void searchCoin(int c) {
         r.getCoinAt(gameLogic.quote[c], c);
     }
 
@@ -295,32 +292,46 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             // Mossa UTENTE
             runOnUiThread(()-> {
                 gameLogic.setCoin(c, 'R');
+                decreaseUserCoin();
             });
-            gameLogic.incrementTurno();
-
-            runOnUiThread(()-> {
-                endGame = this.checkWin();
-            });
-
-            if (!endGame) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            win=gameLogic.winner();
+            Log.i("CAL","1 winner "+win);
+            if(win!='H'){
+                runOnUiThread(()-> {
+                        this.checkWin(win);
+                    }
+                );
+                this.r.gameOver(false);
+                Log.i("CAL","return "+win);
+                return;
+            }else {
+                Log.i("CAL","Mossa Robot");
                 // Mossa ROBOT
                 coordinateRobot = gameLogic.calculateRobotAction(diff);
+
                 runOnUiThread(() -> {
                     gameLogic.setCoin(coordinateRobot, 'Y');
                     decreaseRobotCoin();
                 });
                 gameLogic.incrementTurno();
 
-                runOnUiThread(() -> {
-                    endGame = this.checkWin();
-                });
-                //il thread runonUI non finisce in tempo
-                if (!endGame) {
+                win=gameLogic.winner();
+                if(win!='H'){
+                    runOnUiThread(()-> {
+                            this.checkWin(win);
+                        }
+                    );
+                    this.r.gameOver(true);
+                    return;
+                }else{
+                    Log.i("CAL","Drop Token");
                     this.r.dropToken(coordinateRobot);
                     mediaPlayer.start();
-                }
-                else {
-                    return;
                 }
             }
         }

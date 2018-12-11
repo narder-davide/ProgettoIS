@@ -152,7 +152,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x3"
@@ -160,7 +160,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x4"
@@ -168,7 +168,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x5"
@@ -176,7 +176,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x6"
@@ -184,7 +184,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
         <TableRow
@@ -216,7 +216,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x3"
@@ -224,7 +224,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x4"
@@ -232,7 +232,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x5"
@@ -240,7 +240,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x6"
@@ -248,7 +248,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
         <TableRow
@@ -272,7 +272,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x2"
@@ -280,7 +280,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x3"
@@ -288,7 +288,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x4"
@@ -296,7 +296,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x5"
@@ -304,7 +304,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x6"
@@ -312,7 +312,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
         <TableRow
@@ -328,7 +328,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x1"
@@ -336,7 +336,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x2"
@@ -344,7 +344,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x3"
@@ -352,7 +352,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x4"
@@ -360,7 +360,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x5"
@@ -368,7 +368,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x6"
@@ -376,7 +376,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
         <TableRow
@@ -392,7 +392,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x1"
@@ -400,7 +400,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x2"
@@ -408,7 +408,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x3"
@@ -416,7 +416,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x4"
@@ -424,7 +424,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x5"
@@ -432,7 +432,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x6"
@@ -440,7 +440,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
         <TableRow
@@ -456,7 +456,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x1"
@@ -464,7 +464,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x2"
@@ -472,7 +472,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x3"
@@ -480,7 +480,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x4"
@@ -488,7 +488,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_red" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x5"
@@ -496,7 +496,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x6"
@@ -504,7 +504,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/rounded_button_yellow" />
+                android:background="@drawable/rounded_button_empty" />
         </TableRow>
     </TableLayout>
 

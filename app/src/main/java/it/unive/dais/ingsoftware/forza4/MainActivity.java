@@ -1,7 +1,11 @@
 package it.unive.dais.ingsoftware.forza4;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothProfile;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -31,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        IntentFilter btEvents = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(broadcastReceiver, btEvents);
 
         // Gestione delle impostazioni di gioco
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -93,9 +100,37 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Bluetooth non abilitato",Toast.LENGTH_LONG).show();
             }
         }
-
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                switch(state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        enableDisableButtons(false);
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        enableDisableButtons(false);
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        enableDisableButtons(true);
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        enableDisableButtons(true);
+                        break;
+                }
+            }
+        }
+    };
     private void enableDisableButtons(boolean b) {
         newGameButton.setEnabled(b);
         loadGameButton.setEnabled(b);

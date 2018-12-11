@@ -398,19 +398,7 @@ public class GameLogic{
 
         for(i=0;i<ROWS;i++){
             for(j=0;j<COLS;j++){
-                switch (matrix[i][j]) {
-                    case 'X':
-                        out += "X";
-                        break;
-                    case 'R':
-                        out += "R";
-                        break;
-                    case 'Y':
-                        out += "Y";
-                        break;
-                    default:
-                        out += "X";
-                }
+                out += matrix[i][j];
             }
         }
         this.lastGame = out;
