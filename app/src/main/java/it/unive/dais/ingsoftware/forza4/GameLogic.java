@@ -126,6 +126,7 @@ public class GameLogic{
             else {
                 return calculateRobotAction("hard");
             }*/
+            
             return normalMove('R');
         }
         // HARD
