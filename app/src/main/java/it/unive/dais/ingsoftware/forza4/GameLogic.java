@@ -19,6 +19,7 @@ public class GameLogic{
     final int COLS = 7;
     char[][] matrix;
     int[][] voto;
+    Long nodes;
     int[] quote;    // vettore lungo tanto quanto il numero di colonne.
                     // Contiene l'indice della prima riga disponibile in cui andare ad inserire un gettone.
     TableLayout gameGrid;
@@ -33,6 +34,7 @@ public class GameLogic{
         this.gameGrid = gameGrid;
         this.lastGame = lastGame;
         this.turno = 0;
+        nodes = new Long(0);
         resetGame();
     }
 
@@ -118,17 +120,18 @@ public class GameLogic{
         }
         // NORMAL
         else if (diff.compareTo("norm") == 0){
-            if (turno%2 == 0){
+            /*if (turno%2 == 0){
                 return calculateRobotAction("easy");
             }
             else {
                 return calculateRobotAction("hard");
-            }
+            }*/
+            return normalMove();
         }
         // HARD
         else {
             //return this.getBestMove('Y');
-            return this.getBestMove();
+            return hardMove('Y');
         }
 
         return out;
@@ -286,47 +289,64 @@ public class GameLogic{
         return 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
     }
 
-    /*private int goodness(char player, int depth, int column, int trigger) {
+    private int goodness(char player, int depth, int column, int trigger) {
         int max,i,value,j;
-        int nodes;
+
         max = -200;
 
-        if (winner() == 'R' || winner() == 'Y') return -128;
-
-        if (depth == 0) return 0;
-
-        for(i=0;i<COLS;i++){
-            if(matrix[0][i] == 'X') {
-                nodes = 0;
-                j = ROWS-1;
-                while(matrix[j][i] != 'X') j--;
-                matrix[j][i] = player;
-                nodes++;
-                value = -goodness(player,depth-1,i,-max)/2;
-                matrix[j][i] = 'X';
-                if (value>max) max = value;
-                if (value>trigger) return max;
-            }
+        if (player == 'R'){
+            if (winner() == 'Y') return -128;
         }
-        return max;
+        else {
+            if (winner() == 'R') return -128;
+        }
+        // if (winner() == 'R' || winner() == 'Y') return -128;
+
+        if (depth == 0){
+            return 0;
+        }
+        else {
+            for (i=0; i<COLS; i++) {
+                if (matrix[0][i] == 'X') {
+                    j = ROWS - 1;
+                    while (matrix[j][i] != 'X') j--;
+                    matrix[j][i] = player;
+                    nodes++;
+
+                    if (player == 'Y') value = -goodness('R', depth - 1, i, -max) / 2;
+                    else value = -goodness('Y', depth - 1, i, -max) / 2;
+                    //value = -goodness(player,depth-1,i,-max)/2;
+
+                    matrix[j][i] = 'X';
+                    if (value > max) max = value;
+                    if (value > trigger) return max;
+                }
+            }
+            return max;
+        }
     }
 
     // UTILIZZARLO PER RITORNARE ANCHE SUGGERIMENTI ALL'UTENTE con un Toast DOPO tot. secondi di inattività
-    public int getBestMove(char player) {
+    public int hardMove(char player) {
         int i, j, max, value, best;
         int nodes;
         int[] res = new int[COLS];
+        int depth = 10;
 
         max = -100;
         best = -1;
         for(i=0;i<COLS;i++) {
-            if(matrix[0][i] == 'X') {
+            if (matrix[0][i] == 'X') {
                 nodes = 0;
                 j = ROWS-1;
                 while((matrix[j][i] != 'X') && (j>=0)) j--;
                 matrix[j][i] = player;
-                value = -goodness(player,10, i,200);
-                Log.i("CAL","\nmove:"+i+1+"    goodness: "+ value +"    tree size for this move: "+nodes+" nodes");
+
+                if (player == 'Y') value = -goodness('R',depth, i,200);
+                else value = -goodness('Y',depth, i,200);
+
+                Log.i("CAL","\nmove:"+i+1+"    goodness: "+ value +" tree size for this move: "+nodes+" nodes");
+
                 res[i] = value;
                 matrix[j][i] = 'X';
                 if (value > max) {
@@ -342,11 +362,11 @@ public class GameLogic{
         }
 
         return best;
-    }*/
+    }
 
 
-
-    public int getBestMove(){
+    // UTILIZZARLO PER RITORNARE ANCHE SUGGERIMENTI ALL'UTENTE con un Toast DOPO tot. secondi di inattività
+    public int normalMove(){
         votazioni();
         Random random = new Random();
         int colonna = random.nextInt(COLS);
