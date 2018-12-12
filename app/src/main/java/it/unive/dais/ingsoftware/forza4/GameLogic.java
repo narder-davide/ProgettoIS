@@ -126,7 +126,7 @@ public class GameLogic{
             else {
                 return calculateRobotAction("hard");
             }*/
-            return normalMove();
+            return normalMove('R');
         }
         // HARD
         else {
@@ -366,87 +366,102 @@ public class GameLogic{
 
 
     // UTILIZZARLO PER RITORNARE ANCHE SUGGERIMENTI ALL'UTENTE con un Toast DOPO tot. secondi di inattività
-    public int normalMove(){
-        votazioni();
-        Random random = new Random();
-        int colonna = random.nextInt(COLS);
+    // cerca di ostacolare la giocata dell'avversario posizionando sulle celle di maggior rilievo contigue all'avverario
+    // inoltre rileva e cerca di impedire la mossa vincente dell'avversario
+    // ritorna -1 se matrix non ha celle disponibili altrimenti il valore della colonna
+    public int normalMove(char enemy){
+        votazioni(enemy);
+        int best_row = 0;
+        int best_col = 0;
 
         for(int i=0;i<ROWS;i++){
-            for(int k=0;k<COLS;k++){
-                if (voto[i][k] > voto[i][colonna]){
-                    colonna = k;
+            for(int j=0; j<COLS; j++){
+                if (voto[i][j] > voto[best_row][best_col]){
+                    best_row = i;
+                    best_col = j;
                 }
             }
         }
 
-        boolean piena = true;
-        int i = 5;
-
-        while(piena==true){
-            if(i < 0){
-                colonna = random.nextInt(COLS);
-                i = 5;
-            }
-            if (matrix[i][colonna] == 'X'){
-                piena=false;
-            }
-            else {
-                i--;
-            }
-        }
-
-        return colonna;
+        if(matrix[best_row][best_col] != 'X') return -1;
+        else return best_col;
     }
 
-    //algoritmo MIN MAX da implementare a piacimento
-    private void votazioni() {
+    // Ritorna il valore della cella se appartiene a matrix altrimenti 'X'
+    private char getCellValue(int row, int col){
+        if(row >= ROWS || col >= COLS || row < 0 || col < 0) return 'X';
+        else return matrix[row][col];
+    }
 
-        for(int i=0;i<ROWS;i++){
-            for(int k=0;k<COLS;k++) {
+    // maggiore è il valore del voto maggiore è la priorità della cella
+    private void votazioni(char enemy) {
 
-                voto[i][k]=0;
+        this.voto = new int[ROWS][COLS];
+        int[] cime = new int[COLS];
+        int first = 0;
+        int second = 0;
+        int max = 15;   // valore minimo di una cella vincente per enemy
 
-                if(i>2 && k>2 && matrix[i-1][k-1]==matrix[i-2][k-2] && matrix[i-1][k-1]==matrix[i-3][k-3]
-                        && matrix[i-1][k-1]!=0)
-                {
-                    voto[i][k]=10;
-                }
-                if(i>2 && matrix[i-1][k]==matrix[i-2][k] && matrix[i-1][k]==matrix[i-3][k]
-                        && matrix[i-1][k]!=0)
-                {
-                    voto[i][k]=10;
-                }
-                if(i>2 && k+3<COLS && matrix[i-1][k+1]==matrix[i-2][k+2] && matrix[i-1][k+1]==matrix[i-3][k+3]
-                        && matrix[i-1][k+1]!=0)
-                {
-                    voto[i][k]=10;
-                }
-                if(k>2 && matrix[i][k-1]==matrix[i][k-2] && matrix[i][k-1]==matrix[i][k-3]
-                        && matrix[i][k-1]!=0)
-                {
-                    voto[i][k]=10;
-                }
-                if(k+3<COLS && matrix[i][k+1]==matrix[i][k+2] && matrix[i][k+3]==matrix[i][k+1]
-                        && matrix[i][k+1]!=0)
-                {
-                    voto[i][k]=10;
-                }
-                if(i+3<ROWS && k>2 && matrix[i+1][k-1]==matrix[i+2][k-2] && matrix[i+1][k-1]==matrix[i+3][k-3]
-                        && matrix[i+1][k-1]!=0)
-                {
-                    voto[i][k]=10;
-                }
-                if(i+3<ROWS && matrix[i+1][k]==matrix[i+2][k] &&matrix[i+1][k]==matrix[i+3][k]
-                        && matrix[i+1][k]!=0)
-                {
-                    voto[i][k]=10;
-                }
-                if(i+3<ROWS && k+3<COLS && matrix[i+1][k+1]==matrix[i+2][k+2] && matrix[i+1][k+1]==matrix[i+3][k+3]
-                        && matrix[i+1][k+1]!=0)
-                {
-                    voto[i][k]=10;
-                }
+        // reset voto
+        for(int i=0;i<ROWS; i++){
+            for(int j=0; j<COLS; j++){
+                voto[i][j] = 0;
             }
+        }
+        // cerco cime
+        for(int j=0; j<COLS; j++){
+            cime[j] = -1;
+            for(int i=0;i<ROWS; i++) {
+                if(matrix[i][j] == 'X') cime[j] = i;
+            }
+        }
+
+        // do voto a ogni possibile cima
+        for(int j=0;j<COLS;j++) {
+
+            // se ho esaurito spazio sulla colonna la salto
+            int i = 0;
+            if(cime[j] < 0 )break;
+            else i = cime[j];
+
+            int top = i-3;
+            int bottom = i+3;
+            int left = j-3;
+            int right = j+3;
+
+            // controllo gettoni sulla diagonale
+            first = 0;
+            second = 0;
+            for(int r=i-1, c=j-1; r>=top && c>=left && getCellValue(r,c)==enemy; r--, c--) first++;
+            for(int r=i+1, c=j+1; r<=bottom && c<=right && getCellValue(r,c)==enemy; r++, c++) second++;
+            // se l'avversario può vincere con una mossa, il valore di voto sarà molto alto
+            if(first + second >= 3) voto[i][j] = max;
+            else voto[i][j] += (first + second);
+
+            // controllo gettoni sull'anti-diagonale
+            first = 0;
+            second = 0;
+            for(int r=i+1, c=j-1; r<=bottom && c>=left && getCellValue(r,c)==enemy; r++, c--) first++;
+            for(int r=i-1, c=j+1; r>=top && c<=right && getCellValue(r,c)==enemy; r--, c++) second++;
+            // se l'avversario può vincere con una mossa, il valore di voto sarà molto alto
+            if(first + second >= 3) voto[i][j] = max;
+            else voto[i][j] += (first + second);
+
+            // controllo gettoni orrizzontale
+            first = 0;
+            second = 0;
+            for(int c=j-1; c>=left && getCellValue(i,c)==enemy; c--) first++;
+            for(int c=j+1; c<=right && getCellValue(i,c)==enemy; c++) second++;
+            // se l'avversario può vincere con una mossa, il valore di voto sarà molto alto
+            if(first + second >= 3) voto[i][j] = max;
+            else voto[i][j] += (first + second);
+
+            // controllo gettoni verticale
+            first = 0;
+            for(int r=i+1; r<=bottom && getCellValue(r,j)==enemy; r++) first++;
+            // se l'avversario può vincere con una mossa, il valore di voto sarà molto alto
+            if(first == 3) first = max;
+            voto[i][j] += first;
         }
     }
 
