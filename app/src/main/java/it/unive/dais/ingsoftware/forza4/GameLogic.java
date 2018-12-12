@@ -126,7 +126,6 @@ public class GameLogic{
             else {
                 return calculateRobotAction("hard");
             }*/
-            
             return normalMove('R');
         }
         // HARD
@@ -422,7 +421,7 @@ public class GameLogic{
 
             // se ho esaurito spazio sulla colonna la salto
             int i = 0;
-            if(cime[j] < 0 )break;
+            if(cime[j] < 0 ) continue;
             else i = cime[j];
 
             int top = i-3;
