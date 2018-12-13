@@ -374,7 +374,7 @@ public class GameLogic{
         int best_row = 0;
         int best_col = 0;
 
-        for(int i=0;i<ROWS;i++){
+        for(int i=ROWS-1;i>=0;i--){
             for(int j=0; j<COLS; j++){
                 if (voto[i][j] > voto[best_row][best_col]){
                     best_row = i;
