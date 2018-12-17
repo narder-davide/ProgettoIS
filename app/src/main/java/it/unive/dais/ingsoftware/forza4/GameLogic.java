@@ -87,7 +87,7 @@ public class GameLogic{
         this.matrix[r][c] = type;
 
         if (type != 'X') {
-            if (quote[c] < ROWS-1) {
+            if (quote[c] <= ROWS-1) {
                 this.quote[c]++;    // Si presuppone che la stringa lastGame sia sempre coerente e valida
             }
         }
