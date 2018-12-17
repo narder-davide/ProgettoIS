@@ -113,8 +113,8 @@
 
     <TableLayout
         android:id="@+id/gamegrid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="379dp"
+        android:layout_height="364dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="13dp"
         app:layout_constraintBottom_toTopOf="@+id/textTurno"
@@ -134,56 +134,56 @@
                 android:id="@+id/token5x0"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x5"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token5x6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
@@ -198,56 +198,56 @@
                 android:id="@+id/token4x0"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x5"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token4x6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
@@ -262,56 +262,56 @@
                 android:id="@+id/token3x0"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x5"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token3x6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
@@ -326,56 +326,56 @@
                 android:id="@+id/token2x0"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x5"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token2x6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
@@ -390,56 +390,56 @@
                 android:id="@+id/token1x0"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x5"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token1x6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
         </TableRow>
 
@@ -454,56 +454,56 @@
                 android:id="@+id/token0x0"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x5"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
 
             <Button
                 android:id="@+id/token0x6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@drawable/rounded_button_empty" />
         </TableRow>
     </TableLayout>
