@@ -10,10 +10,10 @@ import it.dais.forza4.R;
 
 public class GameLogic{
 
-    private final int MAX_COIN = 20;
+    private final int MAX_COIN = 21;
 
     private int userCoin = MAX_COIN;
-    private int robotCoin = MAX_COIN-1;
+    private int robotCoin = MAX_COIN;
 
     final int ROWS = 6;
     final int COLS = 7;
@@ -162,7 +162,7 @@ public class GameLogic{
     public char winner(){
         int red=0, yellow = 0;
 
-        if (userCoin == 0 || robotCoin == 0){
+        if (userCoin == 0 && robotCoin == 0){
             return 'X';
         }
 
