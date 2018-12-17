@@ -117,37 +117,35 @@ public class RobotControl {
                 sensorMotor.setType(TachoMotor.Type.LARGE);
                 if(currentCol!=0 && currentRow!=5) {
                     end = false;
+                    motor.setPower(30);
+                    motor.setSpeed(30);
 
-                    Thread.sleep(100);
-                    motor.resetPosition();
-                    motor.setPower(10);
                     motor.start();
                     while (!end){
                         c = lightSensor.getColor();
                         color=c.get();
                         if (color!=LightSensor.Color.TRANSPARENT) {
+                            motor.brake();
                             end=true;
-                        }else{
-                            Thread.sleep(50);
                         }
+                        Thread.sleep(40);
                         Log.i("CAL", "motor: "+color);
                     }
 
-                    Thread.sleep(10000);
-                    Thread.sleep(10000);
-                    Thread.sleep(10000);
-
+                    Thread.sleep(1000);
                     end = false;
-                    /*
+                    sensorMotor.setSpeed(35);
+                    sensorMotor.setPower(35);
+                    sensorMotor.start();
+
                     while (!end) {
                         c=lightSensor.getColor();
                         color=c.get();
                         if (color==LightSensor.Color.TRANSPARENT) {
+                            sensorMotor.brake();
                             end = true;
-                        }else{
-                            sensorMotor.setStepPower(30,20,20,20,true);
-                            Thread.sleep(700);
                         }
+                        Thread.sleep(40);
                         Log.i("CAL", "sensor: "+color);
                     }
                     Thread.sleep(1000);
@@ -293,7 +291,7 @@ public class RobotControl {
                     if(newr!=0)
                         sensorMotor.setStepPower(-1*Integer.signum(newr)*50, 20,steps-40, 20, true);
                     //questa attesa in base alla distanza
-                    sleepTime(Math.max(stepm,steps)+500);
+                    sleepTime(Math.max(stepm,steps)+700);
                     currentRow=r;
                     currentCol=(dropping ? c-3: c);
                     Log.i("CAL","currR "+currentRow+"  currC "+currentCol);
