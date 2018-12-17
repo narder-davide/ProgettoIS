@@ -289,6 +289,7 @@ public class GameLogic{
         return 'H'; // o 'R' o 'Y' o 'X'=patta o 'H'=continua
     }
 
+    /*** MODALITA' HARD ****/
     private int goodness(char player, int depth, int column, int trigger) {
         int max,i,value,j;
 
@@ -356,17 +357,22 @@ public class GameLogic{
             }
         }
         if (best == -1) {
-            for(i=0;i<COLS;i++){
+            Random random = new Random();
+            int c = random.nextInt(COLS);
+
+            best = c;
+            /*for(i=0;i<COLS;i++){
                 if(matrix[0][i] == 'X') return i;
-            }
+            }*/
         }
 
         return best;
     }
+    /*** END MODALITA' HARD ****/
 
 
-    // UTILIZZARLO PER RITORNARE ANCHE SUGGERIMENTI ALL'UTENTE con un Toast DOPO tot. secondi di inattività
-    // cerca di ostacolare la giocata dell'avversario posizionando sulle celle di maggior rilievo contigue all'avverario
+    /*** MODALITA' NORMALE ***/
+    // Cerca di ostacolare la giocata dell'avversario posizionando sulle celle di maggior rilievo contigue all'avverario
     // inoltre rileva e cerca di impedire la mossa vincente dell'avversario
     // ritorna -1 se matrix non ha celle disponibili altrimenti il valore della colonna
     public int normalMove(char enemy){
@@ -464,6 +470,7 @@ public class GameLogic{
             voto[i][j] += first;
         }
     }
+    /*** END MODALITA' NORMALE ***/
 
     // Legge la matrice e crea una stringa corrispondente alla partita appena interrotta
     public String getLastGame(){
