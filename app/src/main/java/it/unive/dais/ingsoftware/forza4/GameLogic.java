@@ -358,7 +358,11 @@ public class GameLogic{
         }
         if (best == -1) {
             Random random = new Random();
-            int c = random.nextInt(COLS);
+            int c;
+            
+            do {
+                c = random.nextInt(COLS);
+            } while(quote[c] >= ROWS-1);
 
             best = c;
             /*for(i=0;i<COLS;i++){
