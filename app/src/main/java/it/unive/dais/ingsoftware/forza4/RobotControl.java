@@ -25,6 +25,7 @@ public class RobotControl {
     private static final int SENSOR_STEP = 340;
 
     private static EV3 ev3;
+    private static String BRICK_NAME="F4Bot";
     private UltrasonicSensor ultrasonicSensor;
     private TachoMotor tokenMotor;
     private boolean outOfBoard = false;
@@ -88,7 +89,7 @@ public class RobotControl {
     public static RobotControl connectToEv3(OnTasksFinished act){
         try {
             if(ev3==null){
-                BluetoothConnection conn = new BluetoothConnection("F4Bot");
+                BluetoothConnection conn = new BluetoothConnection(BRICK_NAME);
                 Channel channel = null;
                 channel = conn.connect();
                 ev3 = new EV3(new SpooledAsyncChannel(channel));
@@ -116,19 +117,58 @@ public class RobotControl {
                 sensorMotor.setType(TachoMotor.Type.LARGE);
                 if(currentCol!=0 && currentRow!=5) {
                     end = false;
-                    motor.setPower(35);
+
+                    Thread.sleep(100);
+                    motor.resetPosition();
+                    motor.setPower(10);
                     motor.start();
-                    while (!end) {
+                    while (!end){
                         c = lightSensor.getColor();
                         color=c.get();
                         if (color!=LightSensor.Color.TRANSPARENT) {
-                            motor.brake();
+                            end=true;
+                        }else{
+                            Thread.sleep(50);
+                        }
+                        Log.i("CAL", "motor: "+color);
+                    }
+
+                    Thread.sleep(10000);
+                    Thread.sleep(10000);
+                    Thread.sleep(10000);
+
+                    end = false;
+                    /*
+                    while (!end) {
+                        c=lightSensor.getColor();
+                        color=c.get();
+                        if (color==LightSensor.Color.TRANSPARENT) {
+                            end = true;
+                        }else{
+                            sensorMotor.setStepPower(30,20,20,20,true);
+                            Thread.sleep(700);
+                        }
+                        Log.i("CAL", "sensor: "+color);
+                    }
+                    Thread.sleep(1000);
+                    sensorMotor.setStepPower(-40, 20, 190, 50, true);
+                    motor.setStepPower(40, 60, 90, 40, true);
+                    sleepTime(210);
+                    //Thread.sleep(1000);
+                    /*
+                    motor.setPower(20);
+                    motor.start();
+                    while (!end){
+                        c = lightSensor.getColor();
+                        color=c.get();
+                        if (color!=LightSensor.Color.TRANSPARENT) {
+                            motor.stop();
                             end=true;
                         }
                         Log.i("CAL", "motor: "+color);
-                        Thread.sleep(30);
                     }
-                    Thread.sleep(100);
+
+                    Thread.sleep(2000);
                     end = false;
                     sensorMotor.setPower(30);
                     sensorMotor.start();
@@ -142,12 +182,13 @@ public class RobotControl {
                         Log.i("CAL", "sensor: "+color);
                         Thread.sleep(40);
                     }
-                    Thread.sleep(100);
+                    Thread.sleep(2000);
                     sensorMotor.setStepPower(-40, 20, 190, 50, true);
-
                     motor.setStepPower(40, 60, 90, 40, true);
                     sleepTime(210);
                     //Thread.sleep(1000);
+
+                    */
                     currentCol=0;
                     currentRow=5;
                 }
@@ -279,7 +320,7 @@ public class RobotControl {
                         }
                     }
                     else {
-                        Thread.sleep(60);
+                        Thread.sleep(130);
                         LightSensor.Color col= lightSensor.getColor().get();
                         Log.i("CAL","Color "+col);
                         if(col==LightSensor.Color.YELLOW || col==LightSensor.Color.BROWN){
@@ -429,9 +470,9 @@ public class RobotControl {
 }
 
 /*
-  -controlli Bluetooth
+  -CALIBRAZIONE
   -eccezzioni varie
-  -modalità difficile
+
   - rotazione
   -
   -tolto rgb su move and read
