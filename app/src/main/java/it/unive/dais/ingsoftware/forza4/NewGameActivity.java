@@ -105,9 +105,15 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
         userCoinCount.setText("" + gameLogic.getUserCoin());
         robotCoinCount.setText("" + gameLogic.getRobotCoin());
-
+        if(res){
+            char w=gameLogic.winner();
+            if(w!='H'){
+                this.checkWin(w);
+                this.r.interrupt();
+                return;
+            }
+        }
         startTimer();
-
         if (!res)
             r.calibrate(true);
         else {
@@ -237,12 +243,12 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             editor.putString("LASTGAME", gameLogic.getLastGame());
             Log.i("SAVE",gameLogic.getLastGame());
             editor.commit();
-
         }
 
         minutes = 0;
         seconds = 0;
-        threadTimer.interrupt();
+        if(threadTimer!=null)
+            threadTimer.interrupt();
     }
 
     @Override

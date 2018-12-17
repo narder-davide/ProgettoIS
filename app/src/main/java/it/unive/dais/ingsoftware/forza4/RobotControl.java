@@ -22,13 +22,14 @@ public class RobotControl {
 
     private static final int OUT_DISTANCE = 2530;
     private static final int MOTOR_STEP = 290;//282
-    private static final int SENSOR_STEP = 331;
+    private static final int SENSOR_STEP = 340;
 
     private static EV3 ev3;
     private UltrasonicSensor ultrasonicSensor;
     private TachoMotor tokenMotor;
     private boolean outOfBoard = false;
     private boolean endGame;
+    private boolean robotWin;
 
     public void dropToken(int c) {
         move(currentRow,c,true);
@@ -45,8 +46,12 @@ public class RobotControl {
 
     public void gameOver(int coordinateRobot, boolean robotWin) {
         endGame=true;
-        if(robotWin)
-            move(currentRow,coordinateRobot,true);
+        this.robotWin=robotWin;
+        if (robotWin){
+            move(currentRow, coordinateRobot, true);
+        }else{
+            interrupt();
+        }
     }
 
     public void interrupt() {
@@ -55,11 +60,9 @@ public class RobotControl {
         });
         try {
             ev3.cancel();
-            ev3.run(interrupt);
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (EV3.AlreadyRunningException e) {
+            ev3.run(interrupt);
+        } catch (InterruptedException | EV3.AlreadyRunningException e) {
             e.printStackTrace();
         }
     }
@@ -276,6 +279,7 @@ public class RobotControl {
                         }
                     }
                     else {
+                        Thread.sleep(60);
                         LightSensor.Color col= lightSensor.getColor().get();
                         Log.i("CAL","Color "+col);
                         if(col==LightSensor.Color.YELLOW || col==LightSensor.Color.BROWN){
@@ -312,7 +316,7 @@ public class RobotControl {
         try {
             Log.i("CAL","Muovi Fuori");
             int stepm = (MOTOR_STEP * currentCol);
-
+            motor=data.getTachoMotor(EV3.OutputPort.A);
             //tempo di uscita dalla griglia
             if(!outOfBoard)
                 motor.setStepPower(-100, 50,stepm-100+RobotControl.OUT_DISTANCE, 50, true);
@@ -343,7 +347,7 @@ public class RobotControl {
 
                 Log.i("CAL", "dist: " + dist);
                 if(dist<23){
-                    col=(dist>8 ? 2 : 0);
+                    col=(dist>9.8 ? 2 : 0);
                 }else if(col!=-1){
                     while(dist>30f && t<7){
                         dist = ultrasonicSensor.getDistance().get();
