@@ -118,11 +118,11 @@ public class GameLogic{
     }
 
     public int calculateRobotAction(String diff){
-        int out = 0;
 
         // EASY
         if (diff.compareTo("easy") == 0){
-            Random random = new Random();
+            return easyMove('R');
+            /*Random random = new Random();
             int c;
 
             do {
@@ -130,25 +130,21 @@ public class GameLogic{
                 c = random.nextInt(COLS);
             } while(quote[c] >= ROWS-1);
 
-            out = c;
+            out = c;*/
         }
         // NORMAL
         else if (diff.compareTo("norm") == 0){
-            /*if (turno%2 == 0){
+            if (turno%2 == 0){
                 return calculateRobotAction("easy");
             }
             else {
                 return calculateRobotAction("hard");
-            }*/
-            return normalMove('R');
+            }
         }
         // HARD
         else {
-            //return this.getBestMove('Y');
             return hardMove('Y');
         }
-
-        return out;
     }
 
     public void incrementTurno(){
@@ -389,11 +385,11 @@ public class GameLogic{
     /*** END MODALITA' HARD ****/
 
 
-    /*** MODALITA' NORMALE ***/
+    /*** MODALITA' EASY ***/
     // Cerca di ostacolare la giocata dell'avversario posizionando sulle celle di maggior rilievo contigue all'avverario
     // inoltre rileva e cerca di impedire la mossa vincente dell'avversario
     // ritorna -1 se matrix non ha celle disponibili altrimenti il valore della colonna
-    public int normalMove(char enemy){
+    public int easyMove(char enemy){
         votazioni(enemy);
         int best_row = 0;
         int best_col = 0;
