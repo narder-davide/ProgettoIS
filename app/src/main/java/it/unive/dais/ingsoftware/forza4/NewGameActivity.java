@@ -1,9 +1,13 @@
 package it.unive.dais.ingsoftware.forza4;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -131,6 +135,13 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 Toast.makeText(this, "PARTITA PATTA", Toast.LENGTH_LONG).show();
             }
 
+            Boolean vibr = settings.getBoolean("VIBRATION", true);
+            if (vibr == true) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                long[] pattern = {100, 100, 100};
+                v.vibrate(pattern, -1); // -1 indica di vibrare una sola volta
+            }
+
             /* Salvataggio delle statistiche SOLO a fine partita */
             if (diff.compareTo("easy") == 0){
                 int eg = settings.getInt("easyGiocate",0);
@@ -213,14 +224,14 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(r!=null)
+        if (r != null) {
             r.interrupt();
+        }
         Log.i("SAVE","saving");
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("LASTGAME", gameLogic.getLastGame());
