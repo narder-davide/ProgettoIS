@@ -514,25 +514,4 @@ public class GameLogic{
             this.quote[j] = 0;
         }
     }
-
-    public void printMatrix(){
-        int i,j;
-
-        System.out.println("MATRIX\n");
-        for(i=0;i<ROWS;i++){
-            for(j=0;j<COLS;j++){
-                System.out.println(this.matrix[i][j]);
-            }
-            System.out.println("\n");
-        }
-    }
-
-    public void printQuote(){
-        int j;
-
-        System.out.println("QUOTE\n");
-        for(j=0;j<COLS;j++){
-            System.out.println(this.quote[j]);
-        }
-    }
 }
