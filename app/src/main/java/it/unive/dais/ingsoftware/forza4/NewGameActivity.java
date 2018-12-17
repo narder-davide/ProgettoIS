@@ -297,20 +297,21 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             });
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            win=gameLogic.winner();
+            win = gameLogic.winner();
             Log.i("CAL","1 winner "+win);
-            if(win!='H'){
+            if (win != 'H'){
                 runOnUiThread(()-> {
-                        this.checkWin(win);
-                    }
-                );
+                    this.checkWin(win);
+                });
                 this.r.gameOver(false);
                 Log.i("CAL","return "+win);
                 return;
-            }else {
+            }
+            else {
                 Log.i("CAL","Mossa Robot");
                 // Mossa ROBOT
                 coordinateRobot = gameLogic.calculateRobotAction(diff);
@@ -321,15 +322,22 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 });
                 gameLogic.incrementTurno();
 
-                win=gameLogic.winner();
-                if(win!='H'){
+                try {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                win = gameLogic.winner();
+                if (win != 'H'){
                     runOnUiThread(()-> {
-                            this.checkWin(win);
-                        }
-                    );
+                        this.checkWin(win);
+                    });
                     this.r.gameOver(true);
                     return;
-                }else{
+                }
+                else {
                     Log.i("CAL","Drop Token");
                     this.r.dropToken(coordinateRobot);
                     mediaPlayer.start();
