@@ -334,7 +334,7 @@ public class GameLogic{
         int i, j, max, value, best;
         int nodes;
         int[] res = new int[COLS];
-        int depth = 10;
+        int depth = 6;
 
         max = -100;
         best = -1;

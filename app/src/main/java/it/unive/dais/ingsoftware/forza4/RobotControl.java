@@ -28,6 +28,7 @@ public class RobotControl {
     private UltrasonicSensor ultrasonicSensor;
     private TachoMotor tokenMotor;
     private boolean outOfBoard = false;
+    private boolean endGame;
 
     public void dropToken(int c) {
         move(currentRow,c,true);
@@ -37,45 +38,28 @@ public class RobotControl {
         move(r,c,false);
     }
 
-
-
     public void setCurrentPos(int r, int c) {
         currentRow=r;
         currentCol=c;
     }
 
-    public void gameOver(boolean robotWin) {
-        Consumer<EV3.Api> gameover = (data -> {
-            try {
-                if(robotWin){
-                    data.soundTone(40,600,1000);
-                }else{
-                    data.soundTone(40,100,1000);
-                }
-                motor = data.getTachoMotor(EV3.OutputPort.A);
-                sensorMotor = data.getTachoMotor(EV3.OutputPort.D);
-                motor.setPolarity(TachoMotor.Polarity.FORWARD);
-                motor.setType(TachoMotor.Type.LARGE);
-                sensorMotor.setType(TachoMotor.Type.LARGE);
-                moveOut(data);
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        try {
-            ev3.run(gameover);
-        }
-        catch (EV3.AlreadyRunningException e) {
-            e.printStackTrace();
-        }
+    public void gameOver(int coordinateRobot, boolean robotWin) {
+        endGame=true;
+        if(robotWin)
+            move(currentRow,coordinateRobot,true);
     }
 
     public void interrupt() {
+        Consumer<EV3.Api> interrupt=(data -> {
+            moveOut(data);
+        });
         try {
             ev3.cancel();
+            ev3.run(interrupt);
             Thread.sleep(1000);
-            gameOver(false);
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (EV3.AlreadyRunningException e) {
             e.printStackTrace();
         }
     }
@@ -136,7 +120,7 @@ public class RobotControl {
                         if (c.get() == LightSensor.Color.TRANSPARENT) {
                             Log.i("CAL", "2-Not_Blue");
                         } else {
-                            motor.stop();
+                            motor.brake();
                             end = true;
                             Log.i("CAL", "2-FoundBlue X:");
                         }
@@ -203,6 +187,7 @@ public class RobotControl {
     }
 
     private void move(int r, int c, boolean dropping){
+        Log.i("CAL","Moving: r: "+r+" c: "+c+"drop: "+dropping);
         if ((r>5 || r<0 || c>6 || c<0) && !dropping){
             return;
         }
@@ -228,19 +213,20 @@ public class RobotControl {
                         motor.setPower(30);
                         motor.start();
                         Future<LightSensor.Color> color;
+
                         while (!end) {
                             color = lightSensor.getColor();
-                            Thread.sleep(30);
                             if (color.get() == LightSensor.Color.TRANSPARENT) {
                                 Log.i("CAL", "2-Not_Blue");
                             } else {
-                                motor.stop();
+                                motor.brake();
                                 end = true;
-                                Log.i("CAL", "2-FoundBlue:");
                             }
+                            Thread.sleep(40);
                         }
-                        Thread.sleep(100);
-                        motor.setStepPower(30,20,110,20,true);
+
+                        Thread.sleep(400);
+                        motor.setStepPower(30,20,120,40,true);
                         sleepTime(50);
                         newc=currentCol-c;
                         outOfBoard=false;
@@ -277,20 +263,19 @@ public class RobotControl {
                         tokenMotor.setType(TachoMotor.Type.MEDIUM);
                         Thread.sleep(500);
                         tokenMotor.setStepPower(-15, 20,90, 5, true);
-                        //sleepTime(115);
                         Thread.sleep(1300);
                         tokenMotor.setStepPower(15, 20,90, 5, true);
-                        //sleepTime(115);
                         Thread.sleep(1000);
                         motor.setStepPower(50, 50,stepm-100, 50, true);
                         sleepTime(stepm);
-                        //Thread.sleep(1000);
                         motor.setStepPower(-50, 50,stepm-100, 50, true);
-
                         moveOut(data);
-
-                        data.soundTone(40,440,600);
-                        getDistance(data);
+                        if(!endGame){
+                            data.soundTone(40,440,600);
+                            getDistance(data);
+                        }else{
+                            //vince robot
+                        }
                     }
                     else {
                         LightSensor.Color col= lightSensor.getColor().get();
@@ -378,6 +363,7 @@ public class RobotControl {
 
             }
             Thread.sleep(200);
+            Log.i("CAL","readColumn: "+col);
             columnRead(col);
         }
         catch (ExecutionException | IOException | InterruptedException e) {
@@ -422,8 +408,10 @@ public class RobotControl {
             catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             switch (t){
                 case DISTANCE:
+                    Log.i("CAL","Task Distance: "+(int)ob[0]);
                     callback.columnRead((int)ob[0]);
                     break;
                 case COLOR:

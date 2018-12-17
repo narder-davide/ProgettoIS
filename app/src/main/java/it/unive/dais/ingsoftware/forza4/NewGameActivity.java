@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +48,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     private RobotControl r;
     private EV3 ev3;
     private char win;
+    private boolean gameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,11 +231,14 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         if (r != null) {
             r.interrupt();
         }
-        Log.i("SAVE","saving");
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("LASTGAME", gameLogic.getLastGame());
-        Log.i("SAVE",gameLogic.getLastGame());
-        editor.commit();
+        if(gameLogic!=null){
+            Log.i("SAVE","saving");
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("LASTGAME", gameLogic.getLastGame());
+            Log.i("SAVE",gameLogic.getLastGame());
+            editor.commit();
+
+        }
 
         minutes = 0;
         seconds = 0;
@@ -295,7 +297,13 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         runOnUiThread(()->{
             textTurno.setText(R.string.textTurnoRobot);
         });
-        r.getCoinAt(gameLogic.quote[c], c);
+        Log.i("CAL","Activity: column"+c+" quota: "+gameLogic.quote[c]);
+        while(gameLogic.quote[c]==ROWS-1){
+            c++;
+        }
+        if(c<COLS-1){
+            r.getCoinAt(gameLogic.quote[c], c);
+        }
     }
 
     @Override
@@ -318,7 +326,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 runOnUiThread(()-> {
                     this.checkWin(win);
                 });
-                this.r.gameOver(false);
+                this.r.gameOver(-1, false);
                 Log.i("CAL","return "+win);
                 return;
             }
@@ -345,7 +353,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     runOnUiThread(()-> {
                         this.checkWin(win);
                     });
-                    this.r.gameOver(true);
+                    gameOver=true;
+                    this.r.gameOver(coordinateRobot,true);
                     return;
                 }
                 else {
