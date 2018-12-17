@@ -15,461 +15,455 @@
         android:text="@string/textStatistics"
         android:textColor="#000000"
         android:textSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:visibility="visible"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TableLayout
+            android:id="@+id/easyTable"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TableLayout
-                android:id="@+id/easyTable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/table_radius"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="8dp">
+            android:layout_marginTop="10dp"
+            android:background="@drawable/table_radius"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="8dp">
 
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="168dp"
-                        android:layout_height="wrap_content"
-                        android:layout_span="2"
-                        android:text="@string/easyTable"
-                        android:textAlignment="center"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:visibility="visible" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="2dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelPlayed"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/easyGiocate"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="2dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelWon"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/easyVinte"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelGameTime"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/easyTempoGioco"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelPCWon"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/easyPcVittorie"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-            </TableLayout>
-
-            <TableLayout
-                android:id="@+id/middleTable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/table_radius"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="8dp">
-
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="168dp"
-                        android:layout_height="wrap_content"
-                        android:layout_span="2"
-                        android:text="Normal"
-                        android:textAlignment="center"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:visibility="visible"
-                        tools:text="@string/middleTable" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="2dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelPlayed"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/middleGiocate"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="2dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelWon"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/middleVinte"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelGameTime"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/middleTempoGioco"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelPCWon"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/middlePcVittorie"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-            </TableLayout>
-
-            <TableLayout
-                android:id="@+id/hardTable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/table_radius"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="8dp">
-
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="168dp"
-                        android:layout_height="wrap_content"
-                        android:layout_span="2"
-                        android:text="@string/hardTable"
-                        android:textAlignment="center"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:visibility="visible" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="2dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelPlayed"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/hardGiocate"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="2dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelWon"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/hardVinte"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelGameTime"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/hardTempoGioco"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:text="@string/labelPCWon"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/hardPcVittorie"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="1dp"
-                        android:background="#ffffff"
-                        android:textAlignment="center" />
-                </TableRow>
-
-            </TableLayout>
-
-            <Button
-                android:id="@+id/buttonResetStat"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/resetStatistics"
-                android:textSize="18sp" />
+                android:layout_height="match_parent">
 
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:layout_width="168dp"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:text="@string/easyTable"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelPlayed"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/easyGiocate"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelWon"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/easyVinte"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelGameTime"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/easyTempoGioco"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelPCWon"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/easyPcVittorie"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/middleTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/table_radius"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="8dp">
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="168dp"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:text="Normal"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    tools:text="@string/middleTable" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelPlayed"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/middleGiocate"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelWon"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/middleVinte"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelGameTime"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/middleTempoGioco"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelPCWon"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/middlePcVittorie"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/hardTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/table_radius"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="8dp">
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="168dp"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:text="@string/hardTable"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelPlayed"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/hardGiocate"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelWon"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/hardVinte"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelGameTime"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/hardTempoGioco"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:text="@string/labelPCWon"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/hardPcVittorie"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:textAlignment="center" />
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonResetStat"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/resetStatistics"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </android.support.constraint.ConstraintLayout>
