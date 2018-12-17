@@ -461,7 +461,6 @@
         android:id="@+id/textStatistics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
         android:fontFamily="@font/autour_one"
         android:text="@string/textStatistics"
         android:textColor="#000000"
