@@ -61,7 +61,6 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
                 progressBar.setEnabled(true);
                 progressBar.setVisibility(View.VISIBLE);
                 r.calibrate(false);
-
             }
         });
     }

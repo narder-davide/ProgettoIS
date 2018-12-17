@@ -298,10 +298,10 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             textTurno.setText(R.string.textTurnoRobot);
         });
         Log.i("CAL","Activity: column"+c+" quota: "+gameLogic.quote[c]);
-        while(gameLogic.quote[c]==ROWS-1){
+        while(gameLogic.quote[c]==ROWS){
             c++;
         }
-        if(c<COLS-1){
+        if(c<=COLS-1){
             r.getCoinAt(gameLogic.quote[c], c);
         }
     }

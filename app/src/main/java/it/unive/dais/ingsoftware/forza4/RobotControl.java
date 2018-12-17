@@ -107,7 +107,7 @@ public class RobotControl {
                 sensorMotor = data.getTachoMotor(EV3.OutputPort.D);
 
                 Future<LightSensor.Color> c;
-
+                LightSensor.Color color;
                 motor.setPolarity(TachoMotor.Polarity.FORWARD);
                 motor.setType(TachoMotor.Type.LARGE);
                 sensorMotor.setType(TachoMotor.Type.LARGE);
@@ -117,31 +117,29 @@ public class RobotControl {
                     motor.start();
                     while (!end) {
                         c = lightSensor.getColor();
-                        if (c.get() == LightSensor.Color.TRANSPARENT) {
-                            Log.i("CAL", "2-Not_Blue");
-                        } else {
+                        color=c.get();
+                        if (color!=LightSensor.Color.TRANSPARENT) {
                             motor.brake();
-                            end = true;
-                            Log.i("CAL", "2-FoundBlue X:");
+                            end=true;
                         }
-                        Thread.sleep(40);
+                        Log.i("CAL", "motor: "+color);
+                        Thread.sleep(30);
                     }
-
+                    Thread.sleep(100);
                     end = false;
                     sensorMotor.setPower(30);
                     sensorMotor.start();
                     while (!end) {
-                        c = lightSensor.getColor();
-                        LightSensor.Color color = c.get();
-                        if (color != LightSensor.Color.TRANSPARENT) {
-                            Log.i("CAL", "3-NotTrans");
-                        } else {
+                        c=lightSensor.getColor();
+                        color=c.get();
+                        if (color==LightSensor.Color.TRANSPARENT) {
                             sensorMotor.brake();
                             end = true;
                         }
+                        Log.i("CAL", "sensor: "+color);
                         Thread.sleep(40);
                     }
-
+                    Thread.sleep(100);
                     sensorMotor.setStepPower(-40, 20, 190, 50, true);
 
                     motor.setStepPower(40, 60, 90, 40, true);
@@ -180,7 +178,7 @@ public class RobotControl {
 
     private void sleepTime(int giri){
         try {
-            Thread.sleep(1700+(42/25)*giri);
+            Thread.sleep(1800+(42/25)*giri);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
