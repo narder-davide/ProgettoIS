@@ -35,7 +35,19 @@ public class GameLogic{
         this.lastGame = lastGame;
         this.turno = 0;
         nodes = new Long(0);
+        checkStrGame();
         resetGame();
+    }
+
+    private void checkStrGame(){
+        for(int i=0;i<lastGame.length();i++){
+            if (lastGame.charAt(i) == 'R'){
+                decreaseUserCoin();
+            }
+            else if (lastGame.charAt(i) == 'Y'){
+                decreaseRobotCoin();
+            }
+        }
     }
 
     public int getUserCoin(){
