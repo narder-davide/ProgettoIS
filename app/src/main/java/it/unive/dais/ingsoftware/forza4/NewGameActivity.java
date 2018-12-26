@@ -323,9 +323,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
     @Override
     public void columnRead(int c) {
-        runOnUiThread(()->{
-            textTurno.setText(R.string.textTurnoRobot);
-        });
+
         Log.i("CAL","Activity: column"+c+" quota: "+gameLogic.quote[c]);
         while(gameLogic.quote[c] == ROWS){
             c++;
@@ -338,6 +336,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     @Override
     public void colorRead(LightSensor.Color color,int r, int c) {
         if (color == LightSensor.Color.RED){
+
             // Mossa UTENTE
             runOnUiThread(()-> {
                 gameLogic.setCoin(c, 'R');
@@ -355,6 +354,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 runOnUiThread(()-> {
                     this.checkWin(win);
                 });
+                gameOver=true;
                 this.r.gameOver(-1, false);
                 Log.i("CAL","return "+win);
                 return;
@@ -362,6 +362,10 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             else {
                 Log.i("CAL","Mossa Robot");
                 // Mossa ROBOT
+                runOnUiThread(() -> {
+                    textTurno.setText(R.string.textTurnoRobot);
+                });
+
                 coordinateRobot = gameLogic.calculateRobotAction(diff);
 
                 runOnUiThread(() -> {
@@ -377,7 +381,25 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     e.printStackTrace();
                 }
 
+                this.r.dropToken(coordinateRobot);
+                mediaPlayerCoin.start();
+
                 win = gameLogic.winner();
+                if (win != 'H'){
+                    runOnUiThread(()-> {
+                        this.checkWin(win);
+                    });
+                    gameOver = true;
+                    this.r.gameOver(coordinateRobot,true);
+                    return;
+                }
+                else {
+                    runOnUiThread(()->{
+                        textTurno.setText(R.string.textTurnoGiocatore);
+                    });
+                }
+
+                /*win = gameLogic.winner();
                 if (win != 'H'){
                     runOnUiThread(()-> {
                         this.checkWin(win);
@@ -394,7 +416,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     runOnUiThread(()->{
                         textTurno.setText(R.string.textTurnoGiocatore);
                     });
-                }
+                }*/
             }
         }
         else if (c < COLS-1){

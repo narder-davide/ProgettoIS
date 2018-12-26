@@ -499,6 +499,7 @@ public class RobotControl {
 
 /*
   -CALIBRAZIONE
+  - Gestione di fine partita con vittoria utente e vittoria robot
   -eccezioni varie
 
   - rotazione
