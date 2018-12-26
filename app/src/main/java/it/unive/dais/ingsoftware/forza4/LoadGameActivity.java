@@ -38,6 +38,10 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setEnabled(false);
+        progressBar.setVisibility(View.INVISIBLE);
+
         // Caricamento leggendo stringa salvata nelle SharedPreferences
         buttonLoad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,10 +50,6 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
                 startActivity(openNewGameActivity);
             }
         });
-
-        progressBar=findViewById(R.id.progressBar);
-        progressBar.setEnabled(false);
-        progressBar.setVisibility(View.INVISIBLE);
 
         // Scansione della plancia di gioco e creazione della stringa corrispondente alla partita
         new ConnectTask().execute(this);
@@ -83,30 +83,36 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
         }
         if (color==LightSensor.Color.RED) {
             mat[r][c]='R';
-        }else if(color==LightSensor.Color.YELLOW){
+        }
+        else if(color==LightSensor.Color.YELLOW){
             mat[r][c]='Y';
-        }else{
+        }
+        else {
             mat[r][c]='X';
             for(int i=r;i<ROWS;i++)
                 mat[i][c]='X';
-            if(c<=5){
+            if (c<=5){
                 this.r.getCoinAt(0,c+1);
-            }else{
+            }
+            else {
                 starting=true;
                 this.r.getCoinAt(5,0);
             }
         }
         if(color==LightSensor.Color.RED || color==LightSensor.Color.YELLOW){
-            if(r<5){
+            if (r<5){
                 this.r.getCoinAt(r+1,c);
-            }else if (c<=5){
+            }
+            else if (c<=5){
                 this.r.getCoinAt(0,c+1);
-            }else{
-                starting=true;
+            }
+            else {
+                starting = true;
                 this.r.getCoinAt(5,0);
             }
         }
     }
+
     private void startLoadedGame(){
         String s="";
         for(int i=0;i<ROWS;i++){
@@ -133,10 +139,11 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
         @Override
         protected void onPostExecute(RobotControl rc) {
             super.onPostExecute(rc);
-            if(rc!=null){
-                r=rc;
+            if (rc != null){
+                r = rc;
                 enableDisableButtons(true);
-            }else{
+            }
+            else {
                 enableDisableButtons(false);
                 Toast.makeText(LoadGameActivity.this, "Errore Bluetooth", Toast.LENGTH_LONG).show();
             }

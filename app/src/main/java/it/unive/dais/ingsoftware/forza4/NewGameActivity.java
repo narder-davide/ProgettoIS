@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +45,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     Thread threadTimer = null;
     int minutes = 0, seconds = 0;
 
-    MediaPlayer mediaPlayer = null;
+    MediaPlayer mediaPlayerCoin = null;
 
     private RobotControl r;
     private EV3 ev3;
@@ -62,7 +64,6 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = settings.edit();
         lastGame = settings.getString("LASTGAME", "");
-
         diff = settings.getString("DIFFICULT", "easy");
 
         // Ottenimento degli oggetti grafici
@@ -75,7 +76,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
         gameGrid = findViewById(R.id.gamegrid);
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.coin_sound);
+        mediaPlayerCoin = MediaPlayer.create(this, R.raw.coin_sound);
 
         // Associazione robot con Bluetooth
         new ConnectTask().execute(this);
@@ -89,44 +90,53 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if(r!=null){
+            if (r != null){
                 boolean resumed = getIntent().getBooleanExtra("resume", false);
                 startGame(resumed);
-            }else{
+            }
+            else {
                 Toast.makeText(NewGameActivity.this, "Errore Bluetooth", Toast.LENGTH_LONG).show();
                 textTurno.setText("Errore Bluetooth");
             }
         }
     }
-    private void startGame(boolean res){
+
+    private void startGame(boolean res) {
         // Inizio logica di gioco
         gameLogic = new GameLogic(gameGrid, lastGame);
         gameLogic.initializeGame();
 
         userCoinCount.setText("" + gameLogic.getUserCoin());
         robotCoinCount.setText("" + gameLogic.getRobotCoin());
-        if(res){
-            char w=gameLogic.winner();
-            if(w!='H'){
+
+        // MOSSA UTENTE
+        textTurno.setText(R.string.textTurnoGiocatore);
+
+        if (res) {
+            char w = gameLogic.winner();
+            if (w != 'H') {
                 this.checkWin(w);
                 this.r.interrupt();
+
                 return;
             }
         }
         startTimer();
-        if (!res)
-            r.calibrate(true);
-        else {
-            r.setCurrentPos(5,0);
+        if (!res){
             r.calibrate(true);
         }
-        // MOSSA UTENTE
-        textTurno.setText(R.string.textTurnoGiocatore);
+        else {
+            r.setCurrentPos(5, 0);
+            r.calibrate(true);
+        }
     }
 
     private void checkWin(char win){
 
         if (win != 'H') {
+            if (threadTimer != null) {
+                threadTimer.interrupt();
+            }
             if (win == 'R') {    // vince RED - UTENTE
                 textTurno.setText(R.string.textRedWin);
                 Toast.makeText(this, "VINCE IL ROSSO", Toast.LENGTH_LONG).show();
@@ -154,7 +164,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
                 int ev = settings.getInt("easyVinte", 0);
                 if (win == 'R') {
-                    editor.putInt("easyVinte", ev + 1);
+                    editor.putInt("easyVinte", ev+1);
                 }
 
                 String t = settings.getString("easyTempoGioco", "00:00");
@@ -162,11 +172,15 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 int[] split = new int[split_temp.length];
                 split[0] = Integer.parseInt(split_temp[0]);
                 split[1] = Integer.parseInt(split_temp[1]);
+                if (split[1] + seconds >= 60){
+                    minutes++;
+                    seconds = (seconds + split[1])%60;
+                }
                 t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
                 editor.putString("easyTempoGioco", t);
 
-                if (eg != 0){
-                    editor.putInt("easyPCVittore", (ev/eg)*100);
+                if (eg > 0){
+                    editor.putInt("easyPCVittore", (Math.round(ev/eg))*100);
                 }
                 else {
                     editor.putInt("easyPCVittore", 0);
@@ -178,7 +192,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
                 int mv = settings.getInt("middleVinte", 0);
                 if (win == 'R') {
-                    editor.putInt("middleVinte", mv + 1);
+                    editor.putInt("middleVinte", mv+1);
                 }
 
                 String t = settings.getString("middleTempoGioco", "00:00");
@@ -186,11 +200,15 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 int[] split = new int[split_temp.length];
                 split[0] = Integer.parseInt(split_temp[0]);
                 split[1] = Integer.parseInt(split_temp[1]);
+                if (split[1] + seconds >= 60){
+                    minutes++;
+                    seconds = (seconds + split[1])%60;
+                }
                 t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
                 editor.putString("middleTempoGioco", t);
 
-                if (mg != 0){
-                    editor.putInt("middlePCVittore", (mv/mg)*100);
+                if (mg > 0){
+                    editor.putInt("middlePCVittore", (Math.round(mv/mg))*100);
                 }
                 else {
                     editor.putInt("middlePCVittore", 0);
@@ -202,7 +220,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
                 int hv = settings.getInt("hardVinte", 0);
                 if (win == 'R') {
-                    editor.putInt("hardVinte", hv + 1);
+                    editor.putInt("hardVinte", hv+1);
                 }
 
                 String t = settings.getString("hardTempoGioco", "00:00");
@@ -210,11 +228,15 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 int[] split = new int[split_temp.length];
                 split[0] = Integer.parseInt(split_temp[0]);
                 split[1] = Integer.parseInt(split_temp[1]);
+                if (split[1] + seconds >= 60){
+                    minutes++;
+                    seconds = (seconds + split[1])%60;
+                }
                 t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
                 editor.putString("hardTempoGioco", t);
 
-                if (hg != 0){
-                    editor.putInt("hardPCVittore", (hv/hg)*100);
+                if (hg > 0){
+                    editor.putInt("hardPCVittore", (Math.round(hv/hg))*100);
                 }
                 else {
                     editor.putInt("hardPCVittore", 0);
@@ -234,12 +256,12 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     @Override
     protected void onStop() {
         super.onStop();
+
         if (r != null) {
             r.interrupt();
         }
-        if(gameLogic!=null){
+        if (gameLogic != null){
             Log.i("SAVE","saving");
-            SharedPreferences.Editor editor = settings.edit();
             editor.putString("LASTGAME", gameLogic.getLastGame());
             Log.i("SAVE",gameLogic.getLastGame());
             editor.commit();
@@ -247,8 +269,9 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
         minutes = 0;
         seconds = 0;
-        if(threadTimer!=null)
+        if(threadTimer != null) {
             threadTimer.interrupt();
+        }
     }
 
     @Override
@@ -304,10 +327,10 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             textTurno.setText(R.string.textTurnoRobot);
         });
         Log.i("CAL","Activity: column"+c+" quota: "+gameLogic.quote[c]);
-        while(gameLogic.quote[c]==ROWS){
+        while(gameLogic.quote[c] == ROWS){
             c++;
         }
-        if(c<=COLS-1){
+        if(c <= COLS-1){
             r.getCoinAt(gameLogic.quote[c], c);
         }
     }
@@ -366,7 +389,11 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 else {
                     Log.i("CAL","Drop Token");
                     this.r.dropToken(coordinateRobot);
-                    mediaPlayer.start();
+                    mediaPlayerCoin.start();
+
+                    runOnUiThread(()->{
+                        textTurno.setText(R.string.textTurnoGiocatore);
+                    });
                 }
             }
         }

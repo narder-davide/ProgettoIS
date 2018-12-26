@@ -102,7 +102,7 @@ public class StatisticsActivity extends AppCompatActivity {
         });
     }
 
-    public void updateStats(){
+    private void updateStats(){
         // MODALITA' easy
         easyGiocate.setText("" + settings.getInt("easyGiocate", 0));
         easyVinte.setText("" + settings.getInt("easyVinte", 0));

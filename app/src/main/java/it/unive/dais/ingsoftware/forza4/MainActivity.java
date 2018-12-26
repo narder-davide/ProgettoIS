@@ -25,6 +25,7 @@ import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 import it.unive.dais.legodroid.lib.comm.Channel;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
+import it.unive.dais.legodroid.lib.util.Consumer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,10 +92,12 @@ public class MainActivity extends AppCompatActivity {
         });
         
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
         if (bluetoothAdapter == null) {
             enableDisableButtons(false);
-            Toast.makeText(this,"Dispositivo non supporta Bluetooth",Toast.LENGTH_LONG).show();
-        } else {
+            Toast.makeText(this,"Il dispositivo non supporta il Bluetooth",Toast.LENGTH_LONG).show();
+        }
+        else {
             if (!bluetoothAdapter.isEnabled()) {
                 enableDisableButtons(false);
                 Toast.makeText(this,"Bluetooth non abilitato",Toast.LENGTH_LONG).show();
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch(state) {

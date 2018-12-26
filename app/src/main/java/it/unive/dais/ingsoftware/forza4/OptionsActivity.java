@@ -34,7 +34,7 @@ public class OptionsActivity extends AppCompatActivity {
 
         Switch switchSound = findViewById(R.id.switchSound);
 
-        // classe SharedPreference per salvare le opzioni di gioco e la stringa che corrisponde allo stato della partita
+        // Gestione delle opzioni di gioco
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
 
@@ -55,8 +55,7 @@ public class OptionsActivity extends AppCompatActivity {
             }
         }
 
-        // GESTIONE VIBRAZIONE
-
+        /*** GESTIONE VIBRAZIONE ***/
         if (vibr == true){
             switchVibrazione.setChecked(true);
             editor.putBoolean("VIBRATION", true);
@@ -81,8 +80,7 @@ public class OptionsActivity extends AppCompatActivity {
             }
         });
 
-        // GESTIONE SUONI
-
+        /*** GESTIONE SUONI ***/
         if (sound == true){
             switchSound.setChecked(true);
             editor.putBoolean("SOUND", true);
@@ -107,8 +105,7 @@ public class OptionsActivity extends AppCompatActivity {
             }
         });
 
-        // GESTIONE DIFFICOLTA'
-
+        /*** GESTIONE DIFFICOLTA' ***/
         if (diff.compareTo("easy") == 0){
             radioEasy.setChecked(true);
             radioMid.setChecked(false);

@@ -367,14 +367,16 @@ public class GameLogic{
             }
         }
         if (best == -1) {
-            Random random = new Random();
+            best = this.easyMove('R');
+            /*Random random = new Random();
             int c;
 
             do {
                 c = random.nextInt(COLS);
             } while(quote[c] >= ROWS-1);
 
-            best = c;
+            best = c;*/
+
             /*for(i=0;i<COLS;i++){
                 if(matrix[0][i] == 'X') return i;
             }*/
@@ -484,7 +486,7 @@ public class GameLogic{
             voto[i][j] += first;
         }
     }
-    /*** END MODALITA' NORMALE ***/
+    /*** END MODALITA' EASY ***/
 
     // Legge la matrice e crea una stringa corrispondente alla partita appena interrotta
     public String getLastGame(){
