@@ -48,6 +48,39 @@ public class MainActivity extends AppCompatActivity {
         String diff = settings.getString("DIFFICULT", "easy");
         Boolean sound = settings.getBoolean("SOUND", true);
         String LastGame = settings.getString("LASTGAME", "");
+
+        // Valori per statistiche
+        int app;
+        String app_s;
+
+        app = settings.getInt("easyGiocate",0);
+        if (app == 0){ editor.putInt("easyGiocate", 0); }
+        app = settings.getInt("easyVinte",0);
+        if (app == 0){ editor.putInt("easyVinte", 0); }
+        app_s = settings.getString("easyTempoGioco","00:00");
+        if (app_s.compareTo("00:00") == 0){ editor.putString("easyTempoGioco", "00:00"); }
+        app = settings.getInt("easyPCVittore",0);
+        if (app == 0){ editor.putInt("easyPCVittore", 0); }
+
+        app = settings.getInt("middleGiocate",0);
+        if (app == 0){ editor.putInt("middleGiocate", 0); }
+        app = settings.getInt("middleVinte",0);
+        if (app == 0){ editor.putInt("middleVinte", 0); }
+        app_s = settings.getString("middleTempoGioco","00:00");
+        if (app_s.compareTo("00:00") == 0){ editor.putString("middleTempoGioco", "00:00"); }
+        app = settings.getInt("middlePCVittore",0);
+        if (app == 0){ editor.putInt("middlePCVittore", 0); }
+
+        app = settings.getInt("hardGiocate",0);
+        if (app == 0){ editor.putInt("hardGiocate", 0); }
+        app = settings.getInt("hardVinte",0);
+        if (app == 0){ editor.putInt("hardVinte", 0); }
+        app_s = settings.getString("hardTempoGioco","00:00");
+        if (app_s.compareTo("00:00") == 0){ editor.putString("hardTempoGioco", "00:00"); }
+        app = settings.getInt("hardPCVittore",0);
+        if (app == 0){ editor.putInt("hardPCVittore", 0); }
+
+        editor.commit();
        
         // Recupero bottone per NUOVA PARTITA
         newGameButton = findViewById(R.id.newGameButton);
@@ -135,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
     private void enableDisableButtons(boolean b) {
         newGameButton.setEnabled(b);
         loadGameButton.setEnabled(b);

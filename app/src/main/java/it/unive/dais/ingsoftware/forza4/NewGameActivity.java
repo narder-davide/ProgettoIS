@@ -172,15 +172,17 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 int[] split = new int[split_temp.length];
                 split[0] = Integer.parseInt(split_temp[0]);
                 split[1] = Integer.parseInt(split_temp[1]);
-                if (split[1] + seconds >= 60){
+                if ((split[1] + seconds) >= 60){
                     minutes++;
-                    seconds = (seconds + split[1])%60;
+                    seconds = (seconds + split[1])-60;
                 }
                 t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
                 editor.putString("easyTempoGioco", t);
 
                 if (eg > 0){
-                    editor.putInt("easyPCVittore", (Math.round(ev/eg))*100);
+                    float temp = ev/eg;
+                    temp *= 100;
+                    editor.putInt("easyPCVittore", Math.round(temp));
                 }
                 else {
                     editor.putInt("easyPCVittore", 0);
@@ -200,15 +202,17 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 int[] split = new int[split_temp.length];
                 split[0] = Integer.parseInt(split_temp[0]);
                 split[1] = Integer.parseInt(split_temp[1]);
-                if (split[1] + seconds >= 60){
+                if ((split[1] + seconds) >= 60){
                     minutes++;
-                    seconds = (seconds + split[1])%60;
+                    seconds = (seconds + split[1])-60;
                 }
                 t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
                 editor.putString("middleTempoGioco", t);
 
                 if (mg > 0){
-                    editor.putInt("middlePCVittore", (Math.round(mv/mg))*100);
+                    float temp = mv/mg;
+                    temp *= 100;
+                    editor.putInt("middlePCVittore", Math.round(temp));
                 }
                 else {
                     editor.putInt("middlePCVittore", 0);
@@ -228,15 +232,17 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 int[] split = new int[split_temp.length];
                 split[0] = Integer.parseInt(split_temp[0]);
                 split[1] = Integer.parseInt(split_temp[1]);
-                if (split[1] + seconds >= 60){
+                if ((split[1] + seconds) >= 60){
                     minutes++;
-                    seconds = (seconds + split[1])%60;
+                    seconds = (seconds + split[1])-60;
                 }
                 t = String.format("%02d:%02d", split[0]+minutes, split[1]+seconds);
                 editor.putString("hardTempoGioco", t);
 
                 if (hg > 0){
-                    editor.putInt("hardPCVittore", (Math.round(hv/hg))*100);
+                    float temp = hv/hg;
+                    temp *= 100;
+                    editor.putInt("hardPCVittore", Math.round(temp));
                 }
                 else {
                     editor.putInt("hardPCVittore", 0);
