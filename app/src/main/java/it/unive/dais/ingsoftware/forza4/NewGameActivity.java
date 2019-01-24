@@ -134,6 +134,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     private void checkWin(char win){
 
         if (win != 'H') {
+            editor.putString("LASTGAME","");
+            editor.commit();
             if (threadTimer != null) {
                 threadTimer.interrupt();
             }
@@ -362,6 +364,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     this.checkWin(win);
                 });
                 gameOver=true;
+
                 this.r.gameOver(-1, false);
                 Log.i("CAL","return "+win);
                 return;
@@ -388,7 +391,6 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     e.printStackTrace();
                 }
 
-                this.r.dropToken(coordinateRobot);
                 mediaPlayerCoin.start();
 
                 win = gameLogic.winner();
@@ -401,29 +403,11 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     return;
                 }
                 else {
-                    runOnUiThread(()->{
-                        textTurno.setText(R.string.textTurnoGiocatore);
-                    });
-                }
-
-                /*win = gameLogic.winner();
-                if (win != 'H'){
-                    runOnUiThread(()-> {
-                        this.checkWin(win);
-                    });
-                    gameOver=true;
-                    this.r.gameOver(coordinateRobot,true);
-                    return;
-                }
-                else {
-                    Log.i("CAL","Drop Token");
                     this.r.dropToken(coordinateRobot);
-                    mediaPlayerCoin.start();
-
                     runOnUiThread(()->{
                         textTurno.setText(R.string.textTurnoGiocatore);
                     });
-                }*/
+                }
             }
         }
         else if (c < COLS-1){

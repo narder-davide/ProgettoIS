@@ -500,8 +500,24 @@ public class GameLogic{
         int i, j;
         String out = "";
 
-        for(i=0;i<ROWS;i++){
+        /*for(i=0;i<ROWS;i++){
             for(j=0;j<COLS;j++){
+                out += matrix[i][j];
+            }
+        }*/
+        /*for(i=ROWS-1;i>=0;i--){
+            for(j=COLS-1;j>=0;j--){
+                out += matrix[i][j];
+            }
+        }*/
+        /*for(j=0;j<COLS;j++){
+            for(i=0;i<ROWS;i++){
+                out += matrix[i][j];
+            }
+        }*/
+
+        for(j=COLS-1;j>=0;j--){
+            for(i=0;i<ROWS;i++){
                 out += matrix[i][j];
             }
         }

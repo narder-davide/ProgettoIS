@@ -11,7 +11,6 @@ import java.util.concurrent.Future;
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 import it.unive.dais.legodroid.lib.comm.Channel;
-import it.unive.dais.legodroid.lib.comm.Const;
 import it.unive.dais.legodroid.lib.comm.SpooledAsyncChannel;
 import it.unive.dais.legodroid.lib.plugs.LightSensor;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
@@ -22,7 +21,7 @@ import it.unive.dais.legodroid.lib.util.Consumer;
 public class RobotControl {
 
     private static final int OUT_DISTANCE = 2530;
-    private static final int MOTOR_STEP = 290;//282
+    private static final int MOTOR_STEP = 290;
     private static final int SENSOR_STEP = 340;
 
     private static EV3 ev3;
@@ -31,7 +30,6 @@ public class RobotControl {
     private TachoMotor tokenMotor;
     private boolean outOfBoard = false;
     private boolean endGame;
-    private boolean robotWin;
 
     public void dropToken(int c) {
         move(currentRow,c,true);
@@ -48,7 +46,6 @@ public class RobotControl {
 
     public void gameOver(int coordinateRobot, boolean robotWin) {
         endGame = true;
-        this.robotWin = robotWin;
         if (robotWin){
             move(currentRow, coordinateRobot, true);
         }
@@ -93,12 +90,11 @@ public class RobotControl {
         try {
             if(ev3 == null){
                 BluetoothConnection conn = new BluetoothConnection(BRICK_NAME);
-                Channel channel = null;
+                Channel channel;
                 channel = conn.connect();
                 ev3 = new EV3(new SpooledAsyncChannel(channel));
             }
-            RobotControl r = new RobotControl(ev3,act);
-            return r;
+            return new RobotControl(ev3,act);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -139,7 +135,6 @@ public class RobotControl {
                     }
                     motor.waitCompletion();
 
-                    //Thread.sleep(1000);
                     end = false;
                     sensorMotor.setSpeed(35);
                     sensorMotor.setPower(35);
@@ -156,57 +151,18 @@ public class RobotControl {
                         Log.i("CAL", "sensor: "+color);
                     }
                     motor.waitCompletion();
-                    //Thread.sleep(1000);
                     sensorMotor.setStepPower(-40, 20, 190, 50, true);
                     sensorMotor.waitCompletion();
 
                     motor.setStepPower(40, 60, 90, 40, true);
                     motor.waitCompletion();
 
-                    //sleepTime(210);
-                    //Thread.sleep(1000);
-
-                    /*motor.setPower(20);
-                    motor.start();
-                    while (!end){
-                        c = lightSensor.getColor();
-                        color=c.get();
-                        if (color!=LightSensor.Color.TRANSPARENT) {
-                            motor.stop();
-                            end=true;
-                        }
-                        Log.i("CAL", "motor: "+color);
-                    }
-
-                    Thread.sleep(2000);
-                    end = false;
-                    sensorMotor.setPower(30);
-                    sensorMotor.start();
-                    while (!end) {
-                        c=lightSensor.getColor();
-                        color=c.get();
-                        if (color==LightSensor.Color.TRANSPARENT) {
-                            sensorMotor.brake();
-                            end = true;
-                        }
-                        Log.i("CAL", "sensor: "+color);
-                        Thread.sleep(40);
-                    }
-                    Thread.sleep(2000);
-                    sensorMotor.setStepPower(-40, 20, 190, 50, true);
-                    motor.setStepPower(40, 60, 90, 40, true);
-                    sleepTime(210);
-                    Thread.sleep(1000);*/
-
-
                     currentCol=0;
                     currentRow=5;
                 }
 
-                //2500 giri in 2.7 sec 3.3 2.9
                 if(out){
                     motor.setStepPower(-100, 50,RobotControl.OUT_DISTANCE-100, 50, true);
-                    //sleepTime(OUT_DISTANCE);
                     motor.waitCompletion();
                     outOfBoard = true;
                     data.soundTone(40,440,600);
@@ -232,14 +188,6 @@ public class RobotControl {
 
 
 
-    private void sleepTime(int giri){
-        try {
-            Thread.sleep(1800+(42/25)*giri);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void move(int r, int c, boolean dropping){
         Log.i("CAL","Moving: r: "+r+" c: "+c+"drop: "+dropping);
         if ((r>5 || r<0 || c>6 || c<0) && !dropping){
@@ -261,7 +209,6 @@ public class RobotControl {
                     }
                     else{
                         motor.setStepPower(100, 50,RobotControl.OUT_DISTANCE-700, 50, true);
-                        //sleepTime(OUT_DISTANCE);
                         motor.waitCompletion();
                         currentCol=0;
                         boolean end = false;
@@ -281,12 +228,8 @@ public class RobotControl {
                             Thread.sleep(40);
                         }
                         motor.waitCompletion();
-                        //motor.waitUntilReady();
-                        //Thread.sleep(400);
                         motor.setStepPower(30,20,120,40,true);
                         motor.waitCompletion();
-                        //motor.waitUntilReady();
-                        //sleepTime(50);
                         newc = currentCol-c;
                         outOfBoard=false;
                     }
@@ -295,10 +238,6 @@ public class RobotControl {
                         newc = newc+3;
                     }
                     newr = currentRow - r;
-
-                    //X step 282 in orizzontale
-                    //Y step 331 in verticale
-
                     int stepm=Math.abs(MOTOR_STEP*newc);
                     int steps=Math.abs(SENSOR_STEP*newr);
 
@@ -309,10 +248,8 @@ public class RobotControl {
                         motor.setStepPower(-1*Integer.signum(newc)*100, 50,stepm-100, 50, true);
                     if(newr!=0)
                         sensorMotor.setStepPower(-1*Integer.signum(newr)*50, 20,steps-40, 20, true);
-                    //questa attesa in base alla distanza
                     motor.waitCompletion();
                     sensorMotor.waitCompletion();
-                    //sleepTime(Math.max(stepm,steps)+700);
                     currentRow=r;
                     currentCol=(dropping ? c-3: c);
                     Log.i("CAL","currR "+currentRow+"  currC "+currentCol);
@@ -322,16 +259,13 @@ public class RobotControl {
                         stepm=150;
                         tokenMotor=data.getTachoMotor(EV3.OutputPort.C);
                         tokenMotor.setType(TachoMotor.Type.MEDIUM);
-                        Thread.sleep(500);
+
                         tokenMotor.setStepPower(-15, 20,90, 5, true);
                         tokenMotor.waitCompletion();
-                        //Thread.sleep(1300);
                         tokenMotor.setStepPower(15, 20,90, 5, true);
                         tokenMotor.waitCompletion();
-                        //Thread.sleep(1000);
                         motor.setStepPower(50, 50,stepm-100, 50, true);
                         motor.waitCompletion();
-                        //sleepTime(stepm);
                         motor.setStepPower(-50, 50,stepm-100, 50, true);
                         motor.waitCompletion();
                         moveOut(data);
@@ -339,9 +273,12 @@ public class RobotControl {
                         if(!endGame){
                             data.soundTone(40,440,600);
                             getDistance(data);
-                        }
-                        else{
+                        }else{
                             //vince robot
+                            Log.i("CAL","GameOver Robot vince");
+
+                            data.soundTone(50,800,400);
+                            data.soundTone(50,800,400);
                         }
                     }
                     else {
@@ -349,12 +286,10 @@ public class RobotControl {
                         LightSensor.Color col= lightSensor.getColor().get();
                         Log.i("CAL","Color "+col);
                         if(col==LightSensor.Color.YELLOW || col==LightSensor.Color.BROWN){
-                            //Log.i("CAL","Color Giallo/Marrone");
                             colorRead(LightSensor.Color.YELLOW,currentRow,currentCol);
                         }
                         else {
                             if(col==LightSensor.Color.BLUE) {
-                                //Log.i("CAL","Color ROSSO rgb+col");
                                 colorRead(LightSensor.Color.RED,currentRow,currentCol);
                             }
                             else {
@@ -369,7 +304,7 @@ public class RobotControl {
             });
 
             try {
-                ev3.cancel();
+                //ev3.cancel();
                 ev3.run(move_c);
             }
             catch (EV3.AlreadyRunningException e) {
@@ -381,14 +316,13 @@ public class RobotControl {
     private void moveOut(EV3.Api data){
         //esci
         try {
-            Log.i("CAL","Muovi Fuori");
+            Log.i("CAL", "Muovi Fuori");
             int stepm = (MOTOR_STEP * currentCol);
             motor = data.getTachoMotor(EV3.OutputPort.A);
-            //tempo di uscita dalla griglia
-            if(!outOfBoard)
-                motor.setStepPower(-100, 50,stepm-100+RobotControl.OUT_DISTANCE, 50, true);
-            motor.waitCompletion();
-            //Thread.sleep(stepm+OUT_DISTANCE);
+            if (!outOfBoard){
+                motor.setStepPower(-100, 50, stepm - 100 + RobotControl.OUT_DISTANCE, 50, true);
+                motor.waitCompletion();
+            }
             outOfBoard=true;
         }
         catch (IOException e) {
@@ -396,8 +330,7 @@ public class RobotControl {
         }
     }
     private void getDistance(EV3.Api data) {
-        //Float dist,last = (float) -1;
-        Float dist,last = Float.valueOf(-1);
+        Float dist,last = (float) -1;
         int col=-1, t=0, stuck=0;
         boolean end = false;
 
@@ -405,7 +338,6 @@ public class RobotControl {
             while (!end){
                 Thread.sleep(250);
                 dist = ultrasonicSensor.getDistance().get();
-                //dist=dist/10;
                 if(Float.compare(dist,last)==0){
                     stuck++;
                     if(stuck>5){
@@ -423,7 +355,6 @@ public class RobotControl {
                 else if (col != -1){
                     while(dist>30f && t<7){
                         dist = ultrasonicSensor.getDistance().get();
-                        // dist=dist/10;
                         Thread.sleep(300);
                         Log.i("CAL", "dist: " + dist);
                         t++;
@@ -433,8 +364,6 @@ public class RobotControl {
                     }
                     t=0;
                 }
-
-
             }
             Thread.sleep(200);
             Log.i("CAL","readColumn: "+col);
@@ -501,8 +430,6 @@ public class RobotControl {
   -CALIBRAZIONE
   - Gestione di fine partita con vittoria utente e vittoria robot
   -eccezioni varie
-
   - rotazione
   -
-  -tolto rgb su move and read
  */
