@@ -180,7 +180,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 editor.putString("easyTempoGioco", t);
 
                 if (eg > 0){
-                    float temp = ev/eg;
+
+                    float temp = ((float)ev)/eg;
                     temp *= 100;
                     editor.putInt("easyPCVittore", Math.round(temp));
                 }
@@ -210,7 +211,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 editor.putString("middleTempoGioco", t);
 
                 if (mg > 0){
-                    float temp = mv/mg;
+                    float temp = ((float)mv)/mg;
                     temp *= 100;
                     editor.putInt("middlePCVittore", Math.round(temp));
                 }
@@ -240,7 +241,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                 editor.putString("hardTempoGioco", t);
 
                 if (hg > 0){
-                    float temp = hv/hg;
+                    float temp = ((float)hv)/hg;
                     temp *= 100;
                     editor.putInt("hardPCVittore", Math.round(temp));
                 }
