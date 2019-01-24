@@ -43,7 +43,7 @@ public class OptionsActivity extends AppCompatActivity {
         String diff = settings.getString("DIFFICULT", "easy");
 
         // Vibrazione all'apertura dell'activity
-        if (vibr == true) {
+        if (vibr) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             //long[] pattern = {0, 100, 1000, 300, 200, 100, 500, 200, 100};
             //v.vibrate(pattern, -1); // -1 indica di vibrare una sola volta
@@ -55,8 +55,8 @@ public class OptionsActivity extends AppCompatActivity {
             }
         }
 
-        /*** GESTIONE VIBRAZIONE ***/
-        if (vibr == true){
+        /* GESTIONE VIBRAZIONE ***/
+        if (vibr){
             switchVibrazione.setChecked(true);
             editor.putBoolean("VIBRATION", true);
             editor.commit();
@@ -80,8 +80,8 @@ public class OptionsActivity extends AppCompatActivity {
             }
         });
 
-        /*** GESTIONE SUONI ***/
-        if (sound == true){
+        /* GESTIONE SUONI ***/
+        if (sound){
             switchSound.setChecked(true);
             editor.putBoolean("SOUND", true);
             editor.commit();
@@ -105,7 +105,7 @@ public class OptionsActivity extends AppCompatActivity {
             }
         });
 
-        /*** GESTIONE DIFFICOLTA' ***/
+        /* GESTIONE DIFFICOLTA' ***/
         if (diff.compareTo("easy") == 0){
             radioEasy.setChecked(true);
             radioMid.setChecked(false);

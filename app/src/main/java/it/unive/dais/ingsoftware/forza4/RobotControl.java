@@ -25,7 +25,6 @@ public class RobotControl {
     private static final int SENSOR_STEP = 340;
 
     private static EV3 ev3;
-    private static String BRICK_NAME="F4Bot";
     private UltrasonicSensor ultrasonicSensor;
     private TachoMotor tokenMotor;
     private boolean outOfBoard = false;
@@ -89,6 +88,7 @@ public class RobotControl {
     public static RobotControl connectToEv3(OnTasksFinished act){
         try {
             if(ev3 == null){
+                String BRICK_NAME = "F4Bot";
                 BluetoothConnection conn = new BluetoothConnection(BRICK_NAME);
                 Channel channel;
                 channel = conn.connect();

@@ -63,7 +63,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         Boolean vibr = settings.getBoolean("VIBRATION", true);
         // Vibrazione all'apertura dell'activity
-        if (vibr == true) {
+        if (vibr) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             //long[] pattern = {0, 100, 1000, 300, 200, 100, 500, 200, 100};
             //v.vibrate(pattern, -1); // -1 indica di vibrare una sola volta

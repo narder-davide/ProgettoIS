@@ -1,12 +1,11 @@
 package it.unive.dais.ingsoftware.forza4;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -48,9 +47,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     MediaPlayer mediaPlayerCoin = null;
 
     private RobotControl r;
-    private EV3 ev3;
     private char win;
-    private boolean gameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +62,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         editor = settings.edit();
         lastGame = settings.getString("LASTGAME", "");
         diff = settings.getString("DIFFICULT", "easy");
-
+        editor.commit();
         // Ottenimento degli oggetti grafici
         timerValue = findViewById(R.id.timerValue);
 
@@ -81,6 +78,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         // Associazione robot con Bluetooth
         new ConnectTask().execute(this);
     }
+    @SuppressLint("StaticFieldLeak")
     public class ConnectTask extends AsyncTask<RobotControl.OnTasksFinished,Void,Void>{
         @Override
         protected Void doInBackground(RobotControl.OnTasksFinished... a) {
@@ -153,7 +151,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             }
 
             Boolean vibr = settings.getBoolean("VIBRATION", true);
-            if (vibr == true) {
+            if (vibr) {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 long[] pattern = {100, 100, 100};
                 v.vibrate(pattern, -1); // -1 indica di vibrare una sola volta
@@ -360,14 +358,11 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             win = gameLogic.winner();
             Log.i("CAL","1 winner "+win);
             if (win != 'H'){
-                runOnUiThread(()-> {
+                runOnUiThread(()->{
                     this.checkWin(win);
                 });
-                gameOver=true;
-
                 this.r.gameOver(-1, false);
                 Log.i("CAL","return "+win);
-                return;
             }
             else {
                 Log.i("CAL","Mossa Robot");
@@ -398,9 +393,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
                     runOnUiThread(()-> {
                         this.checkWin(win);
                     });
-                    gameOver = true;
                     this.r.gameOver(coordinateRobot,true);
-                    return;
                 }
                 else {
                     this.r.dropToken(coordinateRobot);

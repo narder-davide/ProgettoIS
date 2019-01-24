@@ -1,5 +1,6 @@
 package it.unive.dais.ingsoftware.forza4;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -20,7 +21,6 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
 
     private static final int ROWS = 6,COLS=7;
     private RobotControl r;
-    private GameLogic g;
     private char mat[][]=new char[ROWS][COLS];
     private boolean starting;
     private Button buttonLoad,buttonScan;
@@ -131,6 +131,7 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
         startActivity(openNewGameActivity);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class ConnectTask extends AsyncTask<RobotControl.OnTasksFinished,Void,RobotControl> {
         @Override
         protected RobotControl doInBackground(RobotControl.OnTasksFinished... a) {
