@@ -48,13 +48,21 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
 
     private RobotControl r;
     private char win;
+    private boolean resumed;
+    private Boolean type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        if (savedInstanceState == null) {
+            resumed = getIntent().getBooleanExtra("resume", false);
+            type= getIntent().getBooleanExtra("type" ,false);
+        } else {
+            resumed= (Boolean) savedInstanceState.getSerializable("resume" );
+            type= (Boolean) savedInstanceState.getSerializable("type" );
+        }
         setContentView(R.layout.activity_new_game);
 
         // Gestione delle impostazioni di gioco
@@ -88,8 +96,8 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (r != null){
-                boolean resumed = getIntent().getBooleanExtra("resume", false);
+            if (r!=null){
+                Log.i("CAL","resumed: "+resumed);
                 startGame(resumed);
             }
             else {
@@ -102,7 +110,7 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
     private void startGame(boolean res) {
         // Inizio logica di gioco
         gameLogic = new GameLogic(gameGrid, lastGame);
-        gameLogic.initializeGame();
+        gameLogic.initializeGame(type);
 
         userCoinCount.setText("" + gameLogic.getUserCoin());
         robotCoinCount.setText("" + gameLogic.getRobotCoin());
@@ -115,7 +123,6 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             if (w != 'H') {
                 this.checkWin(w);
                 this.r.interrupt();
-
                 return;
             }
         }
@@ -123,8 +130,10 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
         if (!res){
             r.calibrate(true);
         }
-        else {
+        else if(type){
             r.setCurrentPos(5, 0);
+            r.calibrate(true);
+        }else{
             r.calibrate(true);
         }
     }
@@ -404,7 +413,14 @@ public class NewGameActivity extends AppCompatActivity implements RobotControl.O
             }
         }
         else if (c < COLS-1){
-            this.r.getCoinAt(gameLogic.quote[c+1],c+1);
+            int cols = c;
+            cols++;
+            while(gameLogic.quote[cols] == ROWS){
+                cols++;
+            }
+            Log.i("CAL","col: "+cols);
+            if(cols<=COLS-1)
+                this.r.getCoinAt(gameLogic.quote[cols],cols);
         }
     }
 }

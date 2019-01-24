@@ -30,6 +30,25 @@ public class RobotControl {
     private boolean outOfBoard = false;
     private boolean endGame;
 
+
+
+    interface OnTasksFinished{
+        void calibrated();
+        void columnRead(int c);
+        void colorRead(LightSensor.Color color,int r,int c);
+    }
+
+    private TachoMotor motor, sensorMotor;
+    private int currentRow, currentCol;
+    private LightSensor lightSensor;
+    private OnTasksFinished callback;
+
+    private RobotControl(EV3 e, OnTasksFinished c){
+        ev3 = e;
+        callback = c;
+        currentRow = -1;
+        currentCol = -1;
+    }
     public void dropToken(int c) {
         move(currentRow,c,true);
     }
@@ -66,25 +85,6 @@ public class RobotControl {
             e.printStackTrace();
         }
     }
-
-    interface OnTasksFinished{
-        void calibrated();
-        void columnRead(int c);
-        void colorRead(LightSensor.Color color,int r,int c);
-    }
-
-    private TachoMotor motor, sensorMotor;
-    private int currentRow, currentCol;
-    private LightSensor lightSensor;
-    private OnTasksFinished callback;
-
-    private RobotControl(EV3 e, OnTasksFinished c){
-        ev3 = e;
-        callback = c;
-        currentRow = -1;
-        currentCol = -1;
-    }
-
     public static RobotControl connectToEv3(OnTasksFinished act){
         try {
             if(ev3 == null){
@@ -427,9 +427,5 @@ public class RobotControl {
 }
 
 /*
-  -CALIBRAZIONE
-  - Gestione di fine partita con vittoria utente e vittoria robot
-  -eccezioni varie
-  - rotazione
-  -
+  - Gestione di fine partita dopo caricata
  */

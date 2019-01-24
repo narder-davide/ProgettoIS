@@ -70,28 +70,32 @@ public class GameLogic{
     // X -> empty (no coins)
     // Y -> yellow coin
     // R -> red coin
-    public void initializeGame(){
+    public void initializeGame(boolean type){
         this.resetGame();
 
-        if (lastGame.compareTo("") != 0){;
-            /*int col = 0;
+        if (lastGame.compareTo("") != 0){
+            int col = 0;
 
-            for(int i=0;i<lastGame.length();i++){
-                if (col == COLS){
-                    col = 0;
+            if(type){
+                for(int i=0;i<lastGame.length();i++){
+                    if (col == COLS){
+                        col = 0;
+                    }
+                    this.setCoin(col, lastGame.charAt(i));
+                    col++;
                 }
-                this.setCoin(col, lastGame.charAt(i));
-                col++;
-            }*/
-            int col = COLS-1;
 
-            for(int i=lastGame.length()-1;i>=0;i--){
-                if (col == -1){
-                    col = COLS-1;
+            }else{
+                col=COLS-1;
+                for(int i=lastGame.length()-1;i<=0;i--){
+                    if (col == -1){
+                        col = 0;
+                    }
+                    this.setCoin(col, lastGame.charAt(i));
+                    col--;
                 }
-                this.setCoin(col, lastGame.charAt(i));
-                col--;
             }
+
         }
     }
 
@@ -112,7 +116,7 @@ public class GameLogic{
         }
 
         c = c+(COLS-1)-(2*c);
-
+        Log.i("CAL","grid pos   c:"+c+" r: "+r);
         if (type == 'R') {
             ((TableRow)gameGrid.getChildAt(r)).getVirtualChildAt(c).setBackgroundResource(R.drawable.rounded_button_red);
         }
@@ -499,30 +503,21 @@ public class GameLogic{
     public String getLastGame(){
         int i, j;
         String out = "";
+        String s="";
+        for (i = 0; i < 6; i++) {
+            for (j = 0; j < 7; j++) {
+                s+=matrix[i][j];
+            }
+        }
 
-        /*for(i=0;i<ROWS;i++){
-            for(j=0;j<COLS;j++){
-                out += matrix[i][j];
-            }
-        }*/
-        /*for(i=ROWS-1;i>=0;i--){
-            for(j=COLS-1;j>=0;j--){
-                out += matrix[i][j];
-            }
-        }*/
-        /*for(j=0;j<COLS;j++){
-            for(i=0;i<ROWS;i++){
-                out += matrix[i][j];
-            }
-        }*/
-
+        /*
         for(j=COLS-1;j>=0;j--){
             for(i=0;i<ROWS;i++){
                 out += matrix[i][j];
             }
         }
+        */
         this.lastGame = out;
-
         return out;
     }
 

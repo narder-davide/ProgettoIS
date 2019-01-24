@@ -43,10 +43,13 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
         progressBar.setVisibility(View.INVISIBLE);
 
         // Caricamento leggendo stringa salvata nelle SharedPreferences
+        buttonLoad.setEnabled(false);
         buttonLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent openNewGameActivity = new Intent(LoadGameActivity.this, NewGameActivity.class);
+                openNewGameActivity.putExtra("resume",true);
+                openNewGameActivity.putExtra("type",false);
                 startActivity(openNewGameActivity);
             }
         });
@@ -79,7 +82,7 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
     public void colorRead(LightSensor.Color color,int r, int c) {
         if(starting){
             startLoadedGame();
-            return;//prova calibrazione dopo load game
+            return;
         }
         if (color==LightSensor.Color.RED) {
             mat[r][c]='R';
@@ -128,6 +131,8 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
 
         Intent openNewGameActivity = new Intent(LoadGameActivity.this, NewGameActivity.class);
         openNewGameActivity.putExtra("resume",true);
+        openNewGameActivity.putExtra("type",true);
+
         startActivity(openNewGameActivity);
     }
 
@@ -152,6 +157,6 @@ public class LoadGameActivity extends AppCompatActivity implements RobotControl.
     }
     private void enableDisableButtons(boolean b) {
         buttonScan.setEnabled(b);
-        buttonLoad.setEnabled(b);
+       // buttonLoad.setEnabled(b);
     }
 }
