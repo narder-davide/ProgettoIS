@@ -74,7 +74,7 @@ public class GameLogic{
         this.resetGame();
 
         if (lastGame.compareTo("") != 0){;
-            int col = 0;
+            /*int col = 0;
 
             for(int i=0;i<lastGame.length();i++){
                 if (col == COLS){
@@ -82,8 +82,8 @@ public class GameLogic{
                 }
                 this.setCoin(col, lastGame.charAt(i));
                 col++;
-            }
-            /*int col = COLS-1;
+            }*/
+            int col = COLS-1;
 
             for(int i=lastGame.length()-1;i>=0;i--){
                 if (col == -1){
@@ -91,7 +91,7 @@ public class GameLogic{
                 }
                 this.setCoin(col, lastGame.charAt(i));
                 col--;
-            }*/
+            }
         }
     }
 
