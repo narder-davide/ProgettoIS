@@ -33,6 +33,6 @@
     <string name="textStatistics">STATISTICHE</string>
 
     <string name="textLoadGame">CARICA PARTITA</string>
-    <string name="textButtonLoad">Carica partita salvata</string>
+    <string name="textButtonLoad">Continua partita esistente</string>
     <string name="textButtonScan">Scansiona la partita</string>
 </resources>

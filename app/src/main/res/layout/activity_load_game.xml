@@ -25,7 +25,7 @@
 
     <Button
         android:id="@+id/buttonLoad"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
         android:background="#3498db"
@@ -39,7 +39,7 @@
 
     <Button
         android:id="@+id/buttonScan"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
         android:background="#3498db"
