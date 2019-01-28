@@ -425,7 +425,3 @@ public class RobotControl {
         }
     }
 }
-
-/*
-  - Gestione di fine partita dopo caricata
- */
